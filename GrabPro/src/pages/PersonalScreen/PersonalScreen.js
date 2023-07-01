@@ -2,23 +2,15 @@ import React from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import styles from "./PersonalScreen.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  useFonts,
-  Poppins_400Regular,
-  Poppins_600SemiBold,
-  Poppins_700Bold,
-} from "@expo-google-fonts/poppins";
+import { useCustomFonts } from "../../styles/fonts";
+import OptionItem from "./components/PersonalItem";
 import {
   faChevronRight,
   faCircleUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const PersonalScreen = () => {
-  let [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
-  });
+  const fontsLoaded = useCustomFonts();
   if (!fontsLoaded) {
     return null;
   } else {
@@ -32,14 +24,7 @@ const PersonalScreen = () => {
             color="#4FAE5A"
           />
           <View style={styles.person_right}>
-            <Text
-              style={[
-                styles.person_name,
-                { fontFamily: "Poppins_600SemiBold" },
-              ]}
-            >
-              Trần Anh Khôi
-            </Text>
+            <Text style={[styles.person_name]}>Trần Anh Khôi</Text>
 
             <Pressable
               style={[
@@ -71,93 +56,19 @@ const PersonalScreen = () => {
             Tài khoản của tôi
           </Text>
           <View style={{ marginTop: 10 }}>
-            <Pressable style={styles.person_item}>
-              <Text
-                style={[
-                  styles["person_item-text"],
-                  { fontFamily: "Poppins_400Regular" },
-                ]}
-              >
-                Vàng
-              </Text>
-              <View style={styles["person_item-right"]}>
-                <Image
-                  source={require("../../../assets/icons/Personal/ic_crown.png")}
-                  style={{
-                    marginBottom: 5,
-                    marginRight: 5,
-                    width: 20,
-                    height: 20,
-                  }}
-                />
-                <Text
-                  style={{
-                    fontFamily: "Poppins_400Regular",
-                    fontSize: 12,
-                    marginRight: 5,
-                    color: "#4F4848",
-                  }}
-                >
-                  127 Điểm
-                </Text>
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size={14}
-                  color="#4F4848"
-                />
-              </View>
-            </Pressable>
-            <Pressable style={styles.person_item}>
-              <Text
-                style={[
-                  styles["person_item-text"],
-                  { fontFamily: "Poppins_400Regular" },
-                ]}
-              >
-                Yêu thích
-              </Text>
-              <View style={styles["person_item-right"]}>
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size={14}
-                  color="#4F4848"
-                />
-              </View>
-            </Pressable>
-            <Pressable style={styles.person_item}>
-              <Text
-                style={[
-                  styles["person_item-text"],
-                  { fontFamily: "Poppins_400Regular" },
-                ]}
-              >
-                Địa điểm đã lưu
-              </Text>
-              <View style={styles["person_item-right"]}>
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size={14}
-                  color="#4F4848"
-                />
-              </View>
-            </Pressable>
-            <Pressable style={styles.person_item}>
-              <Text
-                style={[
-                  styles["person_item-text"],
-                  { fontFamily: "Poppins_400Regular" },
-                ]}
-              >
-                Hình thức thanh toán
-              </Text>
-              <View style={styles["person_item-right"]}>
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size={14}
-                  color="#4F4848"
-                />
-              </View>
-            </Pressable>
+            <OptionItem
+              title="Vàng"
+              text="127 Điểm"
+              type={1}
+              path="/some/path"
+            />
+            <OptionItem title="Yêu thích" type={2} path="/personal" />
+            <OptionItem title="Địa điểm đã lưu" type={2} path="/personal" />
+            <OptionItem
+              title="Hình thức thanh toán"
+              type={2}
+              path="/paymentperson"
+            />
           </View>
           <Text
             style={{
@@ -169,23 +80,11 @@ const PersonalScreen = () => {
             Cơ hội
           </Text>
           <View style={{ marginTop: 5 }}>
-            <Pressable style={styles.person_item}>
-              <Text
-                style={[
-                  styles["person_item-text"],
-                  { fontFamily: "Poppins_400Regular" },
-                ]}
-              >
-                Lái xe cùng Grab
-              </Text>
-              <View style={styles["person_item-right"]}>
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  size={14}
-                  color="#4F4848"
-                />
-              </View>
-            </Pressable>
+            <OptionItem
+              title="Lái xe cùng Grab"
+              type={2}
+              path="/some/chance/path"
+            />
           </View>
         </View>
       </View>

@@ -7,5 +7,6 @@ export default {
 
     banner__color: "#E0ECFF",
     txt_color_900: "#797070",
-    txt_color_800: "#4F4848"
+    txt_color_800: "#4F4848",
+    bg_color: "#F8F8F8",
 }

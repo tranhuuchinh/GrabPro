@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   },
   person_name: {
     fontSize: 20,
+    fontFamily: "Poppins_600SemiBold",
   },
   icon_user: {
     marginRight: 15,
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   "person_item-text": {
     fontSize: 14,
     color: colors.txt_color_900,
+    fontFamily: "Poppins_400Regular"
   },
   "person_item-right": {
     display: "flex",
