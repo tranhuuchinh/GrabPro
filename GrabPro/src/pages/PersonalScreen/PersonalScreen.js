@@ -60,9 +60,9 @@ const PersonalScreen = () => {
               title="Vàng"
               text="127 Điểm"
               type={1}
-              path="/some/path"
+              path="/awardperson"
             />
-            <OptionItem title="Yêu thích" type={2} path="/personal" />
+            <OptionItem title="Yêu thích" type={2} path="/favorite" />
             <OptionItem title="Địa điểm đã lưu" type={2} path="/personal" />
             <OptionItem
               title="Hình thức thanh toán"

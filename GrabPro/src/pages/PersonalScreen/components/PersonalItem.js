@@ -2,8 +2,7 @@ import React from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigate } from "react-router-native";
 import styles from "../PersonalScreen.style";
 
 const PersonalItem = ({ title, mark, type, path }) => {
@@ -51,8 +50,8 @@ const PersonalItem = ({ title, mark, type, path }) => {
 
   return (
     <Pressable style={styles.person_item} onPress={onPress}>
-        <Text style={styles["person_item-text"]}>{title}</Text>
-        {renderContent()}
+      <Text style={styles["person_item-text"]}>{title}</Text>
+      {renderContent()}
     </Pressable>
   );
 };

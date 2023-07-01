@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigate } from "react-router-native";
+import styles from "./Heading.style";
 
 const Heading = ({ title, returnPath }) => {
   const navigation = useNavigate();
@@ -13,29 +13,9 @@ const Heading = ({ title, returnPath }) => {
   };
 
   return (
-    <View
-      style={{
-        width: "100%",
-        height: 80,
-        elevation: 5,
-      }}
-    >
-      <View
-        style={{ height: 36, width: "100%", backgroundColor: "white" }}
-      ></View>
-      <View
-        style={{
-          height: 44,
-          width: "100%",
-          backgroundColor: "white",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          borderBottomColor: "rgba(0, 0, 0, 0.46)",
-          borderBottomWidth: 1,
-        }}
-      >
+    <View style={styles.heading_container}>
+      <View style={styles.heading_upper}></View>
+      <View style={styles.heading_content}>
         <Text style={{ fontFamily: "Poppins_600SemiBold", fontSize: 14 }}>
           {title}
         </Text>
