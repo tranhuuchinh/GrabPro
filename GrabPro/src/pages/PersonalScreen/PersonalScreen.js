@@ -4,6 +4,7 @@ import styles from "./PersonalScreen.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useCustomFonts } from "../../styles/fonts";
 import OptionItem from "./components/PersonalItem";
+import { useNavigate } from "react-router-native";
 import {
   faChevronRight,
   faCircleUser,
@@ -11,6 +12,7 @@ import {
 
 const PersonalScreen = () => {
   const fontsLoaded = useCustomFonts();
+  const navigation = useNavigate();
   if (!fontsLoaded) {
     return null;
   } else {
@@ -31,6 +33,7 @@ const PersonalScreen = () => {
                 styles.personal_banner_btn,
                 { fontFamily: "Poppins_400Regular" },
               ]}
+              onPress={()=>{navigation("/profile")}}
             >
               <Text>Chỉnh sửa tài khoản</Text>
               <FontAwesomeIcon

@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import colors from "../../styles/colors";
 
 const styles = StyleSheet.create({
   awperson_container: {
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
       width: -1,
       height: 1,
     },
-    textShadowOpacity: 0.9,
+    textShadowColor: "rgba(0, 0, 0, 0.35)",
     textShadowRadius: 2,
     color: "#F4F900",
     fontFamily: "Poppins_600SemiBold",

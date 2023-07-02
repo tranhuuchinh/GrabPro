@@ -7,6 +7,8 @@ import AwardPerson from "../pages/AwardPerson/AwardPerson";
 import FavoritePerson from "../pages/FavoritePerson/FavoritePerson";
 import PaymentScreen from "../pages/PaymentScreen/PaymentScreen";
 import PaymentDetail from "../pages/PaymentDetail/PaymentDetail";
+import ProfilePerson from "../pages/ProfilePerson/ProfilePerson";
+import ActivityScreen from "../pages/ActivityScreen/ActivityScreen";
 
 const AppRouter = () => {
   return (
@@ -20,6 +22,8 @@ const AppRouter = () => {
         
         <Route path="/payment-history" element={<PaymentScreen />} />
         <Route path="/payment-detail" element={<PaymentDetail />} />
+        <Route path="/profile" element={<ProfilePerson />} />
+        <Route path="/activity" element={<ActivityScreen />} />
       </Routes>
     </NativeRouter>
   );
