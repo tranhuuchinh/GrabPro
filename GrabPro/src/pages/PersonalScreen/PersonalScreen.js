@@ -66,7 +66,7 @@ const PersonalScreen = () => {
               path="/awardperson"
             />
             <OptionItem title="Yêu thích" type={2} path="/favorite" />
-            <OptionItem title="Địa điểm đã lưu" type={2} path="/personal" />
+            <OptionItem title="Địa điểm đã lưu" type={2} path="/locationperson" />
             <OptionItem
               title="Hình thức thanh toán"
               type={2}
