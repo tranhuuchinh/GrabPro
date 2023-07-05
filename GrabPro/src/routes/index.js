@@ -9,17 +9,19 @@ import PaymentScreen from "../pages/PaymentScreen/PaymentScreen";
 import PaymentDetail from "../pages/PaymentDetail/PaymentDetail";
 import ProfilePerson from "../pages/ProfilePerson/ProfilePerson";
 import ActivityScreen from "../pages/ActivityScreen/ActivityScreen";
+import GrapChat from "../pages/GrapChat/GrapChat";
 
 const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
+        <Route path="/" element={<GrapChat />} />
+        {/* <Route path="/" element={<HomeScreen />} /> */}
         <Route path="/personal" element={<PersonalScreen />} />
         <Route path="/paymentperson" element={<PaymentPerson />} />
         <Route path="/awardperson" element={<AwardPerson />} />
         <Route path="/favorite" element={<FavoritePerson />} />
-        
+
         <Route path="/payment-history" element={<PaymentScreen />} />
         <Route path="/payment-detail" element={<PaymentDetail />} />
         <Route path="/profile" element={<ProfilePerson />} />
