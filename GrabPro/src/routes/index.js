@@ -10,6 +10,9 @@ import PaymentDetail from "../pages/PaymentDetail/PaymentDetail";
 import ProfilePerson from "../pages/ProfilePerson/ProfilePerson";
 import ActivityScreen from "../pages/ActivityScreen/ActivityScreen";
 import GrapChat from "../pages/GrapChat/GrapChat";
+import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
+import LocationPerson from "../pages/LocationPerson/LocationPerson";
+import SearchScreen from "../pages/SearchScreen/SearchScreen";
 
 const AppRouter = () => {
   return (
@@ -26,6 +29,9 @@ const AppRouter = () => {
         <Route path="/payment-detail" element={<PaymentDetail />} />
         <Route path="/profile" element={<ProfilePerson />} />
         <Route path="/activity" element={<ActivityScreen />} />
+        <Route path="/activity-detail" element={<ActivityDetail />} />
+        <Route path="/locationperson" element={<LocationPerson />} />
+        <Route path="/search" element={<SearchScreen />} />
       </Routes>
     </NativeRouter>
   );

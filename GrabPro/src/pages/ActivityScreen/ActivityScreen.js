@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, ScrollView } from "react-native";
 import styles from "./ActivityScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import Oto from "../../../assets/icons/Activity/ic_oto.png";
 import Moto from "../../../assets/icons/Activity/ic_moto.png";
+import { useNavigate } from "react-router-native";
 
 const activitiesOto = [
   {
@@ -44,11 +45,16 @@ const activitiesMoto = [
 const ActivityScreen = () => {
   const [type, setType] = useState(0);
   const fontsLoaded = useCustomFonts();
+  const navigation = useNavigate();
+
+  const handlePress = () => {
+    navigation("/activity-detail");
+  };
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={styles.activity_container}>
+      <ScrollView style={styles.activity_container}>
         <View style={styles.activity_header}>
           <Text style={styles["activity_header-title"]}>Hoạt động</Text>
           <View style={styles["activity_header-control"]}>
@@ -100,7 +106,11 @@ const ActivityScreen = () => {
         {type == 0 ? (
           <View style={styles.activity_body}>
             {activitiesOto.map((item, index) => (
-              <Pressable style={styles.activity_item} key={index}>
+              <Pressable
+                style={styles.activity_item}
+                key={index}
+                onPress={() => handlePress()}
+              >
                 <View>
                   <Image
                     source={Oto}
@@ -140,7 +150,11 @@ const ActivityScreen = () => {
         ) : (
           <View style={styles.activity_body}>
             {activitiesMoto.map((item, index) => (
-              <Pressable style={styles.activity_item} key={index}>
+              <Pressable
+                style={styles.activity_item}
+                key={index}
+                onPress={() => handlePress()}
+              >
                 <View>
                   <Image
                     source={Moto}
@@ -178,7 +192,7 @@ const ActivityScreen = () => {
             ))}
           </View>
         )}
-      </View>
+      </ScrollView>
     );
   }
 };
