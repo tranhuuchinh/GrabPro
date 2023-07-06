@@ -2,9 +2,14 @@ import { View, Text } from "react-native";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useCustomFonts } from "../../../styles/fonts";
 import styles from "./PaymentItem.style";
 
 const PaymentItem = ({ item }) => {
+  const fontsLoaded = useCustomFonts();
+
+  if (!fontsLoaded) return null;
+
   const HorizontalLine = () => {
     return <View style={styles.line} />;
   };

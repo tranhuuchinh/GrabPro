@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   payment_item__left: {},
   payment_item__title: {
+    fontFamily: "Poppins_500Medium",
     color: "black",
     fontSize: 14,
     fontWeight: "500",
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   payment_item__description: {
+    fontFamily: "Poppins_400Regular",
     color: "#826E6E",
     fontSize: 12,
     fontWeight: "300",
@@ -33,6 +35,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   payment_item__price: {
+    fontFamily: "Poppins_500Medium",
     color: colors.primary__650,
     fontSize: 14,
     fontWeight: "700",
