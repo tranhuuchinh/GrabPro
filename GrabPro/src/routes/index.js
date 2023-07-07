@@ -12,14 +12,21 @@ import ActivityScreen from "../pages/ActivityScreen/ActivityScreen";
 import GrapChatScreen from "../pages/GrapChatScreen/GrapChatScreen";
 import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
 import LocationPerson from "../pages/LocationPerson/LocationPerson";
+import BookCarHome from "../pages/BookCarHome/BookCarHome";
+import BookCarPickUp from "../pages/BookCarPickUp/BookCarPickUp";
+import BookCar from "../pages/BookCar/BookCar";
+import BookCarDestroy from "../pages/BookCarDestroy/BookCarDestroy";
+import BookCarComing from "../pages/BookCarComing/BookCarComing";
+import BookCarPickUpDetail from '../pages/BookCarPickUpDetail/BookCarPickUpDetail';
 import SearchScreen from "../pages/SearchScreen/SearchScreen";
 import ChatDetail from "../pages/ChatDetail/ChatDetail";
+import BookCarAppointment from './../pages/BookCarAppointment/BookCarAppointment';
 
 const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
+        {/* <Route path="/" element={<HomeScreen />} /> */}
 
         <Route path="/chatdetail" element={<ChatDetail />} />
         <Route path="/chat-inform" element={<GrapChatScreen />} />
@@ -34,7 +41,17 @@ const AppRouter = () => {
         <Route path="/activity" element={<ActivityScreen />} />
         <Route path="/activity-detail" element={<ActivityDetail />} />
         <Route path="/locationperson" element={<LocationPerson />} />
+        <Route path="/bookcar-home" element={<BookCarHome />} />
+        <Route path="/bookcar-pickup" element={<BookCarPickUp />} />
+        <Route path="/bookcar-pickup-detail" element={<BookCarPickUpDetail />} />
+        <Route path="/bookcar-book" element={<BookCar />} />
+        <Route path="/bookcar-destroy" element={<BookCarDestroy />} />
+        <Route path="/bookcar-coming" element={<BookCarComing />} />
         <Route path="/search" element={<SearchScreen />} />
+        <Route path="/bookcar-appointment" element={<BookCarAppointment />} />
+
+
+        <Route path="/" element={<BookCarHome />} />
       </Routes>
     </NativeRouter>
   );
