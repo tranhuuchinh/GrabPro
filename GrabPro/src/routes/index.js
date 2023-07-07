@@ -11,6 +11,12 @@ import ProfilePerson from "../pages/ProfilePerson/ProfilePerson";
 import ActivityScreen from "../pages/ActivityScreen/ActivityScreen";
 import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
 import LocationPerson from "../pages/LocationPerson/LocationPerson";
+import BookCarHome from "../pages/BookCarHome/BookCarHome";
+import BookCarPickUp from "../pages/BookCarPickUp/BookCarPickUp";
+import BookCar from "../pages/BookCar/BookCar";
+import BookCarDestroy from "../pages/BookCarDestroy/BookCarDestroy";
+import BookCarComing from "../pages/BookCarComing/BookCarComing";
+import BookCarPickUpDetail from '../pages/BookCarPickUpDetail/BookCarPickUpDetail';
 
 const AppRouter = () => {
   return (
@@ -28,6 +34,12 @@ const AppRouter = () => {
         <Route path="/activity" element={<ActivityScreen />} />
         <Route path="/activity-detail" element={<ActivityDetail />} />
         <Route path="/locationperson" element={<LocationPerson />} />
+        <Route path="/bookcar-home" element={<BookCarHome />} />
+        <Route path="/bookcar-pickup" element={<BookCarPickUp />} />
+        <Route path="/bookcar-pickup-detail" element={<BookCarPickUpDetail />} />
+        <Route path="/bookcar-book" element={<BookCar />} />
+        <Route path="/bookcar-destroy" element={<BookCarDestroy />} />
+        <Route path="/bookcar-coming" element={<BookCarComing />} />
       </Routes>
     </NativeRouter>
   );
