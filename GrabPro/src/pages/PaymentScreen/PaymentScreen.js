@@ -15,6 +15,7 @@ import banner from "../../../assets/imgs/Personal/banner_profile.png";
 import ic_payment from "../../../assets/icons/Payment/ic_payment.png";
 import ic_qr from "../../../assets/icons/Payment/ic_qr.png";
 import PaymentItem from "./PaymentItem/PaymentItem";
+import { useCustomFonts } from "../../styles/fonts";
 
 const PaymentScreen = () => {
   const data = [
@@ -85,6 +86,10 @@ const PaymentScreen = () => {
     },
   ];
 
+  const fontsLoaded = useCustomFonts();
+
+  if (!fontsLoaded) return null;
+
   const HorizontalLine = () => {
     return <View style={styles.line} />;
   };
@@ -104,11 +109,11 @@ const PaymentScreen = () => {
         <View style={styles.payment_body__option}>
           <Pressable style={styles["payment_body-btn"]}>
             <Image style={styles["payment_body-icon"]} source={ic_payment} />
-            <Text>Rút tiền</Text>
+            <Text style={styles["payment_body-btn--text"]}>Rút tiền</Text>
           </Pressable>
           <Pressable style={styles["payment_body-btn"]}>
             <Image style={styles["payment_body-icon"]} source={ic_qr} />
-            <Text>Quét để thanh toán</Text>
+            <Text style={styles["payment_body-btn--text"]}>Quét để thanh toán</Text>
           </Pressable>
         </View>
         <HorizontalLine />

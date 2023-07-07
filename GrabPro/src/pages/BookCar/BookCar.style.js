@@ -9,9 +9,18 @@ const styles = StyleSheet.create({
   "bookcar__container-maps": {
     // zIndex: 0
   },
+  "bookcar__container-back": {
+    position: "absolute",
+    top: 0,
+    padding: 6,
+    backgroundColor: "#fff",
+    borderRadius: 200,
+    marginTop: 30,
+    marginLeft: 20
+  },
   "bookcar__container-timer":{
     backgroundColor: "#02B250",
-    paddingHorizontal: 30,
+    paddingHorizontal: 22,
     paddingVertical: 14,
     display: "flex",
     flexDirection: "row",
@@ -20,17 +29,15 @@ const styles = StyleSheet.create({
   },
   "bookcar__container-timer-title": {
     fontSize: 14,
-    // fontWeight: 600,
     fontFamily: "Poppins_600SemiBold",
     color: "#fff"
   },
   "bookcar__container-timer-content": {
     fontSize: 14,
-    // fontWeight: 600,
     fontFamily: "Poppins_600SemiBold",
-    // fontFamily: "Poppins",
     color: "#000",
     paddingHorizontal: 14,
+    paddingTop: 8,
     paddingVertical: 4,
     backgroundColor: "#fff",
     borderRadius: 4
@@ -42,12 +49,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFF9F8",
     marginVertical: 14,
     paddingVertical: 14,
-    paddingHorizontal: 16
+    paddingLeft: 22,
+    paddingRight: 10
   },
   "bookcar__container-location-title": {
     fontSize: 15,
-    // fontWeight: 600,
-    // fontFamily: "Poppins",
     fontFamily: "Poppins_600SemiBold",
     color: "#464646"
   },
@@ -59,8 +65,6 @@ const styles = StyleSheet.create({
   "bookcar__container-location-price": {
     width: "20%",
     fontSize: 14,
-    // fontWeight: 700,
-    // fontFamily: "Poppins",
     fontFamily: "Poppins_700Bold",
     color: "#000",
     textAlign: "right"
@@ -72,8 +76,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#02B250",
     color: "#fff",
     fontSize: 14,
-    // fontFamily: "Poppins",
-    // fontWeight: 600,
     fontFamily: "Poppins_600SemiBold",
     borderRadius: 8,
     marginBottom: 14
@@ -98,8 +100,6 @@ const styles = StyleSheet.create({
   },
   "bookcar__container-payment-left-title": {
     fontSize: 12,
-    // fontFamily: "Poppins",
-    // fontWeight: 600,
     fontFamily: "Poppins_600SemiBold",
     color: "#000",
     marginLeft: 14,
@@ -112,8 +112,6 @@ const styles = StyleSheet.create({
   },
   "bookcar__container-payment-right-title": {
     fontSize: 12,
-    // fontFamily: "Poppins",
-    // fontWeight: 600,
     fontFamily: "Poppins_600SemiBold",
     color: "#000",
   },

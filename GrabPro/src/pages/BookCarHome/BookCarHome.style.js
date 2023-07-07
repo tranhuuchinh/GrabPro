@@ -50,17 +50,17 @@ const styles = StyleSheet.create({
     left: 0,
     width: "100%",
     height: 50,
-    marginLeft: 10,
-    marginRight: 10,
-    paddingLeft: 20,
+    marginLeft: 20,
+    paddingLeft: 55,
     borderRadius: 8,
     backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowRadius: 8,
-    shadowOpacity: 0.4,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    elevation: 4,
+  },
+  "bookcar__container-search-input": {
+    width: "100%",
+    height: "100%",
+    fontSize: 14,
+    fontFamily: "Poppins_600SemiBold"
   },
   "bookcar__container-search-title": {
     fontSize: 14,
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     width: "100%",
-    paddingLeft: 20,
+    paddingHorizontal: 10,
     marginTop: 10,
     paddingBottom: 10,
     borderBottomColor: "#ccc",
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   "bookcar__container-favorlocation-list": {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   "bookcar__container-favorlocation-item": {
     display: "flex",
@@ -137,15 +137,13 @@ const styles = StyleSheet.create({
     width: "25%"
   },
   "bookcar__container-favorlocation-item-ic": {
-    padding: 4, 
+    padding: 6, 
     backgroundColor: "#fff", 
     borderRadius: 200, 
     position: "absolute", 
-    bottom: -2, 
-    right: -2,  
-    shadowColor: '#000',
-    shadowRadius: 8,
-    shadowOpacity: 0.4,
+    bottom: "-25%", 
+    right: -10,
+    elevation: 2
   },    
   "bookcar__container-favorlocation-content": {
     fontSize: 10,

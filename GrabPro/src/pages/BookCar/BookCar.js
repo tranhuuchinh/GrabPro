@@ -7,9 +7,12 @@ import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from './BookCar.style';
 import { useCustomFonts } from "../../styles/fonts";
+import { Pressable } from 'react-native';
+import { useNavigate } from 'react-router-native';
 
 const BookCar = () => {
     const fontsLoaded = useCustomFonts();
+    const navigation = useNavigate();
 
     if (!fontsLoaded) {
         return null;
@@ -18,8 +21,12 @@ const BookCar = () => {
         return (
             <View style={styles.bookcar__container}>
                 <View style={styles["bookcar__container-maps"]}>
-                    <Image source={HaLinh} style={{width: "100%", height: "100vh"}}/>
+                    <Image source={HaLinh} style={{width: "100%", height: "100%"}}/>
                 </View>
+
+                <Pressable style={styles["bookcar__container-back"]} onPress={() => navigation("/bookcar-pickup")}>
+                    <FontAwesomeIcon icon={faChevronLeft} size={20} color='#000'/>
+                </Pressable>
     
                 <View style={{position: "absolute", backgroundColor: "#fff", width: "100%", bottom: 0}}>
                     <View style={styles["bookcar__container-timer"]}>
@@ -35,7 +42,7 @@ const BookCar = () => {
                             <Image source={CarV2} style={{width: 41, height: 37}} />
                         </View>
     
-                        <View style={{width: "70%", marginLeft: 20}}>
+                        <View style={{width: "60%", marginLeft: 20}}>
                             <Text style={styles["bookcar__container-location-title"]}>GrabCar</Text>
                             <Text style={styles["bookcar__container-location-content"]}>Tối đa 4 hành khách</Text>
                         </View>
@@ -58,7 +65,9 @@ const BookCar = () => {
                         </View> 
                     </View>
     
-                    <Text style={styles["bookcar__container-button"]}>Đặt xe GrabCar</Text>
+                    <Pressable onPress={() => navigation("/bookcar-destroy")}>
+                        <Text style={styles["bookcar__container-button"]}>Đặt xe GrabCar</Text>
+                    </Pressable>
                 </View>
             </View>
         );

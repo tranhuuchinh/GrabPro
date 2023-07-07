@@ -23,11 +23,12 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   payment_name: {
-    fontSize: 30,
-    fontWeight: 700,
+    fontSize: 24,
+    fontFamily: "Poppins_700Bold",
     marginBottom: 10,
   },
   payment_slogan: {
+    fontFamily: "Poppins_300Light",
     fontSize: 12,
   },
   payment_image: {
@@ -63,6 +64,9 @@ const styles = StyleSheet.create({
   "payment_body-icon": {
     marginRight: 10,
   },
+  "payment_body-btn--text": {
+    fontFamily: "Poppins_300Light",
+  },
 
   scroll_view: {
     justifyContent: "center",
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 500,
     paddingVertical: 14,
+    fontFamily: "Poppins_500Medium",
   },
 });
 export default styles;

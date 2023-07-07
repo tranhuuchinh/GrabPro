@@ -4,7 +4,7 @@ import { preventAutoHide } from 'expo-app-loading/node_modules/expo-splash-scree
 
 const styles = StyleSheet.create({
   bookcarpickupdetail__container: {
-    
+    marginTop: 30
   },
   "bookcarpickupdetail__container-header": {
     display: "flex",
@@ -15,8 +15,7 @@ const styles = StyleSheet.create({
   },
   "bookcarpickupdetail__container-header-title": {
     fontSize: 14,
-    fontFamily: "Poppins",
-    fontWeight: 600,
+    fontFamily: "Poppins_600SemiBold",
     color: "#000",
     marginLeft: 14,
   },
@@ -40,17 +39,17 @@ const styles = StyleSheet.create({
   "bookcarpickupdetail__container-search-up-title": {
     width: "70%",
     fontSize: 12,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
     color: "#A3A3A3",
     marginLeft: 14,
     paddingBottom: 10,
     borderBottomColor: "#A3A3A3",
     borderBottomStyle: "solid",
-    borderBottomWidth: "1px",
+    borderBottomWidth: 1,
   },
   "bookcarpickupdetail__container-search-down-title": {
     fontSize: 12,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
     color: "#A3A3A3",
     marginLeft: 14
   },
@@ -60,8 +59,7 @@ const styles = StyleSheet.create({
   },
   "bookcarpickupdetail__container-list-title": {
     fontSize: 14,
-    fontFamily: "Poppins",
-    fontWeight: 600,
+    fontFamily: "Poppins_600SemiBold",
     color: "#000",  
     marginBottom: 10
   },   
@@ -73,18 +71,16 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomColor: "#ccc",
     borderBottomStyle: "solid",
-    borderBottomWidth: "1px",
+    borderBottomWidth: 1
   },
   "bookcarpickupdetail__container-history-title": {
     fontSize: 13,
-    fontFamily: "Poppins",
-    fontWeight: 600,
+    fontFamily: "Poppins_600SemiBold",
     marginBottom: 6
   },
   "bookcarpickupdetail__container-history-content": {
     fontSize: 10,
-    fontFamily: "Poppins",
-    fontWeight: 400,
+    fontFamily: "Poppins_400Regular",
     color: "#5B5A5A",
   },
 });

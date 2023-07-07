@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft, faLocationDot, faArrowRightLong, faPlus, faA } from "@fortawesome/free-solid-svg-icons";
 import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
@@ -22,21 +22,23 @@ const BookCarPickUp = () => {
         return (
             <View style={styles.bookcarchoicedes__container}>
                 <View style={styles["bookcarchoicedes__container-maps"]}>
-                    <Image source={HaLinh} style={{width: "100%", height: "100vh"}}/>
+                    <Image source={HaLinh} style={{width: "100%", height: "100%"}}/>
                 </View>
     
-                <View style={styles["bookcarchoicedes__container-back"]} onPress={() => handleBack()}>
+                <Pressable style={styles["bookcarchoicedes__container-back"]} onPress={() => navigation("/bookcar-home")}>
                     <FontAwesomeIcon icon={faChevronLeft} size={20} color='#000'/>
-                </View>
+                </Pressable>
     
                 <View style={{position: "absolute", backgroundColor: "#fff", width: "100%", bottom: 0}}>
                     <View style={styles["bookcarchoicedes__container-location"]}>
-                        <View style={{width: "80%"}}>
+                        <View style={{width: "75%"}}>
                             <Text style={styles["bookcarchoicedes__container-location-title"]}>Trường Đại học Khoa học tự nhiên</Text>
                             <Text style={styles["bookcarchoicedes__container-location-content"]} ellipsizeMode='tail' numberOfLines={1}>135b Trần Hưng Đạo, P.Cầu Ông Lãnh, Q.1, Hồ Chí Minh</Text>
                         </View>
     
-                        <Text style={styles["bookcarchoicedes__container-location-button"]}>Thay đổi</Text>
+                        <Pressable style={styles["bookcarchoicedes__container-location-button"]} onPress={() => navigation("/bookcar-pickup-detail")}>
+                            <Text style={styles["bookcarchoicedes__container-location-button-title"]}>Thay đổi</Text>
+                        </Pressable>
                     </View>
     
                     <Text style={styles["bookcarchoicedes__container-title"]}>Chọn địa điểm đón</Text>
@@ -47,7 +49,9 @@ const BookCarPickUp = () => {
                         <Text style={styles["bookcarchoicedes__container-gate-title"]}>Cổng chính</Text>
                     </View>
     
-                    <Text style={styles["bookcarchoicedes__container-button"]}>Chọn điểm đón này</Text>
+                    <Pressable onPress={() => navigation("/bookcar-book")}>
+                        <Text style={styles["bookcarchoicedes__container-button"]}>Chọn điểm đón này</Text>
+                    </Pressable>
                 </View>
             </View>
         );   

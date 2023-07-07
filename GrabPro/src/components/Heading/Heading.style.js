@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   heading_content: {
-    height: 44,
+    flex: 1,
     width: "100%",
     backgroundColor: "white",
     display: "flex",

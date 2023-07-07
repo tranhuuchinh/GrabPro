@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   payment_detail__title: {
+    fontFamily: "Poppins_500Medium",
     color: "#000",
     fontSize: 16,
     fontWeight: 600,
@@ -24,10 +25,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   payment_detail__paid_title: {
+    fontFamily: "Poppins_300Light",
     fontSize: 14,
     color: "#706969",
   },
   payment_detail__paid_total: {
+    fontFamily: "Poppins_500Medium",
     fontSize: 20,
     fontWeight: 500,
     alignSelf: "flex-end",
@@ -38,14 +41,18 @@ const styles = StyleSheet.create({
     height: 40,
   },
   payment_detail__info_name: {
+    fontFamily: "Poppins_400Regular",
     fontSize: 16,
     fontWeight: 300,
     paddingLeft: 14,
   },
   payment_detail__info_title: {
+    fontFamily: "Poppins_300Light",
     color: "#7F6A6A",
     fontSize: 14,
   },
-  payment_detail__info_des: {},
+  payment_detail__info_des: {
+    fontFamily: "Poppins_400Regular",
+  },
 });
 export default styles;

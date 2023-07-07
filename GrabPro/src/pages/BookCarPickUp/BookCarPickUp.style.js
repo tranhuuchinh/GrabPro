@@ -14,18 +14,18 @@ const styles = StyleSheet.create({
     top: 0,
     padding: 6,
     backgroundColor: "#fff",
-    borderRadius: "50%",
-    margin: 20,
+    borderRadius: 200,
+    marginTop: 30,
+    marginLeft: 20
   },
   "bookcarchoicedes__container-location": {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#f5f5f5",
-    marginHorizontal: 10,
     marginVertical: 14,
     paddingVertical: 10,
-    paddingHorizontal: 5
+    paddingHorizontal: 10
   },
   "bookcarchoicedes__container-location-title": {
     fontSize: 15,
@@ -38,14 +38,20 @@ const styles = StyleSheet.create({
     color: "#5b5a5a"
   },
   "bookcarchoicedes__container-location-button": {
-    width: "20%",
+    width: "25%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  "bookcarchoicedes__container-location-button-title": {
     textAlign: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+    paddingTop: 7,
     borderColor: "#086F09",
     borderStyle: "solid",
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: 20,
     fontSize: 12,
     fontFamily: "Poppins_600SemiBold",
     color: "#086F09"
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
     padding: 6,
     backgroundColor: "#01880F",
     color: "#fff",
-    borderRadius: "50%",
+    borderRadius: 200,
     width: "fit-content",
     marginRight: 16
   },

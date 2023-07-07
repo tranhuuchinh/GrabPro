@@ -3,13 +3,13 @@ import colors from "../../styles/colors";
 import { preventAutoHide } from 'expo-app-loading/node_modules/expo-splash-screen/build/SplashScreen';
 
 const styles = StyleSheet.create({
-  bookcardestroy__container: {
+  bookcarappointment__container: {
     position: "relative"
   }, 
-  "bookcardestroy__container-maps": {
+  "bookcarappointment__container-maps": {
     // zIndex: 0
   },
-  "bookcardestroy__container-back": {
+  "bookcarappointment__container-back": {
     position: "absolute",
     top: 0,
     padding: 6,
@@ -18,27 +18,36 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 20
   },
-  "bookcardestroy__container-location": {
+  "bookcarappointment__container-timer":{
+    backgroundColor: "#EFF9F8",
+    paddingHorizontal: 22,
+    paddingVertical: 60,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#EFF9F8",
-    marginVertical: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 16
+    justifyContent: "space-between"
   },
-  "bookcardestroy__container-location-title": {
+  "bookcarappointment__container-timer-title": {
+    fontSize: 14,
+    fontFamily: "Poppins_600SemiBold",
+    color: "#000"
+  },
+  "bookcarappointment__container-timer-content": {
     fontSize: 14,
     fontFamily: "Poppins_600SemiBold",
     color: "#000",
-    marginLeft: 16
+    paddingHorizontal: 14,
+    paddingTop: 8,
+    paddingVertical: 4,
+    backgroundColor: "#fff",
+    borderRadius: 4
   },
-  "bookcardestroy__container-button": {
+  "bookcarappointment__container-button": {
     textAlign: "center",
     marginHorizontal: 15,
     paddingVertical: 14,
-    backgroundColor: "#FFF0F0",
-    color: "red",
+    backgroundColor: "#02B250",
+    color: "#fff",
     fontSize: 14,
     fontFamily: "Poppins_600SemiBold",
     borderRadius: 8,

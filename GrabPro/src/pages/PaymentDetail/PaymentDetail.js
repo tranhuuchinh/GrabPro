@@ -3,8 +3,13 @@ import React from "react";
 import Heading from "../../components/Heading/Heading";
 import styles from "./PaymentDetail.style";
 import img from "../../../assets/imgs/Favorite/halinh.png";
+import { useCustomFonts } from "../../styles/fonts";
 
 const PaymentDetail = () => {
+  const fontsLoaded = useCustomFonts();
+
+  if (!fontsLoaded) return null;
+
   return (
     <View>
       <Heading title="Chi tiết giao dịch" returnPath="/payment-history" />
