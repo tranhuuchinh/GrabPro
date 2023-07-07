@@ -21,7 +21,7 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
 
-        {/* <Route path="/" element={<ChatDetail />} /> */}
+        <Route path="/chatdetail" element={<ChatDetail />} />
         <Route path="/chat-inform" element={<GrapChatScreen />} />
         <Route path="/personal" element={<PersonalScreen />} />
         <Route path="/paymentperson" element={<PaymentPerson />} />
