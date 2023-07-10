@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 import colors from "../../styles/colors";
-import { preventAutoHide } from 'expo-app-loading/node_modules/expo-splash-screen/build/SplashScreen';
+import { preventAutoHide } from "expo-app-loading/node_modules/expo-splash-screen/build/SplashScreen";
 
 const styles = StyleSheet.create({
   bookcar__container: {
-    position: "relative"
-  }, 
+    flex: 1,
+    position: "relative",
+  },
   "bookcar__container-maps": {
     // zIndex: 0
   },
@@ -16,21 +17,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 200,
     marginTop: 30,
-    marginLeft: 20
+    marginLeft: 20,
   },
-  "bookcar__container-timer":{
+  "bookcar__container-timer": {
     backgroundColor: "#02B250",
     paddingHorizontal: 22,
     paddingVertical: 14,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   "bookcar__container-timer-title": {
     fontSize: 14,
     fontFamily: "Poppins_600SemiBold",
-    color: "#fff"
+    color: "#fff",
   },
   "bookcar__container-timer-content": {
     fontSize: 14,
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingVertical: 4,
     backgroundColor: "#fff",
-    borderRadius: 4
+    borderRadius: 4,
   },
   "bookcar__container-location": {
     display: "flex",
@@ -50,24 +51,24 @@ const styles = StyleSheet.create({
     marginVertical: 14,
     paddingVertical: 14,
     paddingLeft: 22,
-    paddingRight: 10
+    paddingRight: 10,
   },
   "bookcar__container-location-title": {
     fontSize: 15,
     fontFamily: "Poppins_600SemiBold",
-    color: "#464646"
+    color: "#464646",
   },
   "bookcar__container-location-content": {
     fontSize: 10,
     fontFamily: "Poppins_600SemiBold",
-    color: "#5b5a5a"
+    color: "#5b5a5a",
   },
   "bookcar__container-location-price": {
     width: "20%",
     fontSize: 14,
     fontFamily: "Poppins_700Bold",
     color: "#000",
-    textAlign: "right"
+    textAlign: "right",
   },
   "bookcar__container-button": {
     textAlign: "center",
@@ -78,13 +79,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Poppins_600SemiBold",
     borderRadius: 8,
-    marginBottom: 14
+    marginBottom: 14,
   },
   "bookcar__container-payment": {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20  
+    marginBottom: 20,
   },
   "bookcar__container-payment-left": {
     width: "60%",
