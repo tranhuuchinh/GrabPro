@@ -1,11 +1,16 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./LoginScreen.style";
+import { useNavigate } from "react-router-native";
 
 import LogoGrab from "../../../assets/imgs/Splash/grabLogo.png";
 import GoogleLogin from "../../../assets/icons/LoginBy/ic_google.png";
 import PhoneLogin from "../../../assets/icons/LoginBy/ic_phone.png";
 const LoginScreen = () => {
+  const navigate = useNavigate();
+  const handleButtonPress = () => {
+    navigate("/lgphone");
+  };
   return (
     <View style={styles.login_container}>
       <Image style={styles.login_logo} source={LogoGrab} />
@@ -37,7 +42,10 @@ const LoginScreen = () => {
           <View style={styles.login_line} />
         </View>
 
-        <TouchableOpacity style={styles.loginButtonBy}>
+        <TouchableOpacity
+          onPress={handleButtonPress}
+          style={styles.loginButtonBy}
+        >
           <Image
             style={{
               position: "absolute",

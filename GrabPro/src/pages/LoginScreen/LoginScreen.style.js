@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     textAlign: "center",
-    // fontFamily: "Poppins_700Bold",
+    // fontFamily: "Poppins_300Light",
   },
 
   loginButtonWrap: {

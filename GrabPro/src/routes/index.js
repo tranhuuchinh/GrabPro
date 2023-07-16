@@ -24,15 +24,19 @@ import SplashScreen from "../pages/SplashScreen/SplashScreen";
 import WaitScreen from "../pages/WaitScreen/WaitScreen";
 import LoginScreen from "../pages/LoginScreen/LoginScreen";
 import BookCarAppointment from "./../pages/BookCarAppointment/BookCarAppointment";
+import LoginByPhone from "../pages/LoginScreen/LoginByPhone/LoginByPhone";
+import LoginVerification from "../pages/LoginScreen/LoginByPhone/LoginVerification";
 
 const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
+        <Route path="/h" element={<HomeScreen />} />
         <Route path="/wait" element={<WaitScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/" element={<LoginScreen />} />
         <Route path="/splash" element={<SplashScreen />} />
+        <Route path="/lgphone" element={<LoginByPhone />} />
+        <Route path="/verify" element={<LoginVerification />} />
         {/* <Route path="/" element={<HomeScreen />} /> */}
 
         <Route path="/chatdetail" element={<ChatDetail />} />
