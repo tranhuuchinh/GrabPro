@@ -14,12 +14,18 @@ import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
 import LocationPerson from "../pages/LocationPerson/LocationPerson";
 import SearchScreen from "../pages/SearchScreen/SearchScreen";
 import ChatDetail from "../pages/ChatDetail/ChatDetail";
+import SplashScreen from "../pages/SplashScreen/SplashScreen";
+import WaitScreen from "../pages/WaitScreen/WaitScreen";
+import LoginScreen from "../pages/LoginScreen/LoginScreen";
 
 const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
         <Route path="/" element={<HomeScreen />} />
+        <Route path="/wait" element={<WaitScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/splash" element={<SplashScreen />} />
 
         {/* <Route path="/" element={<ChatDetail />} /> */}
         <Route path="/chat-inform" element={<GrapChatScreen />} />
