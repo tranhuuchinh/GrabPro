@@ -1,5 +1,5 @@
 .my-btn {
-  display: flex;
+  display: inline-flex;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -7,6 +7,7 @@
   padding: 4px 16px;
   border: none;
   position: relative;
+  margin: 0 4px;
 }
 
 .icon-left {
@@ -91,17 +92,23 @@
 }
 
 .borderRadius {
-  border-radius: 40px;
+  border-radius: 6px;
 }
 
 .outlineBtn {
-  border: 1px solid #B05E27;
-  color: #B05E27;
+  border: 1px solid #EE6352;
+  color: #EE6352;
+  font-weight: 500;
+}
+
+.outlineBtnBlue {
+  border: 1px solid #075CDB;
+  color: #075CDB;
   font-weight: 500;
 }
 
 .primary {
-  background-color: #B05E27;
+  background-color: #008E3F;
   color: #fff;
   font-size: 16px;
 }

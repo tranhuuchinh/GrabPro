@@ -1,0 +1,71 @@
+.formOrder  {
+
+    &__title {
+        display: flex;
+        justify-content: space-between;
+
+        h3 {
+            color: #F38522;
+            margin-bottom: 20px;
+        }
+
+        &--tag {
+            padding: 4px 14px;
+            background-color: #9A9A9A;
+            color: white;
+            border-radius: 50px;
+            height: 100%;
+        }
+    }
+
+    &__input {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+
+        label {
+          margin-right: 10px;
+        }
+
+        input {
+          font-size: 1.4rem;
+          border: 1px solid #ccc;
+          padding: 6px;
+          width: 23%;
+        }
+    }
+
+    h4 {
+        color: #336DD1;
+        padding: 10px 0;
+    }
+
+    &__info {
+
+        &-item {
+            display: flex;
+            margin-bottom: 6px;
+
+            h5 {
+                width: 120px;
+                color: #333;
+                font-size: 1.4rem;
+            }
+            p {
+                color: #006A2F;
+                font-weight: 600;
+                font-size: 1.4rem;
+            }
+        }
+    }
+
+    &__btn {
+        float: right;
+    }
+
+    &__map {
+
+        padding-top: 50px;
+        width: 100%;
+    }
+}
