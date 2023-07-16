@@ -61,6 +61,57 @@ const styles = StyleSheet.create({
     padding: 8,
     color: "black",
   },
+
+  homeBookType: {
+    flexDirection: "row",
+    marginTop: 60,
+    paddingHorizontal: 30,
+    marginBottom: 20,
+  },
+  homeBookCar: {
+    marginRight: 30,
+    textAlign: "center",
+  },
+
+  homeBookBike: {
+    marginRight: 30,
+    textAlign: "center",
+  },
+
+  homeBookTitle: {
+    marginTop: 10,
+    textAlign: "center",
+    fontSize: 14,
+  },
+  homeWrapCard: {
+    flex: 0.2,
+    flexDirection: "row",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+
+  homeWrapCardType: {
+    backgroundColor: "#F9F9F9",
+    flex: 0.8,
+    borderRadius: 10,
+    marginRight: 10,
+    padding: 10,
+  },
+  homeWrapScore: {
+    flex: 1,
+  },
+
+  homeWrapCardScore: {
+    flex: 1.2,
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
+    marginLeft: 10,
+    flexDirection: "row",
+    padding: 10,
+  },
+  homeWrapScore: {
+    flex: 1,
+  },
 });
 
 export default styles;
