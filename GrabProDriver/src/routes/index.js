@@ -8,12 +8,14 @@ import ProfileScreen from "../pages/ProfileScreen/ProfileScreen";
 import ChatDetail from "../pages/ChatDetail/ChatDetail";
 import MoneyScreen from "../pages/MoneyScreen/MoneyScreen";
 import OrderDetail from "../pages/OrderDetail/OrderDetail";
+import HomePage from "../pages/Home/HomePage";
 
 const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
+        <Route path="/s" element={<HomeScreen />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/splash" element={<SplashScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/avartar" element={<AvartarScreen />} />
