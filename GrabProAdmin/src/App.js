@@ -5,7 +5,9 @@ import Navigation from './routes';
 
 const App = () => (
     <div>
-        <Navigation />
+        <div>
+            <Navigation />
+        </div>
     </div>
 );
 

@@ -55,8 +55,7 @@ button[type="button"] {
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+    font-family: "Poppins";
 }
 
 /* width */
@@ -67,6 +66,7 @@ div::-webkit-scrollbar {
 /* Track */
 div::-webkit-scrollbar-track {
     background: #F5F5F5;
+    border-radius: 6px;
 }
 
 /* Handle */
