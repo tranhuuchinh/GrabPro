@@ -1,5 +1,6 @@
 import React from "react";
-import { NativeRouter, Routes, Route } from "react-router-native";
+// import { NativeRouter, Routes, Route } from "react-router-native";
+import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../pages/HomeScreen/HomeScreen";
 import PersonalScreen from "../pages/PersonalScreen/PersonalScreen";
 import PaymentPerson from "../pages/PaymentPerson/PaymentPerson";
@@ -27,46 +28,43 @@ import BookCarAppointment from "./../pages/BookCarAppointment/BookCarAppointment
 import LoginByPhone from "../pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "../pages/LoginScreen/LoginByPhone/LoginVerification";
 
+const Stack = createStackNavigator();
+
 const AppRouter = () => {
   return (
-    <NativeRouter>
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/wait" element={<WaitScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/splash" element={<SplashScreen />} />
-        <Route path="/lgphone" element={<LoginByPhone />} />
-        <Route path="/verify" element={<LoginVerification />} />
-        {/* <Route path="/" element={<HomeScreen />} /> */}
+    <View style={{ flex: 1 }}>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="/"                      component={HomeScreen} />
+        <Stack.Screen name="/wait"                  component={WaitScreen} />
+        <Stack.Screen name="/login"                 component={LoginScreen} />
+        <Stack.Screen name="/splash"                component={SplashScreen} />
+        <Stack.Screen name="/lgphone"               component={LoginByPhone} />
+        <Stack.Screen name="/verify"                component={LoginVerification} />
 
-        <Route path="/chatdetail" element={<ChatDetail />} />
-        <Route path="/chat-inform" element={<GrapChatScreen />} />
-        <Route path="/personal" element={<PersonalScreen />} />
-        <Route path="/paymentperson" element={<PaymentPerson />} />
-        <Route path="/awardperson" element={<AwardPerson />} />
-        <Route path="/favorite" element={<FavoritePerson />} />
+        <Stack.Screen name="/chatdetail"            component={ChatDetail} />
+        <Stack.Screen name="/chat-inform"           component={GrapChatScreen} />
+        <Stack.Screen name="/personal"              component={PersonalScreen} />
+        <Stack.Screen name="/paymentperson"         component={PaymentPerson} />
+        <Stack.Screen name="/awardperson"           component={AwardPerson} />
+        <Stack.Screen name="/favorite"              component={FavoritePerson} />
 
-        <Route path="/payment-history" element={<PaymentScreen />} />
-        <Route path="/payment-detail" element={<PaymentDetail />} />
-        <Route path="/profile" element={<ProfilePerson />} />
-        <Route path="/activity" element={<ActivityScreen />} />
-        <Route path="/activity-detail" element={<ActivityDetail />} />
-        <Route path="/locationperson" element={<LocationPerson />} />
-        <Route path="/bookcar-home" element={<BookCarHome />} />
-        <Route path="/bookcar-pickup" element={<BookCarPickUp />} />
-        <Route
-          path="/bookcar-pickup-detail"
-          element={<BookCarPickUpDetail />}
-        />
-        <Route path="/bookcar-book" element={<BookCar />} />
-        <Route path="/bookcar-destroy" element={<BookCarDestroy />} />
-        <Route path="/bookcar-coming" element={<BookCarComing />} />
-        <Route path="/search" element={<SearchScreen />} />
-        <Route path="/bookcar-appointment" element={<BookCarAppointment />} />
+        <Stack.Screen name="/payment-history"       component={PaymentScreen} />
+        <Stack.Screen name="/payment-detail"        component={PaymentDetail} />
+        <Stack.Screen name="/profile"               component={ProfilePerson} />
+        <Stack.Screen name="/activity"              component={ActivityScreen} />
+        <Stack.Screen name="/activity-detail"       component={ActivityDetail} />
+        <Stack.Screen name="/locationperson"        component={LocationPerson} />
+        <Stack.Screen name="/bookcar-home"          component={BookCarHome} />
+        <Stack.Screen name="/bookcar-pickup"        component={BookCarPickUp} />
+        <Stack.Screen name="/bookcar-pickup-detail" component={BookCarPickUpDetail} />
+        <Stack.Screen name="/bookcar-book"          component={BookCar} />
+        <Stack.Screen name="/bookcar-destroy"       component={BookCarDestroy} />
+        <Stack.Screen name="/bookcar-coming"        component={BookCarComing} />
+        <Stack.Screen name="/search"                component={SearchScreen} />
+        <Stack.Screen name="/bookcar-appointment"   component={BookCarAppointment} />
 
-        <Route path="/" element={<BookCarHome />} />
-      </Routes>
-    </NativeRouter>
+      </Stack.Navigator>
+    </View>
   );
 };
 

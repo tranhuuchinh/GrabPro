@@ -14,7 +14,7 @@ import Book from "../../assets/imgs/BookCar/Book.png";
 import Favor from "../../assets/imgs/BookCar/Favor.png";
 import styles from "./BookCarHome.style";
 import { useCustomFonts } from "../../styles/fonts";
-// import {   } from 'react-router-native';
+import { useNavigation } from "@react-navigation/native";
 
 const locations = [
   {
@@ -36,16 +36,21 @@ const locations = [
 
 const BookCarHome = () => {
   const fontsLoaded = useCustomFonts();
-  // const navigation =  ();
+  const navigation = useNavigation();
 
   const [text, setText] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // const handlePressBack = () => {
-  //     navigation('/');
-  // }
-  // const handlePressLocation = () => {
-  //     navigation("/bookcar-pickup");
-  // }
+  const handlePressBack = () => {
+    navigation.navigate("Trang chủ");
+  }
+  const handlePressLocation = () => {
+     navigation.navigate("/bookcar-pickup");
+  }
+  const handlePressBookCar = () => {
+    navigation.navigate("/bookcar-book");
+ }
 
   const handleChangeText = (inputText) => {
     setText(inputText);
@@ -58,12 +63,13 @@ const BookCarHome = () => {
       <View style={styles.bookcar__container}>
         <View style={styles["bookcar__container-header"]}>
           <View style={styles["bookcar__container-header-left"]}>
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              size={16}
-              color="#434343"
-              onClick={() => handlePressBack()}
-            />
+            <Pressable onClick={() => handlePressBack()}>
+              <FontAwesomeIcon
+                icon={faChevronLeft}
+                size={16}
+                color="#434343"
+              />
+            </Pressable>
             <Text style={styles["bookcar__container-header-left-title"]}>
               Di chuyển
             </Text>
@@ -137,7 +143,7 @@ const BookCarHome = () => {
               Thêm nhiều cách để di chuyển
             </Text>
 
-            <Pressable style={styles["bookcar__container-movemore-book"]}>
+            <Pressable style={styles["bookcar__container-movemore-book"]} onPress={() => handlePressBookCar()}>
               <Image source={Book} style={{ width: 36, height: 36 }} />
               <Text style={styles["bookcar__container-movemore-book-content"]}>
                 Thêm nhiều cách để di chuyển
@@ -179,7 +185,7 @@ const BookCarHome = () => {
 
                 <Text
                   style={styles["bookcar__container-favorlocation-content"]}
-                  numberOfLines={2}
+                  numberOfLines={1}
                   ellipsizeMode="tail"
                 >
                   KTX 135B Trần Hưng Đạo

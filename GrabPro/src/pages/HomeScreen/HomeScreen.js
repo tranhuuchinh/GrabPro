@@ -17,6 +17,7 @@ import Car from "../../../assets/imgs/Home/grabCar.png";
 import Bike from "../../../assets/imgs/Home/grabBike.png";
 import Crown from "../../../assets/imgs/Home/crown.png";
 import ImgBg from "../../../assets/imgs/Home/no1.jpeg";
+import { useNavigation } from "@react-navigation/native";
 
 import { useCustomFonts } from "../../styles/fonts";
 
@@ -24,6 +25,7 @@ const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
   const fontsLoaded = useCustomFonts();
   const ScreenWidth = Dimensions.get("window").width;
+  const navigation = useNavigation();
 
   const handleSearch = () => {
     // Xử lý tìm kiếm dựa trên searchText
@@ -33,6 +35,10 @@ const HomeScreen = () => {
   const handleFavorite = () => {
     console.log("Người dùng đã nhấn vào nút Favorite");
   };
+
+  const handlePressOto = () => {
+    navigation.navigate("/bookcar-home");
+  }
 
   const handleButton1Press = () => {
     // Xử lý khi nút 1 được nhấn
@@ -77,7 +83,7 @@ const HomeScreen = () => {
         <View style={styles.homeBookType}>
           <TouchableOpacity
             style={styles.homeBookCar}
-            onPress={handleButton1Press}
+            onPress={handlePressOto}
           >
             <Image
               style={{

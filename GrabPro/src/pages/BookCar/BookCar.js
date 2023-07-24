@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, Text, View } from "react-native";
+import React, {useState} from "react";
+import { Image, Text, View, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faChevronLeft,
@@ -15,12 +15,26 @@ import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from "./BookCar.style";
 import { useCustomFonts } from "../../styles/fonts";
-import { Pressable } from "react-native";
-// import {   } from 'react-router-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from "@react-navigation/native";
+
 
 const BookCar = () => {
   const fontsLoaded = useCustomFonts();
-  // const navigation =  ();
+  const navigation = useNavigation();
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const handleDateChange = (event, selected) => {
+    const currentDate = selected || selectedDate;
+    setShowDatePicker(Platform.OS === 'ios'); // For iOS only
+    setSelectedDate(currentDate);
+  };
+
+  const showDateTimePicker = () => {
+    setShowDatePicker(true);
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -33,7 +47,7 @@ const BookCar = () => {
 
         <Pressable
           style={styles["bookcar__container-back"]}
-          onPress={() => navigation("/bookcar-pickup")}
+          onPress={() => navigation.navigate("/bookcar-pickup")}
         >
           <FontAwesomeIcon icon={faChevronLeft} size={20} color="#000" />
         </Pressable>
@@ -55,7 +69,17 @@ const BookCar = () => {
               8 : 45 25/06/2023
             </Text>
 
-            <FontAwesomeIcon icon={faCalendar} size={24} color="#fff" />
+            <FontAwesomeIcon icon={faCalendar} size={24} color="#fff" onPress={showDateTimePicker}/>
+            {showDatePicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={selectedDate}
+                mode="datetime" // Chọn mode "date" hoặc "time" nếu muốn chỉ chọn ngày hoặc giờ.
+                is24Hour={true}
+                display="default"
+                onChange={handleDateChange}
+              />
+      )}
           </View>
 
           <View style={styles["bookcar__container-location"]}>
