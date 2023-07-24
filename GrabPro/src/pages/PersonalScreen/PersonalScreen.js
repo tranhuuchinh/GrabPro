@@ -4,7 +4,7 @@ import styles from "./PersonalScreen.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useCustomFonts } from "../../styles/fonts";
 import OptionItem from "./components/PersonalItem";
-import { useNavigate } from "react-router-native";
+// import {   } from "react-router-native";
 import {
   faChevronRight,
   faCircleUser,
@@ -12,7 +12,7 @@ import {
 
 const PersonalScreen = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  // const navigation =  ();
   if (!fontsLoaded) {
     return null;
   } else {
@@ -33,7 +33,7 @@ const PersonalScreen = () => {
                 styles.personal_banner_btn,
                 { fontFamily: "Poppins_400Regular" },
               ]}
-              onPress={()=>{navigation("/profile")}}
+              // onPress={()=>{navigation("/profile")}}
             >
               <Text>Chỉnh sửa tài khoản</Text>
               <FontAwesomeIcon
@@ -66,7 +66,11 @@ const PersonalScreen = () => {
               path="/awardperson"
             />
             <OptionItem title="Yêu thích" type={2} path="/favorite" />
-            <OptionItem title="Địa điểm đã lưu" type={2} path="/locationperson" />
+            <OptionItem
+              title="Địa điểm đã lưu"
+              type={2}
+              path="/locationperson"
+            />
             <OptionItem
               title="Hình thức thanh toán"
               type={2}

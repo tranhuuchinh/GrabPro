@@ -12,7 +12,7 @@ import {
 import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import Google from "../../../assets/icons/Profile/gg_icon.png";
 import Background from "../../../assets/imgs/Profile/bgProfile.png";
-import { useNavigate } from "react-router-native";
+// import {   } from "react-router-native";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -26,7 +26,7 @@ const emailValid = (email) => {
 
 const ProfilePerson = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  // const navigation =  ();
   const [name, setName] = useState("Trần Anh Khôi");
   const [phone, setPhone] = useState("0898919260");
   const [email, setEmail] = useState("anhkoi@gmail.com");
@@ -107,9 +107,9 @@ const ProfilePerson = () => {
 
           <Pressable
             style={{ position: "absolute", top: 40, left: 20 }}
-            onPress={() => {
-              navigation("/personal");
-            }}
+            // onPress={() => {
+            //   navigation("/personal");
+            // }}
           >
             <FontAwesomeIcon icon={faChevronLeft} size={20} color="white" />
           </Pressable>

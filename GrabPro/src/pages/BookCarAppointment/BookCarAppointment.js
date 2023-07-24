@@ -8,11 +8,11 @@ import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from './BookCarAppointment.style';
 import { useCustomFonts } from "../../styles/fonts";
 import { Pressable } from 'react-native';
-import { useNavigate } from 'react-router-native';
+// import {   } from 'react-router-native';
 
 const BookCarAppointment = () => {
     const fontsLoaded = useCustomFonts();
-    const navigation = useNavigate();
+    // const navigation =  ();
 
     if (!fontsLoaded) {
         return null;

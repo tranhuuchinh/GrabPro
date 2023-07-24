@@ -31,9 +31,9 @@ const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
-        <Route path="/h" element={<HomeScreen />} />
+        <Route path="/" element={<HomeScreen />} />
         <Route path="/wait" element={<WaitScreen />} />
-        <Route path="/" element={<LoginScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
         <Route path="/splash" element={<SplashScreen />} />
         <Route path="/lgphone" element={<LoginByPhone />} />
         <Route path="/verify" element={<LoginVerification />} />

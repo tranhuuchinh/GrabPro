@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useCustomFonts } from "../../styles/fonts";
 import { faBookmark, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Heading from "../../components/Heading/Heading";
-import { useNavigate } from "react-router-native";
+import {   } from "react-router-native";
 
 const locations = [
   {
@@ -21,14 +21,14 @@ const locations = [
 ];
 
 const LocationPerson = () => {
-  const navigation = useNavigate();
+  // const navigation =  ();
   const fontsLoaded = useCustomFonts();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(-1);
 
-  const handleSearch = () => {
-    navigation("/search");
-  };
+  // const handleSearch = () => {
+  //   navigation("/search");
+  // };
 
   const setDelete = (idx) => {
     setSelectedLocationIndex(idx);

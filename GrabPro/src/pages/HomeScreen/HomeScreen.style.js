@@ -8,13 +8,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   homeBanner: {
-    height: 150,
+    height: 50,
     backgroundColor: colors.primary__650, // Màu xanh lá cây
   },
   homeSearchWrap: {
     flexDirection: "row",
     position: "absolute",
-    top: 125,
+    top: 30,
     alignItems: "center",
     shadowColor: "lightgray", // Màu của box shadow
     shadowOffset: { width: -1, height: 1 }, // Khoảng cách và hướng của box shadow
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   homeWrapCard: {
-    flex: 0.2,
     flexDirection: "row",
     paddingHorizontal: 15,
     paddingVertical: 10,
@@ -92,17 +91,20 @@ const styles = StyleSheet.create({
 
   homeWrapCardType: {
     backgroundColor: "#F9F9F9",
-    flex: 0.8,
+    justifyContent: "center",
+    minHeight: 70,
+    maxHeight: 100,
     borderRadius: 10,
     marginRight: 10,
     padding: 10,
   },
-  homeWrapScore: {
-    flex: 1,
-  },
+  homeWrapScore: {},
 
   homeWrapCardScore: {
     flex: 1.2,
+    justifyContent: "center",
+    maxHeight: 100,
+    minHeight: 70,
     backgroundColor: "#F9F9F9",
     borderRadius: 10,
     marginLeft: 10,
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
   },
   homeWrapScore: {
     flex: 1,
+    justifyContent: "center",
   },
 });
 

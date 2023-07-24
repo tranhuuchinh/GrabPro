@@ -4,7 +4,7 @@ import styles from "./ActivityScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import Oto from "../../../assets/icons/Activity/ic_oto.png";
 import Moto from "../../../assets/icons/Activity/ic_moto.png";
-import { useNavigate } from "react-router-native";
+// import {   } from "react-router-native";
 
 const activitiesOto = [
   {
@@ -45,11 +45,11 @@ const activitiesMoto = [
 const ActivityScreen = () => {
   const [type, setType] = useState(0);
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  // const navigation =  ();
 
-  const handlePress = () => {
-    navigation("/activity-detail");
-  };
+  // const handlePress = () => {
+  //   navigation("/activity-detail");
+  // };
   if (!fontsLoaded) {
     return null;
   } else {

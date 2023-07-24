@@ -3,7 +3,7 @@ import { View, Text, Pressable, TextInput, Image } from "react-native";
 import styles from "./SearchScreen.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
+// import {   } from "react-router-native";
 import {
   faArrowLeftLong,
   faLocationDot,
@@ -34,7 +34,7 @@ const locations = [
 ];
 
 const LocationPerson = () => {
-  const navigation = useNavigate();
+  // const navigation =  ();
   const fontsLoaded = useCustomFonts();
   const [text, setText] = useState("");
   const [result, setResult] = useState([]);
@@ -62,9 +62,9 @@ const LocationPerson = () => {
           <View style={styles.search_header_down}>
             <Pressable
               style={styles.search_header_down_back}
-              onPress={() => {
-                navigation("/locationperson");
-              }}
+              // onPress={() => {
+              //   navigation("/locationperson");
+              // }}
             >
               <FontAwesomeIcon
                 icon={faArrowLeftLong}

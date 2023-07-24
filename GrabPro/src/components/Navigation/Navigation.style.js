@@ -2,11 +2,7 @@ import { StyleSheet } from "react-native";
 import colors from "../../styles/colors";
 
 const styles = StyleSheet.create({
-  navContainer: {
-    marginTop: 100,
-    backgroundColor: "white",
-    flex: 1,
-  },
+  navContainer: {},
   navNavWrap: {
     height: 80,
     width: "100%",
@@ -14,7 +10,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingBottom: 10,
     backgroundColor: "white",
     shadowColor: "lightgray", // Màu của box shadow
     shadowOffset: { width: 0, height: -0.5 }, // Khoảng cách và hướng của box shadow
@@ -37,9 +32,9 @@ const styles = StyleSheet.create({
   },
   navTextNav: {
     fontSize: 10,
-    fontWeight: 500,
     textAlign: "center",
     color: "gray",
+    fontFamily: "Poppins_500Medium",
   },
 
   selectedTextNav: {
