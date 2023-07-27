@@ -20,7 +20,7 @@ const ActivityDetail = () => {
   } else {
     return (
       <ScrollView style={styles.dtactivity_container}>
-        <Heading title="Thông tin cuốc đi" returnPath="/activity" />
+        <Heading title="Thông tin cuốc đi" returnPath="Hoạt động" />
         <View style={styles.dtactivity_infor}>
           <View style={styles.dtactivity_heading}>
             <Text style={styles.dtactivity_heading_txt1}>
