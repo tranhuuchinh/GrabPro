@@ -8,13 +8,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   homeBanner: {
-    height: 50,
+    height: 100,
     backgroundColor: colors.primary__650, // Màu xanh lá cây
   },
   homeSearchWrap: {
     flexDirection: "row",
     position: "absolute",
-    top: 30,
+    top: 70,
     alignItems: "center",
     shadowColor: "lightgray", // Màu của box shadow
     shadowOffset: { width: -1, height: 1 }, // Khoảng cách và hướng của box shadow

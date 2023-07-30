@@ -4,12 +4,12 @@ import colors from "../../styles/colors";
 const styles = StyleSheet.create({
   navContainer: {},
   navNavWrap: {
-    height: 80,
+    height: 70,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     backgroundColor: "white",
     shadowColor: "lightgray", // Màu của box shadow
     shadowOffset: { width: 0, height: -0.5 }, // Khoảng cách và hướng của box shadow

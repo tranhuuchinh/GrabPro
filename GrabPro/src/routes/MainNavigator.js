@@ -40,41 +40,62 @@ const MainNavigator = () => {
   return (
     <View style={{ flex: 1 }}>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Trang chủ" component={HomeScreen} />
-        <Stack.Screen name="Hoạt động" component={ActivityScreen} />
-        <Stack.Screen name="Thanh toán" component={PaymentScreen} />
-        <Stack.Screen name="Tin nhắn" component={MessageScreen} />
+        <Stack.Screen
+          name="Trang chủ"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Hoạt động"
+          component={ActivityScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Thanh toán"
+          component={PaymentScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Tin nhắn"
+          component={MessageScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Tài khoản" component={AccountScreen} />
 
         {/* <Stack.Screen name="/"                      component={HomeScreen} /> */}
-        <Stack.Screen name="/wait"                  component={WaitScreen} />
-        <Stack.Screen name="/login"                 component={LoginScreen} />
-        <Stack.Screen name="/splash"                component={SplashScreen} />
-        <Stack.Screen name="/lgphone"               component={LoginByPhone} />
-        <Stack.Screen name="/verify"                component={LoginVerification} />
+        <Stack.Screen name="/wait" component={WaitScreen} />
+        <Stack.Screen name="/login" component={LoginScreen} />
+        <Stack.Screen name="/splash" component={SplashScreen} />
+        <Stack.Screen name="/lgphone" component={LoginByPhone} />
+        <Stack.Screen name="/verify" component={LoginVerification} />
 
-        <Stack.Screen name="/chatdetail"            component={ChatDetail} />
-        <Stack.Screen name="/chat-inform"           component={GrapChatScreen} />
-        <Stack.Screen name="/personal"              component={PersonalScreen} />
-        <Stack.Screen name="/paymentperson"         component={PaymentPerson} />
-        <Stack.Screen name="/awardperson"           component={AwardPerson} />
-        <Stack.Screen name="/favorite"              component={FavoritePerson} />
+        <Stack.Screen name="/chatdetail" component={ChatDetail} />
+        <Stack.Screen name="/chat-inform" component={GrapChatScreen} />
+        <Stack.Screen name="/personal" component={PersonalScreen} />
+        <Stack.Screen name="/paymentperson" component={PaymentPerson} />
+        <Stack.Screen name="/awardperson" component={AwardPerson} />
+        <Stack.Screen name="/favorite" component={FavoritePerson} />
 
         {/* <Stack.Screen name="/payment-history"       component={PaymentScreen} /> */}
-        <Stack.Screen name="/payment-detail"        component={PaymentDetail} />
-        <Stack.Screen name="/profile"               component={ProfilePerson} />
+        <Stack.Screen name="/payment-detail" component={PaymentDetail} />
+        <Stack.Screen name="/profile" component={ProfilePerson} />
         {/* <Stack.Screen name="/activity"              component={ActivityScreen} /> */}
-        <Stack.Screen name="/activity-detail"       component={ActivityDetail} />
-        <Stack.Screen name="/locationperson"        component={LocationPerson} />
-        <Stack.Screen name="/bookcar-home"          component={BookCarHome} />
-        <Stack.Screen name="/bookcar-pickup"        component={BookCarPickUp} />
-        <Stack.Screen name="/bookcar-pickup-detail" component={BookCarPickUpDetail} />
-        <Stack.Screen name="/bookcar-book"          component={BookCar} />
-        <Stack.Screen name="/bookcar-destroy"       component={BookCarDestroy} />
-        <Stack.Screen name="/bookcar-coming"        component={BookCarComing} />
-        <Stack.Screen name="/search"                component={SearchScreen} />
-        <Stack.Screen name="/bookcar-appointment"   component={BookCarAppointment} />
-        
+        <Stack.Screen name="/activity-detail" component={ActivityDetail} />
+        <Stack.Screen name="/locationperson" component={LocationPerson} />
+        <Stack.Screen name="/bookcar-home" component={BookCarHome} />
+        <Stack.Screen name="/bookcar-pickup" component={BookCarPickUp} />
+        <Stack.Screen
+          name="/bookcar-pickup-detail"
+          component={BookCarPickUpDetail}
+        />
+        <Stack.Screen name="/bookcar-book" component={BookCar} />
+        <Stack.Screen name="/bookcar-destroy" component={BookCarDestroy} />
+        <Stack.Screen name="/bookcar-coming" component={BookCarComing} />
+        <Stack.Screen name="/search" component={SearchScreen} />
+        <Stack.Screen
+          name="/bookcar-appointment"
+          component={BookCarAppointment}
+        />
       </Stack.Navigator>
       <NavigateBar />
     </View>
