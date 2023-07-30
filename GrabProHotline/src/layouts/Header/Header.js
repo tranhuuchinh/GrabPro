@@ -3,8 +3,10 @@ import classes from './Header.module.scss';
 import logo from '../../assets/imgs/logo.png';
 import logout from '../../assets/imgs/logout.png';
 import avatar from '../../assets/imgs/avatar.png';
+import { useNavigate } from 'react-router';
 
 export default function Header() {
+    const navigate = useNavigate();
     return (
         <div className={classes.header}>
             <div>
@@ -16,7 +18,14 @@ export default function Header() {
                     <p>Call center</p>
                 </div>
                 <img src={avatar} alt="" width={40} />
-                <img src={logout} alt="" width={30} height={'100%'} />
+                <img
+                    src={logout}
+                    alt=""
+                    width={30}
+                    height={'100%'}
+                    onClick={() => navigate('/login')}
+                    style={{ cursor: 'pointer' }}
+                />
             </div>
         </div>
     );
