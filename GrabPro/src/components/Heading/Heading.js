@@ -2,20 +2,20 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-// import {   } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import styles from "./Heading.style";
 import { Image } from "react-native";
 import { useCustomFonts } from "../../styles/fonts";
 
 const Heading = ({ title, returnPath, content, img, type }) => {
-  // const navigation =  ();
+  const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
 
   if (!fontsLoaded) return null;
 
-  // const handlePress = () => {
-  //   navigation(returnPath);
-  // };
+  const handlePress = () => {
+    navigation.navigate(returnPath);
+  };
 
   return (
     <View style={[styles.heading_container, { height: type ? 100 : 80 }]}>
