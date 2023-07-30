@@ -56,7 +56,7 @@ const Heading = ({ title, returnPath, content, img, type }) => {
         )}
         <Pressable
           style={{ position: "absolute", left: 20 }}
-          onPress={handlePress}
+          // onPress={handlePress}
         >
           <FontAwesomeIcon icon={faChevronLeft} size={20} color="#434343" />
         </Pressable>
