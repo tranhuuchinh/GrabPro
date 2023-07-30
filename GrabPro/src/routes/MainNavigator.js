@@ -39,27 +39,14 @@ const Stack = createStackNavigator();
 const MainNavigator = () => {
   return (
     <View style={{ flex: 1 }}>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Trang chủ"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Hoạt động"
-          component={ActivityScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Thanh toán"
-          component={PaymentScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Tin nhắn"
-          component={MessageScreen}
-          options={{ headerShown: false }}
-        />
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Trang chủ" component={HomeScreen} />
+        <Stack.Screen name="Hoạt động" component={ActivityScreen} />
+        <Stack.Screen name="Thanh toán" component={PaymentScreen} />
+        <Stack.Screen name="Tin nhắn" component={MessageScreen} />
         <Stack.Screen name="Tài khoản" component={AccountScreen} />
 
         {/* <Stack.Screen name="/"                      component={HomeScreen} /> */}

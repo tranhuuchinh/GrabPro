@@ -4,6 +4,7 @@ import colors from "../../styles/colors";
 const styles = StyleSheet.create({
   person_container: {
     height: "auto",
+    backgroundColor: "white",
     flex: 1,
   },
   person_banner: {

@@ -2,11 +2,11 @@ import React from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-// import {   } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import styles from "../PersonalScreen.style";
 
 const PersonalItem = ({ title, mark, type, path }) => {
-  // const navigation =  ();
+  const navigation = useNavigation();
   const renderContent = () => {
     if (type === 1) {
       return (
@@ -44,15 +44,12 @@ const PersonalItem = ({ title, mark, type, path }) => {
     }
   };
 
-  // const onPress = () => {
-  //   navigation(path);
-  // };
+  const onPress = () => {
+    navigation.navigate(path);
+  };
 
   return (
-    <Pressable
-      style={styles.person_item}
-      // onPress={onPress}
-    >
+    <Pressable style={styles.person_item} onPress={onPress}>
       <Text style={styles["person_item-text"]}>{title}</Text>
       {renderContent()}
     </Pressable>
