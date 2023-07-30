@@ -66,10 +66,10 @@ const ChatDetail = () => {
         </View>
       ) : (
         <View style={styles.chatDetail__chat}>
-          <Image source={ic_location} style={{ width: 30, height: 30 }} />
+          <Image source={ic_location} style={{ width: 26, height: 26 }} />
           <Image
             source={ic_camera}
-            style={{ width: 30, height: 30, marginHorizontal: 10 }}
+            style={{ width: 26, height: 26, marginHorizontal: 10 }}
           />
           <View
             style={{
