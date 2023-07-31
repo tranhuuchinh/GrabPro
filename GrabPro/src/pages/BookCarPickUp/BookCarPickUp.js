@@ -11,15 +11,15 @@ import {
 import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import styles from "./BookCarPickUp.style";
 import { useCustomFonts } from "../../styles/fonts";
-// import {   } from 'react-router-native';
+import { useNavigation } from "@react-navigation/native";
 
 const BookCarPickUp = () => {
   const fontsLoaded = useCustomFonts();
-  // const navigation =  ();
+  const navigation =  useNavigation();
 
-  // const handleBack = () => {
-  //     navigation("/personal")
-  // }
+  const handleBack = () => {
+      navigation.navigate("/personal")
+  }
 
   if (!fontsLoaded) {
     return null;
