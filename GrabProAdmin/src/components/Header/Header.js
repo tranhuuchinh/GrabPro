@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import classes from './Header.module.scss';
@@ -24,7 +25,9 @@ const Header = () => {
                     </div>
                 </div>
 
-                <FontAwesomeIcon icon={faRightFromBracket} className={classes['header__right--logout']}/>
+                <Link to="/login">
+                    <FontAwesomeIcon icon={faRightFromBracket} className={classes['header__right--logout']}/>
+                </Link>
             </div>
         </div>
     );
