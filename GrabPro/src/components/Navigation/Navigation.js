@@ -15,6 +15,7 @@ import { useCustomFonts } from "../../styles/fonts";
 const Navigation = () => {
   const [selectedItem, setSelectedItem] = useState("Trang chủ");
   const fontsLoaded = useCustomFonts();
+  const [isItemSelected, setIsItemSelected] = useState(false);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
