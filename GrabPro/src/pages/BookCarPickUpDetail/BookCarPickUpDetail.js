@@ -16,7 +16,7 @@ import Book from "../../assets/imgs/BookCar/Book.png";
 import Favor from "../../assets/imgs/BookCar/Favor.png";
 import styles from "./BookCarPickUpDetail.style";
 import { useCustomFonts } from "../../styles/fonts";
-// import {   } from 'react-router-native';
+import { useNavigation } from "@react-navigation/native";
 
 const historyList = [
   {
@@ -38,7 +38,7 @@ const historyList = [
 
 const BookCarPickUpDetail = () => {
   const fontsLoaded = useCustomFonts();
-  // const navigation =  ();
+  const navigation =  useNavigation();
 
   if (!fontsLoaded) {
     return null;

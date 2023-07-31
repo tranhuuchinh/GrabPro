@@ -6,8 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "./Heading.style";
 import { Image } from "react-native";
 import { useCustomFonts } from "../../styles/fonts";
+import ic_phone from "../../../assets/imgs/Phone.png";
 
-const Heading = ({ title, returnPath, content, img, type }) => {
+const Heading = ({ title, returnPath, content, img, type, call }) => {
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
 
@@ -26,7 +27,14 @@ const Heading = ({ title, returnPath, content, img, type }) => {
             {title}
           </Text>
         ) : (
-          <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Image
               source={img}
               style={{ width: 44, height: 44, borderRadius: 50 }}
@@ -52,6 +60,10 @@ const Heading = ({ title, returnPath, content, img, type }) => {
                 {content}
               </Text>
             </View>
+            <Image
+              source={ic_phone}
+              style={{ width: 26, height: 26, marginLeft: 20 }}
+            />
           </View>
         )}
         <Pressable

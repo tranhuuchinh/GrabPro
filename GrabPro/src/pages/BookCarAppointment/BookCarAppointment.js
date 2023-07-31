@@ -8,11 +8,11 @@ import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from './BookCarAppointment.style';
 import { useCustomFonts } from "../../styles/fonts";
 import { Pressable } from 'react-native';
-// import {   } from 'react-router-native';
+import { useNavigation } from "@react-navigation/native";
 
 const BookCarAppointment = () => {
     const fontsLoaded = useCustomFonts();
-    // const navigation =  ();
+    const navigation =  useNavigation();
 
     if (!fontsLoaded) {
         return null;
@@ -24,7 +24,7 @@ const BookCarAppointment = () => {
                     <Image source={HaLinh} style={{width: "100%", height: "100%"}}/>
                 </View>
 
-                <Pressable style={styles["bookcarappointment__container-back"]} onPress={() => navigation("/bookcar-home")}>
+                <Pressable style={styles["bookcarappointment__container-back"]} onPress={() => navigation.navigate("/bookcar-home")}>
                     <FontAwesomeIcon icon={faChevronLeft} size={20} color='#000'/>
                 </Pressable>
     
@@ -37,7 +37,7 @@ const BookCarAppointment = () => {
                         <FontAwesomeIcon icon={faCalendar} size={24} color='#386D52' />
                     </View>
         
-                    <Pressable onPress={() => navigation("/bookcar-destroy")}>
+                    <Pressable onPress={() => navigation.navigate("/bookcar-destroy")}>
                         <Text style={styles["bookcarappointment__container-button"]}>Đặt xe GrabCar</Text>
                     </Pressable>
                 </View>

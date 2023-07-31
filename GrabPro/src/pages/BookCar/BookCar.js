@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Image, Text, View, Pressable } from "react-native";
+import { Image, Text, View, Pressable, ToastAndroid } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faChevronLeft,
@@ -25,17 +25,39 @@ const BookCar = () => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   const handleDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;
-    setShowDatePicker(Platform.OS === 'ios'); // For iOS only
+    // setShowDatePicker(Platform.OS === 'ios'); // For iOS only
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
+    setShowTimePicker(true);
+  };
+
+  const handleTimeChange = (event, selected) => {
+    const currentDate = selected || selectedDate;
+    setShowTimePicker(false);
     setSelectedDate(currentDate);
   };
 
-  const showDateTimePicker = () => {
-    setShowDatePicker(true);
-  };
+  // const showDateTimePicker = () => {
+  //   setShowDatePicker(true);
+  // };
+  
+  // Format the selected date as dd/mm/yyyy
+  const formattedDate = selectedDate.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 
+    // Format the selected time as hh:mm (24-hour format)
+    const formattedTime = selectedDate.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // Use 24-hour format
+    });
   if (!fontsLoaded) {
     return null;
   } else {
@@ -66,20 +88,38 @@ const BookCar = () => {
             </Text>
 
             <Text style={styles["bookcar__container-timer-content"]}>
-              8 : 45 25/06/2023
+              {formattedTime ? formattedTime : 'hh:mm'} {formattedDate ? formattedDate : 'dd/mm/yyyy'}
             </Text>
 
-            <FontAwesomeIcon icon={faCalendar} size={24} color="#fff" onPress={showDateTimePicker}/>
+            
+            {!showDatePicker && !showTimePicker && (
+              <Pressable onPress={() => setShowDatePicker(true)}>
+                <FontAwesomeIcon icon={faCalendar} size={24} color="#fff" />
+              </Pressable>
+            )}
+
             {showDatePicker && (
               <DateTimePicker
-                testID="dateTimePicker"
+                testID="datePicker"
                 value={selectedDate}
-                mode="datetime" // Chọn mode "date" hoặc "time" nếu muốn chỉ chọn ngày hoặc giờ.
-                is24Hour={true}
+                mode="date"
                 display="default"
                 onChange={handleDateChange}
+                locale="vi-VN"
               />
-      )}
+            )}
+
+            {showTimePicker && (
+              <DateTimePicker
+                testID="timePicker"
+                value={selectedDate}
+                mode="time"
+                is24Hour={true}
+                display="default"
+                onChange={handleTimeChange}
+                locale="vi-VN"
+              />
+            )}
           </View>
 
           <View style={styles["bookcar__container-location"]}>
@@ -102,22 +142,25 @@ const BookCar = () => {
           </View>
 
           <View style={styles["bookcar__container-payment"]}>
-            <View style={styles["bookcar__container-payment-left"]}>
-              <View
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <FontAwesomeIcon icon={faCreditCard} size={16} color="#000" />
-                <Text style={styles["bookcar__container-payment-left-title"]}>
-                  Tiền mặt
-                </Text>
-              </View>
+            <Pressable onPress={() => navigation.navigate('/paymentperson')}>
+              <View style={styles["bookcar__container-payment-left"]}>
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCreditCard} size={16} color="#000" />
+                  <Text style={styles["bookcar__container-payment-left-title"]}>
+                    Tiền mặt
+                  </Text>
+                </View>
 
-              <FontAwesomeIcon icon={faChevronDown} size={16} color="#000" />
-            </View>
+                <FontAwesomeIcon icon={faChevronDown} size={16} color="#000" />
+              </View>
+            </Pressable>
+
 
             <View style={styles["bookcar__container-payment-right"]}>
               <Text style={styles["bookcar__container-payment-right-title"]}>

@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   },
   heading_upper: {
     height: 36,
+    flex: 1,
     width: "100%",
     backgroundColor: "white",
   },

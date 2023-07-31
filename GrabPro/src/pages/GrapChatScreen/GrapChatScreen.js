@@ -13,6 +13,7 @@ import grapChat from "../../../assets/imgs/Chat/grapChat.png";
 import { useCustomFonts } from "../../styles/fonts";
 import GrapChatItem from "./GrapChatItem/GrapChatItem";
 import avatar from "../../../assets/imgs/Favorite/halinh.png";
+import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {
@@ -189,9 +190,14 @@ const informs = [
 ];
 
 const ChatScreen = () => {
+  const navigation = useNavigation();
   const [typeOption, setTypeOption] = useState("CHAT");
   const fontsLoaded = useCustomFonts();
   if (!fontsLoaded) return null;
+
+  const handlePress = () => {
+    navigation.navigate("ChatDetail");
+  };
 
   return (
     <View style={styles.chat}>
@@ -248,13 +254,15 @@ const ChatScreen = () => {
           >
             {typeOption === "CHAT"
               ? data.map((item, idx) => (
-                  <GrapChatItem
-                    img={item.img}
-                    name={item.name}
-                    msg={item.msg}
-                    time={item.time}
-                    key={+idx}
-                  />
+                  <Pressable onPress={() => handlePress()} key={+idx}>
+                    <GrapChatItem
+                      img={item.img}
+                      name={item.name}
+                      msg={item.msg}
+                      time={item.time}
+                      key={+idx}
+                    />
+                  </Pressable>
                 ))
               : informs.map((item, idx) => (
                   <GrapChatItem

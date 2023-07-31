@@ -34,14 +34,22 @@ const AppRouter = () => {
   return (
     <View style={{ flex: 1 }}>
       <Stack.Navigator initialRouteName="Home">
+<<<<<<< HEAD
         <Stack.Screen name="/" component={HomeScreen} />
+=======
+        <Stack.Screen name="/" component={ChatDetail} />
+        <Stack.Screen name="/ChatDetail" component={HomeScreen} />
+>>>>>>> 1977957315a65c8fd483369a5b0211fdcbcceec3
         <Stack.Screen name="/wait" component={WaitScreen} />
         <Stack.Screen name="/login" component={LoginScreen} />
         <Stack.Screen name="/splash" component={SplashScreen} />
         <Stack.Screen name="/lgphone" component={LoginByPhone} />
         <Stack.Screen name="/verify" component={LoginVerification} />
 
+<<<<<<< HEAD
         <Stack.Screen name="/chatdetail" component={ChatDetail} />
+=======
+>>>>>>> 1977957315a65c8fd483369a5b0211fdcbcceec3
         <Stack.Screen name="/chat-inform" component={GrapChatScreen} />
         <Stack.Screen name="/personal" component={PersonalScreen} />
         <Stack.Screen name="/paymentperson" component={PaymentPerson} />
