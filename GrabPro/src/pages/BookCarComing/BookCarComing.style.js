@@ -1,13 +1,12 @@
 import { StyleSheet } from "react-native";
-import colors from "../../styles/colors";
-import { preventAutoHide } from 'expo-app-loading/node_modules/expo-splash-screen/build/SplashScreen';
 
 const styles = StyleSheet.create({
   bookcarcoming__container: {
-    position: "relative"
-  }, 
+    position: "relative",
+    flex: 1,
+  },
   "bookcarcoming__container-maps": {
-    // zIndex: 0
+    flex: 1,
   },
   "bookcarcoming__container-time": {
     display: "flex",
@@ -17,12 +16,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFF9F8",
     marginVertical: 14,
     paddingVertical: 14,
-    paddingHorizontal: 23
+    paddingHorizontal: 23,
   },
   "bookcarcoming__container-time-title": {
     fontSize: 14,
-    fontWeight: 600,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_600SemiBold",
     color: "#000",
   },
   "bookcarcoming__container-info": {
@@ -31,17 +29,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 23,
-    marginBottom: 20
+    marginBottom: 20,
   },
   "bookcarcoming__container-info-left": {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
   },
-  "bookcarcoming__container-info-left-name":{
+  "bookcarcoming__container-info-left-name": {
     fontSize: 14,
-    fontWeight: 500,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_500Medium",
     color: "#000",
   },
   "bookcarcoming__container-info-left-wrapper": {
@@ -51,18 +48,17 @@ const styles = StyleSheet.create({
   },
   "bookcarcoming__container-info-left-star": {
     fontSize: 12,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
     color: "#000",
   },
   "bookcarcoming__container-info-right-title": {
     fontSize: 16,
-    fontWeight: 600,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_600SemiBold",
     color: "#000",
   },
   "bookcarcoming__container-info-right-content": {
     fontSize: 12,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
     color: "#000",
   },
   "bookcarcoming__container-message": {
@@ -70,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 23,
-    marginBottom: 10
+    marginBottom: 10,
   },
   "bookcarcoming__container-message-left": {
     width: "80%",
@@ -81,24 +77,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginRight: 20,
-    borderRadius: 8
+    borderRadius: 8,
   },
   "bookcarcoming__container-message-content": {
     fontSize: 12,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
     color: "#5a5959",
-    marginLeft: 14
+    marginLeft: 14,
   },
   "bookcarcoming__container-message-right": {
-    width: "20%"
-  },  
+    width: "20%",
+  },
   "bookcarcoming__container-message-right-ic": {
     padding: 10,
     borderColor: "#5a5959",
     borderStyle: "solid",
     borderWidth: 1,
-    borderRadius: 8
-  }
+    borderRadius: 8,
+  },
 });
 
 export default styles;

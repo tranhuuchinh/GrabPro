@@ -12,7 +12,7 @@ import styles from "./LoginByPhone.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Flag from "../../../../assets/imgs/Home/flag.png";
-// import {   } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import Heading from "../../../components/Heading/Heading";
 import { useCustomFonts } from "../../../styles/fonts";
 import Modal from "react-native-modal";
@@ -22,7 +22,7 @@ import colors from "../../../styles/colors";
 const LoginVerification = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const isButtonDisabled = phoneNumber.trim() === "";
-  // const navigate =  ();
+  const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
   const [otpValue, setOTPValue] = useState(["", "", "", "", "", ""]);
 
@@ -46,6 +46,7 @@ const LoginVerification = () => {
     }, 2000);
     // onModalClose();
     // console.log("OTP:", joinedOTP);
+    navigation.navigate("Tab"); //Vào Home
   };
 
   const renderModalContent = () => (

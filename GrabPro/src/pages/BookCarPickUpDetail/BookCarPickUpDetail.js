@@ -2,18 +2,11 @@ import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
-  faChevronLeft,
   faLocationDot,
-  faArrowRightLong,
-  faPlus,
   faClose,
   faLocationCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
-import Car from "../../assets/imgs/BookCar/Car.png";
-import LocationItem from "../../assets/imgs/BookCar/LocationItem.png";
-import Book from "../../assets/imgs/BookCar/Book.png";
-import Favor from "../../assets/imgs/BookCar/Favor.png";
 import styles from "./BookCarPickUpDetail.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
@@ -38,7 +31,7 @@ const historyList = [
 
 const BookCarPickUpDetail = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation =  useNavigation();
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     return null;
@@ -46,7 +39,11 @@ const BookCarPickUpDetail = () => {
     return (
       <View style={styles.bookcarpickupdetail__container}>
         <View style={styles["bookcarpickupdetail__container-header"]}>
-          <Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
             <FontAwesomeIcon icon={faClose} size={24} color="#33363f" />
           </Pressable>
           <Text style={styles["bookcarpickupdetail__container-header-title"]}>

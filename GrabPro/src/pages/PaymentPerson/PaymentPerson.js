@@ -14,7 +14,7 @@ const PaymentPerson = () => {
   } else {
     return (
       <View style={styles.pmperson_container}>
-        <Heading title="Phương thức thanh toán" returnPath="/personal" />
+        <Heading title="Phương thức thanh toán" returnPath="/account" />
         <View style={styles.pmperson_body}>
           <Text style={styles["pmperson_body-title"]}>
             Chọn phương thức mặc định

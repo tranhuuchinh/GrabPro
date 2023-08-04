@@ -108,7 +108,7 @@ const ProfilePerson = () => {
           <Pressable
             style={{ position: "absolute", top: 40, left: 20 }}
             onPress={() => {
-              navigation.navigate("/personal");
+              navigation.goBack();
             }}
           >
             <FontAwesomeIcon icon={faChevronLeft} size={20} color="white" />

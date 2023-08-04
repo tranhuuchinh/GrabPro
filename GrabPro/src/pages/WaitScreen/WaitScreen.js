@@ -1,12 +1,18 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import styles from "./WaitScreen.style";
 
 import LogoGrab from "../../../assets/imgs/Splash/grabLogo.png";
 import Logillustration from "../../../assets/imgs/Wait/logillustration.png";
 import BGBottom from "../../../assets/imgs/Wait/VectorBG.png";
+import { useNavigation } from "@react-navigation/native";
 
 const WaitScreen = () => {
+  const navigation = useNavigation();
+
+  const handleLogin = () => {
+    navigation.navigate("/login");
+  };
   return (
     <View style={styles.wait_container}>
       <Image style={styles.wait_logo} source={LogoGrab} />
@@ -16,13 +22,13 @@ const WaitScreen = () => {
       <Image style={styles.wait_bottomBg} source={BGBottom} />
 
       <View style={styles.waitButtonWrap}>
-        <TouchableOpacity style={styles.waitButtonLogin}>
+        <Pressable style={styles.waitButtonLogin} onPress={handleLogin}>
           <Text style={styles.buttonTextLogin}>Đăng nhập</Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity style={styles.waitButtonRegister}>
+        <Pressable style={styles.waitButtonRegister} onPress={handleLogin}>
           <Text style={styles.buttonTextRegister}>Đăng kí ngay</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

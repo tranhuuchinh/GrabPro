@@ -43,14 +43,14 @@ const BookCarHome = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handlePressBack = () => {
-    navigation.navigate("Trang chủ");
-  }
+    navigation.goBack();
+  };
   const handlePressLocation = () => {
-     navigation.navigate("/bookcar-pickup");
-  }
+    navigation.navigate("/bookcar-pickup");
+  };
   const handlePressBookCar = () => {
     navigation.navigate("/bookcar-book");
- }
+  };
 
   const handleChangeText = (inputText) => {
     setText(inputText);
@@ -63,12 +63,8 @@ const BookCarHome = () => {
       <View style={styles.bookcar__container}>
         <View style={styles["bookcar__container-header"]}>
           <View style={styles["bookcar__container-header-left"]}>
-            <Pressable onClick={() => handlePressBack()}>
-              <FontAwesomeIcon
-                icon={faChevronLeft}
-                size={16}
-                color="#434343"
-              />
+            <Pressable onPress={() => handlePressBack()}>
+              <FontAwesomeIcon icon={faChevronLeft} size={20} color="#434343" />
             </Pressable>
             <Text style={styles["bookcar__container-header-left-title"]}>
               Di chuyển
@@ -143,10 +139,13 @@ const BookCarHome = () => {
               Thêm nhiều cách để di chuyển
             </Text>
 
-            <Pressable style={styles["bookcar__container-movemore-book"]} onPress={() => handlePressBookCar()}>
+            <Pressable
+              style={styles["bookcar__container-movemore-book"]}
+              onPress={() => handlePressBookCar()}
+            >
               <Image source={Book} style={{ width: 36, height: 36 }} />
               <Text style={styles["bookcar__container-movemore-book-content"]}>
-                Thêm nhiều cách để di chuyển
+                Thuê xe đặt lịch trước
               </Text>
             </Pressable>
           </View>
@@ -162,13 +161,7 @@ const BookCarHome = () => {
                   backgroundColor: "#EFF9F8",
                   borderRadius: 200,
                 }}
-              >
-                <FontAwesomeIcon
-                  icon={faArrowRightLong}
-                  size={12}
-                  color="#434343"
-                />
-              </View>
+              ></View>
             </View>
 
             <View style={styles["bookcar__container-favorlocation-list"]}>

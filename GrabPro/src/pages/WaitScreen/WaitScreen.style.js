@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import colors from "../../styles/colors";
-import font from "../../styles/fonts";
 
 const styles = StyleSheet.create({
   wait_container: {
@@ -16,7 +15,6 @@ const styles = StyleSheet.create({
   wait_title: {
     fontSize: 16,
     color: "white",
-    // fontFamily: "Poppins_700Bold",
   },
   wait_illustrationBg: {
     width: "100%",
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
   },
   wait_bottomBg: {
     width: "100%",
-    resizeMode: "contain",
+    resizeMode: "center",
     position: "absolute",
     bottom: -97,
   },

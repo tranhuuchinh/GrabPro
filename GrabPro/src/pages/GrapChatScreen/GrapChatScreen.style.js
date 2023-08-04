@@ -4,6 +4,7 @@ import colors from "../../styles/colors";
 const styles = StyleSheet.create({
   chat: {
     display: "flex",
+    backgroundColor: "white",
   },
   chat_banner: {
     paddingTop: 20,

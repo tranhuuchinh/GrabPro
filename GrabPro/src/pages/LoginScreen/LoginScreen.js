@@ -1,18 +1,18 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./LoginScreen.style";
-// import {} from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 
 import LogoGrab from "../../../assets/imgs/Splash/grabLogo.png";
 import GoogleLogin from "../../../assets/icons/LoginBy/ic_google.png";
 import PhoneLogin from "../../../assets/icons/LoginBy/ic_phone.png";
 import { useCustomFonts } from "../../styles/fonts";
 const LoginScreen = () => {
-  // const navigate =  ();
+  const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
-  // const handleButtonPress = () => {
-  //   navigate("/lgphone");
-  // };
+  const handleButtonPress = () => {
+    navigation.navigate("/lgphone");
+  };
   if (!fontsLoaded) {
     return null;
   } else {

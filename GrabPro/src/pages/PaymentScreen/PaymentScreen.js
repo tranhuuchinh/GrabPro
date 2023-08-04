@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import React from "react";
 import styles from "./PaymentScreen.style";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import banner from "../../../assets/imgs/Personal/banner_profile.png";
 import ic_payment from "../../../assets/icons/Payment/ic_payment.png";
 import ic_qr from "../../../assets/icons/Payment/ic_qr.png";

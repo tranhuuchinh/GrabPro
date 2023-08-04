@@ -15,12 +15,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "absolute",
     top: 70,
+    width: "95%",
     alignItems: "center",
-    shadowColor: "lightgray", // Màu của box shadow
-    shadowOffset: { width: -1, height: 1 }, // Khoảng cách và hướng của box shadow
-    shadowOpacity: 5, // Độ mờ của box shadow
-    shadowRadius: 4, // Bán kính của box shadow
-    elevation: 4, // Độ cao của box shadow (áp dụng cho Android)
+    shadowColor: "#lightgray",
+    shadowOffset: {
+      width: -1,
+      height: 1,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+    backgroundColor: "white",
+    borderRadius: 10,
     marginHorizontal: 10,
   },
   homeCtnSearch: {
@@ -31,7 +37,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     padding: 8,
     height: 65,
-    width: "80%",
+    width: "82%",
   },
 
   homeFavorite: {
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 8,
     borderTopRightRadius: 8,
     borderLeftColor: "lightgray",
-    borderLeftWidth: 1,
+    borderLeftWidth: 3,
     justifyContent: "center",
   },
 
@@ -84,21 +90,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   homeWrapCard: {
+    display: "flex",
     flexDirection: "row",
     paddingHorizontal: 15,
     paddingVertical: 10,
   },
 
   homeWrapCardType: {
+    flex: 1,
     backgroundColor: "#F9F9F9",
     justifyContent: "center",
     minHeight: 70,
     maxHeight: 100,
     borderRadius: 10,
-    marginRight: 10,
+    marginRight: 0,
     padding: 10,
   },
-  homeWrapScore: {},
+  homeWrapScore: {
+    flex: 3,
+    position: "relative",
+  },
 
   homeWrapCardScore: {
     flex: 1.2,

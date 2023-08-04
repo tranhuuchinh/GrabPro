@@ -15,7 +15,11 @@ const Heading = ({ title, returnPath, content, img, type, call }) => {
   if (!fontsLoaded) return null;
 
   const handlePress = () => {
-    navigation.navigate(returnPath);
+    if (returnPath) {
+      navigation.navigate(returnPath);
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -35,6 +39,7 @@ const Heading = ({ title, returnPath, content, img, type, call }) => {
               alignItems: "center",
             }}
           >
+            <View></View>
             <Image
               source={img}
               style={{ width: 44, height: 44, borderRadius: 50 }}

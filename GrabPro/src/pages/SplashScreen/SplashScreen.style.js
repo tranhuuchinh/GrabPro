@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import colors from "../../styles/colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -7,6 +6,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#14bf61",
+    position: "relative",
   },
   logoGrab: {
     alignSelf: "center",
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   illustratonIcon: {
     position: "absolute",
-    bottom: -100,
+    bottom: -120,
     width: "100%",
   },
 });

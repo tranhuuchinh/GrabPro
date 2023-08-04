@@ -196,7 +196,7 @@ const ChatScreen = () => {
   if (!fontsLoaded) return null;
 
   const handlePress = () => {
-    navigation.navigate("ChatDetail");
+    navigation.navigate("/chatdetail");
   };
 
   return (

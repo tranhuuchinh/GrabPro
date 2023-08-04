@@ -14,7 +14,7 @@ const AwardPerson = () => {
   } else {
     return (
       <View style={styles.awperson_container}>
-        <Heading title="Hạng thành viên" returnPath="/personal" />
+        <Heading title="Hạng thành viên" returnPath="/account" />
         <View style={styles.awperson_banner}>
           <View style={styles["awperson_banner-card"]}>
             <Text style={styles["awperson_banner-card-title"]}>Vàng</Text>

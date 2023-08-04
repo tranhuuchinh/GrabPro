@@ -1,13 +1,7 @@
 import React from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faChevronLeft,
-  faLocationDot,
-  faArrowRightLong,
-  faPlus,
-  faA,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faA } from "@fortawesome/free-solid-svg-icons";
 import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import styles from "./BookCarPickUp.style";
 import { useCustomFonts } from "../../styles/fonts";
@@ -15,11 +9,11 @@ import { useNavigation } from "@react-navigation/native";
 
 const BookCarPickUp = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation =  useNavigation();
+  const navigation = useNavigation();
 
   const handleBack = () => {
-      navigation.navigate("/personal")
-  }
+    navigation.goBack();
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -30,7 +24,10 @@ const BookCarPickUp = () => {
           <Image source={HaLinh} style={{ width: "100%", height: "100%" }} />
         </View>
 
-        <Pressable style={styles["bookcarchoicedes__container-back"]}>
+        <Pressable
+          style={styles["bookcarchoicedes__container-back"]}
+          onPress={handleBack}
+        >
           <FontAwesomeIcon icon={faChevronLeft} size={20} color="#000" />
         </Pressable>
 
@@ -60,6 +57,9 @@ const BookCarPickUp = () => {
 
             <Pressable
               style={styles["bookcarchoicedes__container-location-button"]}
+              onPress={() => {
+                navigation.navigate("/bookcar-pickup-dt");
+              }}
             >
               <Text
                 style={
@@ -87,7 +87,11 @@ const BookCarPickUp = () => {
             </Text>
           </View>
 
-          <Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("/bookcar-book");
+            }}
+          >
             <Text style={styles["bookcarchoicedes__container-button"]}>
               Chọn điểm đón này
             </Text>

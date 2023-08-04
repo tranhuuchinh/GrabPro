@@ -8,10 +8,10 @@ import { Image } from "react-native";
 import ic_location from "../../../assets/imgs/Chat/Location.png";
 import ic_camera from "../../../assets/imgs/Chat/Camera.png";
 import ic_micro from "../../../assets/imgs/Chat/Micro.png";
-import styles from "./ChatDetail.style";
+import styles from "./ChatBook.style";
 import { TextInput } from "react-native";
 
-const ChatDetail = () => {
+const ChatBook = () => {
   const fontsLoaded = useCustomFonts();
   if (!fontsLoaded) return null;
 
@@ -24,7 +24,6 @@ const ChatDetail = () => {
         img={avatar}
         content="5912-434.76 ~ Honda Vision"
         type="CHAT"
-        returnPath="Tin nhắn"
       />
 
       <SafeAreaView style={{ height: Dimensions.get("window").height - 148 }}>
@@ -102,4 +101,4 @@ const ChatDetail = () => {
   );
 };
 
-export default ChatDetail;
+export default ChatBook;

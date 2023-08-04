@@ -4,11 +4,8 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  SafeAreaView,
-  StyleSheet,
   TextInput,
-  Dimensions,
-  ImageBackground,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import styles from "./HomeScreen.style";
@@ -24,7 +21,6 @@ import { useCustomFonts } from "../../styles/fonts";
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
   const fontsLoaded = useCustomFonts();
-  const ScreenWidth = Dimensions.get("window").width;
   const navigation = useNavigation();
 
   const handleSearch = () => {
@@ -33,15 +29,11 @@ const HomeScreen = () => {
   };
 
   const handleFavorite = () => {
-    console.log("Người dùng đã nhấn vào nút Favorite");
+    navigation.navigate("Tài khoản", { screen: "/favorite" });
   };
 
   const handlePressOto = () => {
     navigation.navigate("/bookcar-home");
-  }
-
-  const handleButton1Press = () => {
-    // Xử lý khi nút 1 được nhấn
   };
 
   const handleButton2Press = () => {
@@ -52,7 +44,7 @@ const HomeScreen = () => {
     return null;
   } else {
     return (
-      <View style={styles.homeContainer}>
+      <KeyboardAvoidingView style={styles.homeContainer}>
         <View style={styles.homeBanner}></View>
         <View style={styles.homeSearchWrap}>
           <View style={styles.homeCtnSearch}>
@@ -64,7 +56,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
             <TextInput
               style={styles.homeInput}
-              placeholder="Nhập từ khóa..."
+              placeholder="Nhập địa điểm đến"
               placeholderTextColor="#888888"
               value={searchText}
               onChangeText={setSearchText}
@@ -75,16 +67,13 @@ const HomeScreen = () => {
               style={styles.homeButtonFavorite}
               onPress={handleFavorite}
             >
-              <Feather name="heart" size={30} color="gray" />
+              <Feather name="heart" size={25} color="gray" />
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.homeBookType}>
-          <TouchableOpacity
-            style={styles.homeBookCar}
-            onPress={handlePressOto}
-          >
+          <TouchableOpacity style={styles.homeBookCar} onPress={handlePressOto}>
             <Image
               style={{
                 justifyContent: "flex-start",
@@ -160,10 +149,11 @@ const HomeScreen = () => {
             <View>
               <Image
                 style={{
-                  justifyContent: "flex-start",
-                  width: 50,
-                  height: 50,
-                  // alignSelf: "center",
+                  position: "absolute",
+                  width: 35,
+                  height: 35,
+                  right: 5,
+                  top: 5,
                 }}
                 source={Crown}
               />
@@ -177,14 +167,14 @@ const HomeScreen = () => {
             paddingHorizontal: 10,
           }}
         >
-          <View
+          <KeyboardAvoidingView
             style={{
               borderRadius: 10,
               overflow: "hidden",
             }}
           >
-            <ImageBackground
-              resizeMode="contain"
+            <Image
+              resizeMode="cover"
               borderRadius={10}
               style={{
                 width: "100%",
@@ -192,9 +182,9 @@ const HomeScreen = () => {
               }}
               source={ImgBg}
             />
-          </View>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 };

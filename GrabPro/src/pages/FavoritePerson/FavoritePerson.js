@@ -14,7 +14,7 @@ const FavoritePerson = () => {
   } else {
     return (
       <View style={styles.favorite_container}>
-        <Heading title="Yêu thích" returnPath="/personal" />
+        <Heading title="Yêu thích" returnPath="/account" />
         <Text style={styles.favorite_txt1}>Tài xế yêu thích</Text>
         <View style={{ marginBottom: 20 }}>
           <Pressable style={styles.favorite_item}>

@@ -33,7 +33,9 @@ const PersonalScreen = () => {
                 styles.personal_banner_btn,
                 { fontFamily: "Poppins_400Regular" },
               ]}
-              onPress={()=>{navigation.navigate("/profile")}}
+              onPress={() => {
+                navigation.navigate("/profile");
+              }}
             >
               <Text>Chỉnh sửa tài khoản</Text>
               <FontAwesomeIcon

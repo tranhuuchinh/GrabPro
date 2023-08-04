@@ -10,7 +10,7 @@ import {
 import styles from "./LoginByPhone.style";
 import Flag from "../../../../assets/imgs/Home/flag.png";
 import Heading from "../../../components/Heading/Heading";
-import {   } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import { useCustomFonts } from "../../../styles/fonts";
 
 const LoginByPhone = () => {
@@ -18,24 +18,24 @@ const LoginByPhone = () => {
   const isButtonDisabled = phoneNumber.trim() === "";
   const fontsLoaded = useCustomFonts();
 
-  // const navigate =  ();
+  const navigation = useNavigation();
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
   };
 
-  // const handleButtonPress = () => {
-  //   if (phoneNumber.trim() !== "") {
-  //     navigate("/verify");
-  //   }
-  // };
+  const handleButtonPress = () => {
+    if (phoneNumber.trim() !== "") {
+      navigation.navigate("/verify");
+    }
+  };
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
       <View style={styles.loginByPhoneContainer}>
-        <Heading title="Bắt đầu" returnPath="/" />
+        <Heading title="Bắt đầu" returnPath="/login" />
 
         <TouchableOpacity
           style={{ flex: 1 }}

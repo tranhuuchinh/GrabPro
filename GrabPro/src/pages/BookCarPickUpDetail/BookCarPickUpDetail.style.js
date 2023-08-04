@@ -1,17 +1,15 @@
 import { StyleSheet } from "react-native";
-import colors from "../../styles/colors";
-import { preventAutoHide } from 'expo-app-loading/node_modules/expo-splash-screen/build/SplashScreen';
 
 const styles = StyleSheet.create({
   bookcarpickupdetail__container: {
-    marginTop: 30
+    marginTop: 35,
   },
   "bookcarpickupdetail__container-header": {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     marginLeft: 24,
-    marginBottom: 40
+    marginBottom: 20,
   },
   "bookcarpickupdetail__container-header-title": {
     fontSize: 14,
@@ -24,12 +22,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 23,
     padding: 10,
-    marginBottom: 30
-  },  
+    marginBottom: 30,
+  },
   "bookcarpickupdetail__container-search-up": {
     display: "flex",
     flexDirection: "row",
-    marginBottom: 10
+    marginBottom: 10,
   },
   "bookcarpickupdetail__container-search-down": {
     display: "flex",
@@ -44,25 +42,24 @@ const styles = StyleSheet.create({
     marginLeft: 14,
     paddingBottom: 10,
     borderBottomColor: "#A3A3A3",
-    borderBottomStyle: "solid",
     borderBottomWidth: 1,
   },
   "bookcarpickupdetail__container-search-down-title": {
     fontSize: 12,
     fontFamily: "Poppins_400Regular",
     color: "#A3A3A3",
-    marginLeft: 14
+    marginLeft: 14,
   },
-  "bookcarpickupdetail__container-list":{
+  "bookcarpickupdetail__container-list": {
     marginTop: 10,
     marginHorizontal: 26,
   },
   "bookcarpickupdetail__container-list-title": {
     fontSize: 14,
     fontFamily: "Poppins_600SemiBold",
-    color: "#000",  
-    marginBottom: 10
-  },   
+    color: "#000",
+    marginBottom: 10,
+  },
   "bookcarpickupdetail__container-history": {
     display: "flex",
     flexDirection: "row",
@@ -71,12 +68,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomColor: "#ccc",
     borderBottomStyle: "solid",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   "bookcarpickupdetail__container-history-title": {
     fontSize: 13,
     fontFamily: "Poppins_600SemiBold",
-    marginBottom: 6
+    marginBottom: 6,
   },
   "bookcarpickupdetail__container-history-content": {
     fontSize: 10,

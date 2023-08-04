@@ -27,7 +27,7 @@ const LocationPerson = () => {
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(-1);
 
   const handleSearch = () => {
-    navigation.navigate("/search");
+    navigation.navigate("Khác", { screen: "/search" });
   };
 
   const setDelete = (idx) => {
@@ -52,7 +52,7 @@ const LocationPerson = () => {
   } else {
     return (
       <View style={styles.location_container}>
-        <Heading title="Địa điểm đã lưu" returnPath="/personal" />
+        <Heading title="Địa điểm đã lưu" returnPath="/account" />
         <Text style={styles.location_txt1}>Địa điểm thân quen</Text>
         <View style={{ marginBottom: 20 }}>
           {locations.map((item, index) => (

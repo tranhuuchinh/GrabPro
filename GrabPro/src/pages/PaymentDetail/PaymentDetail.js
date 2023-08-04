@@ -12,7 +12,7 @@ const PaymentDetail = () => {
 
   return (
     <View>
-      <Heading title="Chi tiết giao dịch" returnPath="/payment-history" />
+      <Heading title="Chi tiết giao dịch" returnPath="Thanh toán" />
       <View style={styles.payment_detail}>
         <Text style={styles.payment_detail__title}>Thanh toán</Text>
         <View style={styles.payment_detail__wrapper}>

@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   payment: {
     display: "flex",
+    backgroundColor: "white",
   },
   payment_banner: {
     paddingTop: 20,
