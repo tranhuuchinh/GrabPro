@@ -198,11 +198,11 @@ const App = () => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="/splash" component={SplashScreen} />
+        <Stack.Screen name="/splash" component={SplashScreen} />
         <Stack.Screen name="/wait" component={WaitScreen} />
         <Stack.Screen name="/login" component={LoginScreen} />
         <Stack.Screen name="/lgphone" component={LoginByPhone} />
-        <Stack.Screen name="/verify" component={LoginVerification} /> */}
+        <Stack.Screen name="/verify" component={LoginVerification} />
         <Stack.Screen name="Tab" component={Tab} />
       </Stack.Navigator>
     </NavigationContainer>
