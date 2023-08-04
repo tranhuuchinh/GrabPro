@@ -7,7 +7,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   homePageImage: {
-    flex: 0.7,
+    flex: 0.9,
+  },
+
+  homePageConnect: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   homePageWrap: {
@@ -17,16 +23,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     alignItems: "center",
-    top: -20,
+    top: -10,
     backgroundColor: "white",
-  },
-
-  homePageStatus: {
-    width: 15,
-    borderRadius: 50,
-    height: 15,
-    backgroundColor: "red",
-    marginLeft: 20,
   },
 
   homePageWrapOption: {
