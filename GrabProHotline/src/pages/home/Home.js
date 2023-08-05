@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classes from './Home.module.scss';
 import OrderItem from './OrderItem/OrderItem';
 import ic_phone from '../../assets/svg/phone.svg';
 import AddressItem from './AddressItem/AddressItem';
 import FormOrder from './FormOrder/FormOrder';
+import useAxios from '../../hooks/useAxios';
 
 const dataOrders = [
     {
@@ -43,6 +44,13 @@ const dataAddresses = [
 ];
 
 const Home = () => {
+    //Axios
+    const [response0d, error0d, isLoading0d] = useAxios('get', '/payments', {}, {}, []);
+    useEffect(() => {
+        if (isLoading0d === false && !error0d && response0d.data) {
+            console.log(response0d.data);
+        }
+    }, [isLoading0d]);
     return (
         <div className={classes.home}>
             <div className={classes.home__left}>
