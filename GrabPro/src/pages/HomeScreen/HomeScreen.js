@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,13 +15,27 @@ import Bike from "../../../assets/imgs/Home/grabBike.png";
 import Crown from "../../../assets/imgs/Home/crown.png";
 import ImgBg from "../../../assets/imgs/Home/no1.jpeg";
 import { useNavigation } from "@react-navigation/native";
-
 import { useCustomFonts } from "../../styles/fonts";
+import useAxios from "../../hooks/useAxios";
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+
+  const [responseProduct, errorProduct, isLoadingProduct] = useAxios(
+    "get",
+    "/payments",
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (responseProduct && responseProduct.data !== undefined) {
+      console.log(responseProduct.data);
+    }
+  }, [isLoadingProduct]);
 
   const handleSearch = () => {
     // Xử lý tìm kiếm dựa trên searchText

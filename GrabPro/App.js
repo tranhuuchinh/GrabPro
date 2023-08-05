@@ -36,7 +36,6 @@ import ChatBook from "./src/pages/ChatBook/ChatBook";
 import SplashScreen from "./src/pages/SplashScreen/SplashScreen";
 import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
 import LoginScreen from "./src/pages/LoginScreen/LoginScreen";
-import BookCarAppointment from "././src/pages/BookCarAppointment/BookCarAppointment";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
 

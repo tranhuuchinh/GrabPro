@@ -119,7 +119,7 @@ const OTPInput = ({ length, disabled, value, onChange }) => {
             }),
           }}
           onBlur={clearLocalState}
-          keyboardType="numeric-password"
+          keyboardType="number-pad"
           onChangeText={(text) => handleChange(text, index)}
           onKeyPress={(event) => handleKeyPress(event, index)}
         />
