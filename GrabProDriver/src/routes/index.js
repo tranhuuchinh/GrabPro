@@ -19,13 +19,13 @@ const AppRouter = () => {
   return (
     <NativeRouter>
       <Routes>
-        <Route path="/s" element={<HomeScreen />} />
+        <Route path="/" element={<HomeScreen />} />
         <Route path="/s" element={<HomePage />} />
         <Route path="/s" element={<FavouriteScreen />} />
         <Route path="/s" element={<SettingPage />} />
         <Route path="/s" element={<WalletPage />} />
         <Route path="/s" element={<CreditWalletPage />} />
-        <Route path="/" element={<AddMoney />} />
+        <Route path="/sss" element={<AddMoney />} />
         <Route path="/splash" element={<SplashScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/avartar" element={<AvartarScreen />} />

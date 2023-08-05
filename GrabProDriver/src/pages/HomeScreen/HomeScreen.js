@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Text, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -17,10 +17,24 @@ import styles from "./HomeScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
+import useAxios from "../../hooks/useAxios";
 
 const BookCar = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigate();
+  const [responseProduct, errorProduct, isLoadingProduct] = useAxios(
+    "get",
+    "/payments",
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (responseProduct && responseProduct.data !== undefined) {
+      console.log(responseProduct.data);
+    }
+  }, [isLoadingProduct]);
 
   if (!fontsLoaded) {
     return null;
