@@ -1,55 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, Pressable, ScrollView } from "react-native";
 import styles from "./ActivityScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import Oto from "../../../assets/icons/Activity/ic_oto.png";
 import Moto from "../../../assets/icons/Activity/ic_moto.png";
 import { useNavigation } from "@react-navigation/native";
+import useAxios from "../../hooks/useAxios";
 
-const activitiesOto = [
-  {
-    location: "Trường Đại học Khoa học Tự Nhiên",
-    time: "7 Jun , 21:38",
-    price: "15.500",
-    status: 0,
-  },
-  {
-    location: "Trường Tiểu học Số 1 Sơn Tịnh",
-    time: "7 Jun , 21:38",
-    price: "15.500",
-    status: 1,
-  },
-  {
-    location: "Thành phố Thủ Đức",
-    time: "7 Jun , 21:38",
-    price: "125.500",
-    status: 1,
-  },
-];
+const truncateString = (inputString, maxLength) => {
+  if (inputString.length > maxLength) {
+    return inputString.substring(0, maxLength) + "...";
+  }
+  return inputString;
+};
 
-const activitiesMoto = [
-  {
-    location: "Trường Đại học Khoa học Tự Nhiên",
-    time: "7 Jun , 21:38",
-    price: "15.500",
-    status: 1,
-  },
-  {
-    location: "Trường Tiểu học Số 1 Sơn Tịnh",
-    time: "7 Jun , 21:38",
-    price: "15.500",
-    status: 1,
-  },
-];
+const formatDate = (inputDate) => {
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  const date = new Date(inputDate);
+  return date.toLocaleDateString("en-US", options);
+};
+
+const formatNumberWithDots = (inputNumber) => {
+  if (isNaN(inputNumber)) {
+    return inputNumber;
+  }
+
+  const formattedNumber = Number(inputNumber).toLocaleString("en-US");
+  return formattedNumber;
+};
 
 const ActivityScreen = () => {
-  const [type, setType] = useState(0);
+  const [type, setType] = useState("GrabCar");
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+  const [activities, setActivities] = useState([]);
 
-  const handlePress = () => {
-    navigation.navigate("/activity-detail");
-  };
+  const [response, error, isLoading] = useAxios(
+    "get",
+    `/orders?type=${type}&idUser=64cd144708afa47f3bda6ae6`,
+    {},
+    {},
+    [type]
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      setActivities(response.data);
+    }
+  }, [isLoading, type]);
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -58,11 +63,11 @@ const ActivityScreen = () => {
         <View style={styles.activity_header}>
           <Text style={styles["activity_header-title"]}>Hoạt động</Text>
           <View style={styles["activity_header-control"]}>
-            {type == 0 ? (
+            {type == "GrabCar" ? (
               <Pressable
                 style={styles["activity_header-btn--active"]}
                 onPress={() => {
-                  setType(0);
+                  setType("GrabCar");
                 }}
               >
                 <Text style={styles["activity_header-txt--active"]}>
@@ -73,18 +78,18 @@ const ActivityScreen = () => {
               <Pressable
                 style={styles["activity_header-btn"]}
                 onPress={() => {
-                  setType(0);
+                  setType("GrabCar");
                 }}
               >
                 <Text style={styles["activity_header-txt"]}>GrabCar</Text>
               </Pressable>
             )}
 
-            {type == 1 ? (
+            {type == "GrabBike" ? (
               <Pressable
                 style={styles["activity_header-btn--active"]}
                 onPress={() => {
-                  setType(1);
+                  setType("GrabBike");
                 }}
               >
                 <Text style={styles["activity_header-txt--active"]}>
@@ -95,7 +100,7 @@ const ActivityScreen = () => {
               <Pressable
                 style={styles["activity_header-btn"]}
                 onPress={() => {
-                  setType(1);
+                  setType("GrabBike");
                 }}
               >
                 <Text style={styles["activity_header-txt"]}>GrabBike</Text>
@@ -103,13 +108,15 @@ const ActivityScreen = () => {
             )}
           </View>
         </View>
-        {type == 0 ? (
+        {type == "GrabCar" ? (
           <View style={styles.activity_body}>
-            {activitiesOto.map((item, index) => (
+            {activities.map((item, index) => (
               <Pressable
                 style={styles.activity_item}
                 key={index}
-                onPress={() => handlePress()}
+                onPress={() => {
+                  navigation.navigate("/activity-detail", item);
+                }}
               >
                 <View>
                   <Image
@@ -127,11 +134,11 @@ const ActivityScreen = () => {
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
-                      {item.location}
+                      {truncateString(item.to.address, 31)}
                     </Text>
                     <View style={styles["activity_item-right-price"]}>
                       <Text style={styles["activity_item-right-txtpr"]}>
-                        {item.price}
+                        {formatNumberWithDots(item.totalPrice)}
                       </Text>
                       <Text style={styles["activity_item-right-txtđ"]}>đ</Text>
                     </View>
@@ -139,9 +146,11 @@ const ActivityScreen = () => {
                   <Text style={styles["activity_item-stt"]}>
                     Chuyến đi đã hoàn thành
                   </Text>
-                  <Text style={styles["activity_item-time"]}>{item.time}</Text>
+                  <Text style={styles["activity_item-time"]}>
+                    {formatDate(item.updatedAt)}
+                  </Text>
                 </View>
-                {item.status == 0 && (
+                {item.feedback == 0 && (
                   <Text style={styles["activity_item-fb"]}>Đánh giá ngay</Text>
                 )}
               </Pressable>
@@ -149,11 +158,13 @@ const ActivityScreen = () => {
           </View>
         ) : (
           <View style={styles.activity_body}>
-            {activitiesMoto.map((item, index) => (
+            {activities.map((item, index) => (
               <Pressable
                 style={styles.activity_item}
                 key={index}
-                onPress={() => handlePress()}
+                onPress={() => {
+                  navigation.navigate("/activity-detail", item);
+                }}
               >
                 <View>
                   <Image
@@ -171,11 +182,11 @@ const ActivityScreen = () => {
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
-                      {item.location}
+                      {truncateString(item.to.address, 31)}
                     </Text>
                     <View style={styles["activity_item-right-price"]}>
                       <Text style={styles["activity_item-right-txtpr"]}>
-                        {item.price}
+                        {formatNumberWithDots(item.totalPrice)}
                       </Text>
                       <Text style={styles["activity_item-right-txtđ"]}>đ</Text>
                     </View>
@@ -183,9 +194,11 @@ const ActivityScreen = () => {
                   <Text style={styles["activity_item-stt"]}>
                     Chuyến đi đã hoàn thành
                   </Text>
-                  <Text style={styles["activity_item-time"]}>{item.time}</Text>
+                  <Text style={styles["activity_item-time"]}>
+                    {formatDate(item.updatedAt)}
+                  </Text>
                 </View>
-                {item.status == 0 && (
+                {item.feedback == 0 && (
                   <Text style={styles["activity_item-fb"]}>Đánh giá ngay</Text>
                 )}
               </Pressable>

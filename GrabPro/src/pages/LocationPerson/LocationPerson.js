@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Pressable } from "react-native";
 import styles from "./LocationPerson.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -6,25 +6,28 @@ import { useCustomFonts } from "../../styles/fonts";
 import { faBookmark, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Heading from "../../components/Heading/Heading";
 import { useNavigation } from "@react-navigation/native";
-
-const locations = [
-  {
-    name: "Nhà tôi",
-    distance: "2.07Km",
-    destination: "135B Trần Hưng Đạo",
-  },
-  {
-    name: "Trường học",
-    distance: "2.07Km",
-    destination: "227 Nguyễn Văn Cừ, quận 5, TP.HCM",
-  },
-];
+import useAxios from "../../hooks/useAxios";
 
 const LocationPerson = () => {
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(-1);
+  const [savedLocations, setLocations] = useState([]);
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    "/customer/profile/64cd144708afa47f3bda6ae6",
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      setLocations(response.data.savedLocations);
+    }
+  }, [isLoading]);
 
   const handleSearch = () => {
     navigation.navigate("Khác", { screen: "/search" });
@@ -55,7 +58,7 @@ const LocationPerson = () => {
         <Heading title="Địa điểm đã lưu" returnPath="/account" />
         <Text style={styles.location_txt1}>Địa điểm thân quen</Text>
         <View style={{ marginBottom: 20 }}>
-          {locations.map((item, index) => (
+          {savedLocations.map((item, index) => (
             <Pressable style={styles.location_item} key={index}>
               <View style={styles["location_item-left"]}>
                 <View style={styles["location_item-circle"]}>
@@ -63,13 +66,15 @@ const LocationPerson = () => {
                 </View>
               </View>
               <View style={styles["location_item-right"]}>
-                <Text style={styles["location_item-title"]}>{item.name}</Text>
+                <Text style={styles["location_item-title"]}>
+                  {item.description}
+                </Text>
                 <Text
                   style={styles["location_item-des"]}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {item.distance} • {item.destination}
+                  {item.address}
                 </Text>
               </View>
               <Pressable

@@ -49,12 +49,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(228, 228, 228, 0.37)",
     borderRadius: 5,
   },
-  "awperson_banner-provalue": {
-    width: "80%",
-    height: "100%",
-    backgroundColor: "white",
-    borderRadius: 5,
-  },
   "awperson_banner-right": {
     display: "flex",
     width: 18,

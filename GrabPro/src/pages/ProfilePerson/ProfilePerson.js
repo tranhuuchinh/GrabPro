@@ -13,6 +13,8 @@ import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import Google from "../../../assets/icons/Profile/gg_icon.png";
 import Background from "../../../assets/imgs/Profile/bgProfile.png";
 import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import { axiosClient } from "../../api/axios";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -25,11 +27,13 @@ const emailValid = (email) => {
 };
 
 const ProfilePerson = () => {
+  const route = useRoute();
+  const props = route.params;
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
-  const [name, setName] = useState("Trần Anh Khôi");
-  const [phone, setPhone] = useState("0898919260");
-  const [email, setEmail] = useState("anhkoi@gmail.com");
+  const [name, setName] = useState(props.fullname);
+  const [phone, setPhone] = useState(props.phone);
+  const [email, setEmail] = useState(props.email);
   const NameInput = useRef();
   const PhoneInput = useRef();
   const EmailInput = useRef();
@@ -68,9 +72,20 @@ const ProfilePerson = () => {
       setIsEmail(true);
     }
 
-    if (isName && isPhone && isEmail) {
-      setIsEditable(false);
-    }
+    const object = {
+      fullname: name,
+      phone: phone,
+      email: email,
+    };
+
+    axiosClient
+      .patch("/customer/profile/64cd144708afa47f3bda6ae6", object, {}, [])
+      .then((res) => {
+        console.log(res);
+        if (res.status === "success") {
+          setIsEditable(false);
+        }
+      });
   };
 
   //SWITCH
@@ -99,8 +114,10 @@ const ProfilePerson = () => {
                 <FontAwesomeIcon icon={faCrown} size={12} color="white" />
               </View>
               <View style={styles["profile_avt-infor"]}>
-                <Text style={styles["profile_avt-name"]}>Trần Anh Khôi</Text>
-                <Text style={styles["profile_avt-intro"]}>136 điểm | Vàng</Text>
+                <Text style={styles["profile_avt-name"]}>{name}</Text>
+                <Text style={styles["profile_avt-intro"]}>
+                  {props.bonusPoint} điểm | {props.mainAward}
+                </Text>
               </View>
             </View>
           </View>

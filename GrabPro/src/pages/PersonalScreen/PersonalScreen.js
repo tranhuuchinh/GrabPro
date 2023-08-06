@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import styles from "./PersonalScreen.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -9,10 +9,35 @@ import {
   faChevronRight,
   faCircleUser,
 } from "@fortawesome/free-solid-svg-icons";
+import useAxios from "../../hooks/useAxios";
 
 const PersonalScreen = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+  const [award, setAward] = useState("");
+  const [name, setName] = useState("");
+  const [bonus, setBonus] = useState("");
+  const [favorites, setFavorites] = useState([]);
+  const [profile, setProfile] = useState();
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    "/customer/profile/64cd144708afa47f3bda6ae6",
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      setProfile(response.data);
+      setAward(response.data.mainAward);
+      setName(response.data.fullname);
+      setBonus(response.data.bonusPoint);
+      setFavorites(response.data.favoriteLocations);
+    }
+  }, [isLoading]);
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -26,7 +51,7 @@ const PersonalScreen = () => {
             color="#4FAE5A"
           />
           <View style={styles.person_right}>
-            <Text style={[styles.person_name]}>Trần Anh Khôi</Text>
+            <Text style={[styles.person_name]}>{name}</Text>
 
             <Pressable
               style={[
@@ -34,7 +59,7 @@ const PersonalScreen = () => {
                 { fontFamily: "Poppins_400Regular" },
               ]}
               onPress={() => {
-                navigation.navigate("/profile");
+                navigation.navigate("/profile", profile);
               }}
             >
               <Text>Chỉnh sửa tài khoản</Text>
@@ -62,12 +87,18 @@ const PersonalScreen = () => {
           </Text>
           <View style={{ marginTop: 10 }}>
             <OptionItem
-              title="Vàng"
-              text="127 Điểm"
+              title={award}
+              mark={bonus.toString() + " điểm"}
               type={1}
               path="/awardperson"
+              props={{ award: award, point: bonus }}
             />
-            <OptionItem title="Yêu thích" type={2} path="/favorite" />
+            <OptionItem
+              title="Yêu thích"
+              type={2}
+              path="/favorite"
+              props={{ favorites }}
+            />
             <OptionItem
               title="Địa điểm đã lưu"
               type={2}

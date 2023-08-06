@@ -20,12 +20,15 @@ import useAxios from "../../hooks/useAxios";
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
+  const [award, setAward] = useState("");
+  const [bonus, setBonus] = useState("");
+  const [favorites, setFavorites] = useState([]);
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
 
   const [responseProduct, errorProduct, isLoadingProduct] = useAxios(
     "get",
-    "/payments",
+    "/customer/profile/64cd144708afa47f3bda6ae6",
     {},
     {},
     []
@@ -33,7 +36,9 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (responseProduct && responseProduct.data !== undefined) {
-      console.log(responseProduct.data);
+      setAward(responseProduct.data.mainAward);
+      setBonus(responseProduct.data.bonusPoint);
+      setFavorites(responseProduct.data.favoriteLocations);
     }
   }, [isLoadingProduct]);
 
@@ -43,7 +48,10 @@ const HomeScreen = () => {
   };
 
   const handleFavorite = () => {
-    navigation.navigate("Tài khoản", { screen: "/favorite" });
+    navigation.navigate("Tài khoản", {
+      screen: "/favorite",
+      params: { favorites },
+    });
   };
 
   const handlePressOto = () => {
@@ -55,7 +63,7 @@ const HomeScreen = () => {
   };
 
   if (!fontsLoaded) {
-    return null;
+    return null;  
   } else {
     return (
       <KeyboardAvoidingView style={styles.homeContainer}>
@@ -93,7 +101,6 @@ const HomeScreen = () => {
                 justifyContent: "flex-start",
                 width: 50,
                 height: 50,
-                // alignSelf: "center",
               }}
               source={Car}
             />
@@ -109,7 +116,6 @@ const HomeScreen = () => {
                 justifyContent: "flex-start",
                 width: 50,
                 height: 50,
-                // alignSelf: "center",
               }}
               source={Bike}
             />
@@ -136,7 +142,7 @@ const HomeScreen = () => {
                 paddingLeft: 10,
               }}
             >
-              Vip
+              {award}
             </Text>
           </View>
           <View style={styles.homeWrapCardScore}>
@@ -157,7 +163,7 @@ const HomeScreen = () => {
                   paddingLeft: 10,
                 }}
               >
-                758
+                {bonus}
               </Text>
             </View>
             <View>
