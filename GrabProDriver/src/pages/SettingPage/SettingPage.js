@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Switch } from "react-native";
 import React, { useState } from "react";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
 import Heading from "../../components/Heading/Heading";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -9,7 +8,6 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 const SettingPage = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
   const [isEnabled, setIsEnabled] = useState(false);
 
   const toggleSwitch = () => {
@@ -21,15 +19,12 @@ const SettingPage = () => {
   const toggleSwitchs = () => {
     setIsEnableds((previousState) => !previousState);
   };
-
-  // <FontAwesomeIcon icon={faXmark} size={30} color="#000" />
-
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={{ flex: 1 }}>
-        <Heading title={"Tất cả cài đặt"} returnPath={"/"} />
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <Heading title={"Tất cả cài đặt"} />
         <View
           style={{
             flexDirection: "column",

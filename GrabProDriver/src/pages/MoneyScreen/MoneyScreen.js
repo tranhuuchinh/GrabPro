@@ -4,24 +4,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import styles from "./MoneyScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
 
 const MoneyScreen = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={styles.money__container}>
-        <Heading title="Thu nhập" returnPath="/" />
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <Heading title="Thu nhập" />
         <View style={styles.money__body}>
           <Pressable
             style={styles.money__item}
             onPress={() => {
-              navigation("/order");
+              navigation.navigate("/order");
             }}
           >
             <Text style={styles.money__item_txt1}>Cuốc xe đã hoàn tất</Text>

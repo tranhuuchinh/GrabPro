@@ -1,23 +1,22 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { Text, View, Image, Pressable } from "react-native";
 import React from "react";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Heading from "../../components/Heading/Heading";
-import Redo from "../../assets/imgs/Home/redoalt.png";
 import GroupGrab from "../../assets/imgs/Home/groupgrab.png";
 
 const WalletPage = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={{ flex: 1 }}>
-        <Heading title={"Ví"} returnPath={"/"} />
-        <View
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <Heading title={"Ví"} />
+        <Pressable
           style={{
             flexDirection: "row",
             margin: 15,
@@ -26,6 +25,9 @@ const WalletPage = () => {
             borderBottomWidth: 1,
             borderBottomColor: "#CCCCCC",
             paddingBottom: 15,
+          }}
+          onPress={() => {
+            navigation.navigate("/credit");
           }}
         >
           <View
@@ -74,12 +76,10 @@ const WalletPage = () => {
           >
             <FontAwesomeIcon icon={faChevronRight} size={20} color="#000" />
           </View>
-        </View>
+        </Pressable>
       </View>
     );
   }
 };
 
 export default WalletPage;
-
-const styles = StyleSheet.create({});

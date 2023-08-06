@@ -5,6 +5,7 @@ import Moto from "../../../assets/icons/Activity/ic_moto.png";
 import styles from "./OrderDetail.style";
 import { useCustomFonts } from "../../styles/fonts";
 import Heading from "../../components/Heading/Heading";
+import { useNavigation } from "@react-navigation/native";
 
 const activitiesOto = [
   {
@@ -41,14 +42,15 @@ const activitiesMoto = [
 
 const OrderDetail = () => {
   const fontsLoaded = useCustomFonts();
+  const navigation = useNavigation();
   const [type, setType] = useState(0);
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={styles.order__container}>
-        <Heading title="Cuốc xe hoàn tất" returnPath="/money" />
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <Heading title="Cuốc xe hoàn tất" />
 
         {type == 0 ? (
           <ScrollView style={styles.order_body}>
@@ -56,7 +58,9 @@ const OrderDetail = () => {
               <Pressable
                 style={styles.order_item}
                 key={index}
-                onPress={() => handlePress()}
+                onPress={() => {
+                  navigation.navigate("/order-detail");
+                }}
               >
                 <View>
                   <Image
@@ -97,7 +101,9 @@ const OrderDetail = () => {
               <Pressable
                 style={styles.order_item}
                 key={index}
-                onPress={() => handlePress()}
+                onPress={() => {
+                  navigation.navigate("/order-detail");
+                }}
               >
                 <View>
                   <Image

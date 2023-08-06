@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
 import Background from "../../../assets/imgs/Profile/bgProfile.png";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -25,7 +25,7 @@ const emailValid = (email) => {
 
 const ProfileScreen = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
   const [name, setName] = useState("Trần Anh Khôi");
   const [phone, setPhone] = useState("0898919260");
   const [email, setEmail] = useState("anhkoi@gmail.com");
@@ -112,7 +112,7 @@ const ProfileScreen = () => {
           <Pressable
             style={{ position: "absolute", top: 40, left: 20 }}
             onPress={() => {
-              navigation("/avartar");
+              navigation.goBack();
             }}
           >
             <FontAwesomeIcon icon={faChevronLeft} size={20} color="white" />

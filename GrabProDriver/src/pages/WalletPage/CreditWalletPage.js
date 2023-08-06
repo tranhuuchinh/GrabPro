@@ -1,22 +1,21 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { Text, View, Image, Pressable } from "react-native";
 import React from "react";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Heading from "../../components/Heading/Heading";
-import Redo from "../../assets/imgs/Home/redoalt.png";
 import Credit from "../../assets/imgs/Home/credit.png";
 
 const CreditWalletPage = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={{ flex: 1 }}>
-        <Heading title={"Ví tín dụng"} returnPath={"/"} />
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <Heading title={"Ví tín dụng"} />
         <View
           style={{
             width: "100%",
@@ -48,7 +47,10 @@ const CreditWalletPage = () => {
         >
           VND 0
         </Text>
-        <View
+        <Pressable
+          onPress={() => {
+            navigation.navigate("/addmoney");
+          }}
           style={{
             flexDirection: "row",
             padding: 15,
@@ -91,7 +93,7 @@ const CreditWalletPage = () => {
           >
             <FontAwesomeIcon icon={faChevronRight} size={20} color="#000" />
           </View>
-        </View>
+        </Pressable>
 
         <View
           style={{
@@ -142,5 +144,3 @@ const CreditWalletPage = () => {
 };
 
 export default CreditWalletPage;
-
-const styles = StyleSheet.create({});

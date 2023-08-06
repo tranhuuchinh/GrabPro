@@ -2,19 +2,23 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import styles from "./Heading.style";
 import { Image } from "react-native";
 import { useCustomFonts } from "../../styles/fonts";
 
 const Heading = ({ title, returnPath, content, img, type }) => {
-  const navigation = useNavigate();
+  const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
 
   if (!fontsLoaded) return null;
 
   const handlePress = () => {
-    navigation(returnPath);
+    if (returnPath) {
+      navigation.navigate(returnPath);
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -46,7 +50,7 @@ const Heading = ({ title, returnPath, content, img, type }) => {
                   fontFamily: "Poppins_400Regular",
                   fontSize: 14,
                   paddingLeft: 10,
-                  fontSize: 12
+                  fontSize: 12,
                 }}
               >
                 {content}

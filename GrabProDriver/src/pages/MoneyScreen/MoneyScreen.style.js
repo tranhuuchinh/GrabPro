@@ -3,11 +3,13 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   money__container: {
     flex: 1,
+    backgroundColor: "white ",
   },
   money__body: {
     flex: 1,
     paddingHorizontal: 10,
     marginTop: 10,
+    backgroundColor: "white ",
   },
   money__item: {
     position: "relative",

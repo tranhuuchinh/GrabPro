@@ -4,12 +4,12 @@ import Logo from "../../../assets/imgs/Splash/logo_sp.png";
 import Background from "../../../assets/imgs/Splash/banner_sp.png";
 import styles from "./SplashScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import Svg, { Path } from "react-native-svg";
 
 const SplashScreen = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     return null;
@@ -41,13 +41,18 @@ const SplashScreen = () => {
               />
             </Svg>
             <View style={styles["splash__container-buttons"]}>
-              <Pressable style={styles["splash__container-btn1"]}>
+              <Pressable
+                style={styles["splash__container-btn1"]}
+                onPress={() => {
+                  navigation.navigate("/login");
+                }}
+              >
                 <Text style={styles["splash__container-txt1"]}>Đăng nhập</Text>
               </Pressable>
               <Pressable
                 style={styles["splash__container-btn2"]}
                 onPress={() => {
-                  navigation("/register");
+                  navigation.navigate("/register");
                 }}
               >
                 <Text style={styles["splash__container-txt2"]}>

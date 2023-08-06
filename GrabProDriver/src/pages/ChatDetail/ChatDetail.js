@@ -3,12 +3,19 @@ import React from "react";
 import Heading from "../../components/Heading/Heading";
 import avatar from "../../../assets/imgs/Favorite/halinh.png";
 import { useCustomFonts } from "../../styles/fonts";
-import styles from "./ChatDetail.style";
 import ChatItem from "./ChatItem/ChatItem";
+import { Image } from "react-native";
+import ic_location from "../../../assets/imgs/Chat/Location.png";
+import ic_camera from "../../../assets/imgs/Chat/Camera.png";
+import ic_micro from "../../../assets/imgs/Chat/Micro.png";
+import styles from "./ChatDetail.style";
+import { TextInput } from "react-native";
 
 const ChatDetail = () => {
   const fontsLoaded = useCustomFonts();
   if (!fontsLoaded) return null;
+
+  const isSystemMsg = false;
 
   return (
     <View style={styles.chatDetail}>
@@ -17,7 +24,6 @@ const ChatDetail = () => {
         img={avatar}
         content="5912-434.76 ~ Honda Vision"
         type="CHAT"
-        returnPath="/avartar"
       />
 
       <SafeAreaView style={{ height: Dimensions.get("window").height - 148 }}>
@@ -44,18 +50,53 @@ const ChatDetail = () => {
         </ScrollView>
       </SafeAreaView>
 
-      <View style={styles.chatDetail__inform}>
-        <Text style={styles.chatDetail__inform_txt}>
-          Cuộc trò chuyện đã kết thúc.
-        </Text>
-        <Text style={styles.chatDetail__inform_txt}>
-          Vui lòng vào{" "}
-          <Text style={{ fontWeight: 600, color: "#2E4F91" }}>
-            Trung tâm hỗ trợ
-          </Text>{" "}
-          nếu bạn cần trợ giúp thêm
-        </Text>
-      </View>
+      {isSystemMsg ? (
+        <View style={styles.chatDetail__inform}>
+          <Text style={styles.chatDetail__inform_txt}>
+            Cuộc trò chuyện đã kết thúc.
+          </Text>
+          <Text style={styles.chatDetail__inform_txt}>
+            Vui lòng vào{" "}
+            <Text style={{ fontWeight: 600, color: "#2E4F91" }}>
+              Trung tâm hỗ trợ
+            </Text>{" "}
+            nếu bạn cần trợ giúp thêm
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.chatDetail__chat}>
+          <Image source={ic_location} style={{ width: 26, height: 26 }} />
+          <Image
+            source={ic_camera}
+            style={{ width: 26, height: 26, marginHorizontal: 10 }}
+          />
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#f2f2f2",
+              borderRadius: 50,
+              marginRight: 10,
+            }}
+          >
+            <TextInput
+              style={{
+                color: "gray",
+                fontSize: 14,
+                alignItems: "center",
+                alignContent: "center",
+                paddingTop: 10,
+                paddingBottom: 6,
+                paddingHorizontal: 10,
+                width: "100%",
+                fontFamily: "Poppins_500Medium",
+              }}
+              placeholder="Nhập để chat"
+              placeholderTextColor="#BFBFBF"
+            />
+          </View>
+          <Image source={ic_micro} style={{ width: 30, height: 30 }} />
+        </View>
+      )}
     </View>
   );
 };

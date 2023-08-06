@@ -1,18 +1,12 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
 import React, { useState } from "react";
 import ImageMap from "../../assets/imgs/Home/image3.png";
 import styles from "./HomePage.style";
-import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
+import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faLocationDot,
-  faCar,
+  faUser,
   faDollarSign,
   faBolt,
   faEllipsis,
@@ -21,13 +15,13 @@ import {
   faChartColumn,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
 import { useCustomFonts } from "../../styles/fonts";
 
 const HomePage = () => {
   const fontsLoaded = useCustomFonts();
   const [isConnected, setIsConnected] = useState(false);
   const [isIncome, setIsIncome] = useState(false);
+  const navigation = useNavigation();
 
   const handleToggleConnect = () => {
     setIsConnected((prev) => !prev);
@@ -104,7 +98,10 @@ const HomePage = () => {
                     <FontAwesomeIcon icon={faXmark} size={30} color="#000" />
                   </View>
                   {/* Card1 */}
-                  <View
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("/payment");
+                    }}
                     style={{
                       width: 180,
                       height: 90,
@@ -167,72 +164,7 @@ const HomePage = () => {
                         />
                       </View>
                     </View>
-                  </View>
-                  {/* Card 2 */}
-                  <View
-                    style={{
-                      width: 180,
-                      height: 90,
-                      position: "absolute",
-                      top: 170,
-                      left: -25,
-                      backgroundColor: "white",
-                      borderRadius: 20,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      zIndex: 1000,
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <View
-                        style={{
-                          marginRight: 10,
-                          justifyContent: "flex-start",
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 16,
-                            marginLeft: 20,
-                            textAlign: "center",
-                            fontFamily: "Poppins_400Regular",
-                          }}
-                        >
-                          Ví tính dụng
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 24,
-                            marginLeft: 20,
-                            textAlign: "center",
-                            fontFamily: "Poppins_700Bold",
-                          }}
-                        >
-                          100.000
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          marginLeft: 10,
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faChevronRight}
-                          size={30}
-                          color="#000"
-                        />
-                      </View>
-                    </View>
-                  </View>
+                  </Pressable>
                 </View>
               )}
             </TouchableOpacity>
@@ -345,9 +277,14 @@ const HomePage = () => {
                   alignItems: "center",
                 }}
               >
-                <View style={styles.homePageOption}>
-                  <FontAwesomeIcon icon={faCar} size={30} color="#fff" />
-                </View>
+                <Pressable
+                  style={styles.homePageOption}
+                  onPress={() => {
+                    navigation.navigate("/account");
+                  }}
+                >
+                  <FontAwesomeIcon icon={faUser} size={30} color="#fff" />
+                </Pressable>
                 <Text
                   style={{
                     width: 70,
@@ -356,7 +293,7 @@ const HomePage = () => {
                     textAlign: "center",
                   }}
                 >
-                  Loại dịch vụ
+                  Tài khoản
                 </Text>
               </View>
               <View
@@ -366,13 +303,18 @@ const HomePage = () => {
                   alignItems: "center",
                 }}
               >
-                <View style={styles.homePageOption}>
+                <Pressable
+                  style={styles.homePageOption}
+                  onPress={() => {
+                    navigation.navigate("/favorite");
+                  }}
+                >
                   <FontAwesomeIcon
                     icon={faLocationDot}
                     size={30}
                     color="#fff"
                   />
-                </View>
+                </Pressable>
                 <Text
                   style={{
                     width: 70,
@@ -381,7 +323,7 @@ const HomePage = () => {
                     textAlign: "center",
                   }}
                 >
-                  Điểm đến yêu thích
+                  Yêu thích
                 </Text>
               </View>
               <View
@@ -391,14 +333,19 @@ const HomePage = () => {
                   alignItems: "center",
                 }}
               >
-                <View style={styles.homePageOption}>
+                <Pressable
+                  style={styles.homePageOption}
+                  onPress={() => {
+                    navigation.navigate("/payment");
+                  }}
+                >
                   <FontAwesomeIcon
                     style={{ width: 70, fontSize: 12 }}
                     icon={faDollarSign}
                     size={30}
                     color="#fff"
                   />
-                </View>
+                </Pressable>
                 <Text
                   style={{
                     width: 70,
@@ -407,7 +354,7 @@ const HomePage = () => {
                     textAlign: "center",
                   }}
                 >
-                  Tiền vốn hoạt động
+                  Thu nhập
                 </Text>
               </View>
               <View
@@ -417,9 +364,14 @@ const HomePage = () => {
                   alignItems: "center",
                 }}
               >
-                <View style={styles.homePageOption}>
+                <Pressable
+                  style={styles.homePageOption}
+                  onPress={() => {
+                    navigation.navigate("/setting");
+                  }}
+                >
                   <FontAwesomeIcon icon={faBolt} size={30} color="#fff" />
-                </View>
+                </Pressable>
 
                 <Text
                   style={{

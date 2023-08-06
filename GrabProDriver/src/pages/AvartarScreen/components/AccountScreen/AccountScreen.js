@@ -13,23 +13,28 @@ import {
 import Avatar from "../../../../../assets/imgs/Profile/ic_avartar.png";
 import styles from "./AccountScreen.style";
 import { useCustomFonts } from "../../../../styles/fonts";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import Heading from "../../../../components/Heading/Heading";
 
 const AccountScreen = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={styles.account__container}>
-        <Heading title="Tài khoản" returnPath="/" />
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+        }}
+      >
+        <Heading title="Tài khoản" />
         <Pressable
           style={styles.account__infor}
           onPress={() => {
-            navigation("/profile");
+            navigation.navigate("/profile");
           }}
         >
           <Image source={Avatar} style={{ width: 44, height: 44 }} />

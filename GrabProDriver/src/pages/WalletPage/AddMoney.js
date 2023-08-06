@@ -8,18 +8,13 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { useCustomFonts } from "../../styles/fonts";
-import { useNavigate } from "react-router-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
-import Redo from "../../assets/imgs/Home/redoalt.png";
-import Credit from "../../assets/imgs/Home/credit.png";
-import GroupGrab from "../../assets/imgs/Home/groupgrab.png";
 import Money from "../../assets/imgs/Home/money.png";
 
 const AddMoney = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (text) => {
@@ -35,7 +30,7 @@ const AddMoney = () => {
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <Heading title={"Nạp tiền"} returnPath={"/"} />
+        <Heading title={"Nạp tiền"} />
         <View
           style={{
             width: "100%",

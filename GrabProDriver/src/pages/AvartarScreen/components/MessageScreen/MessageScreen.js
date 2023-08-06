@@ -3,7 +3,7 @@ import { Image, Text, View, Pressable, ScrollView } from "react-native";
 import avatar from "../../../../../assets/imgs/Favorite/halinh.png";
 import styles from "./MessageScreen.style";
 import { useCustomFonts } from "../../../../styles/fonts";
-import { useNavigate } from "react-router-native";
+import { useNavigation } from "@react-navigation/native";
 import Heading from "../../../../components/Heading/Heading";
 
 const data = [
@@ -23,17 +23,28 @@ const data = [
 
 const MessageScreen = () => {
   const fontsLoaded = useCustomFonts();
-  const navigation = useNavigate();
+  const navigation = useNavigation();
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <View style={styles.message__container}>
-        <Heading title="Tin nhắn" returnPath="/" />
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+        }}
+      >
+        <Heading title="Tin nhắn" />
         <ScrollView style={{ marginTop: 10 }}>
           {data.map((item, idx) => (
-            <Pressable style={styles.message_item} key={idx}>
+            <Pressable
+              style={styles.message_item}
+              key={idx}
+              onPress={() => {
+                navigation.navigate("/chat");
+              }}
+            >
               <Image style={styles.message_item__img} source={item.img} />
               <View style={styles.message_item__body}>
                 <Text
