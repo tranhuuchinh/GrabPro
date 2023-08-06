@@ -19,10 +19,17 @@ const UpdateScreen = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const [name, setName] = useState("");
   const [email, setPass] = useState("");
+  const [code, setCode] = useState("");
+  const [color, setColor] = useState("");
+  const [nameCar, setNameCar] = useState("");
   const NameInput = useRef();
   const EmailInput = useRef();
+  const CodeInput = useRef();
+  const CarInput = useRef();
   const [isName, setIsName] = useState(true);
   const [isEmail, setIsEmail] = useState(true);
+  const [isCode, setIsCode] = useState(true);
+  const [isCar, setIsCar] = useState(true);
 
   const submitForm = () => {
     if (name.length <= 4) {
@@ -39,6 +46,20 @@ const UpdateScreen = () => {
     } else {
       setIsEmail(true);
     }
+    if (code.length <= 4) {
+      setIsCode(false);
+      CodeInput.current.focus();
+      return;
+    } else {
+      setIsCode(true);
+    }
+    if (nameCar.length <= 4) {
+      setIsCar(false);
+      CarInput.current.focus();
+      return;
+    } else {
+      setIsCar(true);
+    }
 
     if (isName && isEmail) {
       navigation.navigate("/home");
@@ -52,14 +73,6 @@ const UpdateScreen = () => {
       <View style={styles.register__container}>
         <Heading title="Cập nhật thông tin" />
         <View style={styles.register__body}>
-          <View style={{ marginBottom: 25 }}>
-            <Text style={styles["register_title"]}>Khu vực</Text>
-            <TextInput
-              style={styles.register_input}
-              value={"TP. Hồ Chí Minh"}
-              editable={false}
-            />
-          </View>
           <View style={{ marginBottom: 25 }}>
             <Text style={styles["register_title"]}>Loại dịch vụ</Text>
             <SelectList
@@ -84,7 +97,6 @@ const UpdateScreen = () => {
             />
             {!isName && <Text style={styles.register_alarm}>Tên quá ngắn</Text>}
           </View>
-
           <View style={{ marginBottom: 25 }}>
             <Text style={styles["register_title"]}>Gmail</Text>
             <TextInput
@@ -97,6 +109,41 @@ const UpdateScreen = () => {
             {!isEmail && (
               <Text style={styles.register_alarm}>Email không hợp lệ</Text>
             )}
+          </View>
+          <View style={{ marginBottom: 25 }}>
+            <Text style={styles["register_title"]}>Biển số xe</Text>
+            <TextInput
+              placeholder="Nhập biển số xe"
+              style={styles.register_input}
+              value={code}
+              onChangeText={setCode}
+              ref={CodeInput}
+            />
+            {!isCode && (
+              <Text style={styles.register_alarm}>Biển số không hợp lệ</Text>
+            )}
+          </View>
+          <View style={{ marginBottom: 25 }}>
+            <Text style={styles["register_title"]}>Tên xe</Text>
+            <TextInput
+              placeholder="Nhập tên xe"
+              style={styles.register_input}
+              value={nameCar}
+              onChangeText={setNameCar}
+              ref={CarInput}
+            />
+            {!isCar && (
+              <Text style={styles.register_alarm}>Tên xe quá ngắn</Text>
+            )}
+          </View>
+          <View style={{ marginBottom: 25 }}>
+            <Text style={styles["register_title"]}>Màu xe</Text>
+            <TextInput
+              placeholder="Nhập màu xe"
+              style={styles.register_input}
+              value={color}
+              onChangeText={setColor}
+            />
           </View>
           <View style={styles.register__btn_ctn}>
             <Pressable onPress={submitForm} style={styles.register__btn}>
