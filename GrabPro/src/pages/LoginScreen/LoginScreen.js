@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./LoginScreen.style";
 import { useNavigation } from "@react-navigation/native";
@@ -7,11 +7,24 @@ import LogoGrab from "../../../assets/imgs/Splash/grabLogo.png";
 import GoogleLogin from "../../../assets/icons/LoginBy/ic_google.png";
 import PhoneLogin from "../../../assets/icons/LoginBy/ic_phone.png";
 import { useCustomFonts } from "../../styles/fonts";
+import useAxios from "../../hooks/useAxios";
 const LoginScreen = () => {
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
+
+  const [responseReg, errorReg, isLoadingReg] = useAxios(
+    "post",
+    "/auth/register?role=customer",
+    { phone: "0987545644356565636", password: "123", role: "customer" },
+    {},
+    []
+  );
+
+  useEffect(() => {
+    console.log(errorReg);
+  }, [responseReg, errorReg]);
   const handleButtonPress = () => {
-    navigation.navigate("/lgphone");
+    // navigation.navigate("/lgphone");
   };
   if (!fontsLoaded) {
     return null;

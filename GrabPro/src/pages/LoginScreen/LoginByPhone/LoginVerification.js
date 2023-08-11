@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Keyboard,
 } from "react-native";
 import styles from "./LoginByPhone.style";
+import { Alert } from "react-native";
+import { useRoute } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Flag from "../../../../assets/imgs/Home/flag.png";
@@ -18,36 +20,79 @@ import { useCustomFonts } from "../../../styles/fonts";
 import Modal from "react-native-modal";
 import OTPInput from "./inputOTP";
 import colors from "../../../styles/colors";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { firebaseConfig } from "../../../../config";
+import firebase from "firebase/compat/app";
+import { log } from "react-native-reanimated";
+import useAxios from "../../../hooks/useAxios";
 
 const LoginVerification = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const isButtonDisabled = phoneNumber.trim() === "";
+  const [code, setCode] = useState("");
+  const isButtonDisabled = code.trim() === "";
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
   const [otpValue, setOTPValue] = useState(["", "", "", "", "", ""]);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
+
+  const route = useRoute();
+  const { verificationId, phoneNumber } = route.params;
+  const [object, setObject] = useState({});
+
+  useEffect(() => {
+    // Cập nhật giá trị của object bằng hàm setObject
+    setObject({
+      phone: phoneNumber,
+      password: otpValue,
+      role: "customer",
+    });
+  }, []);
+
+  const confirmCode = () => {
+    const credential = firebase.auth.PhoneAuthProvider.credential(
+      verificationId,
+      code
+    );
+    firebase
+      .auth()
+      .signInWithCredential(credential)
+      .then((userCredential) => {
+        const [responseReg, errorReg, isLoadingReg] = useAxios(
+          "post",
+          "/auth/register?role=customer",
+          { phone: "09875456436", password: "123", role: "customer" },
+          {},
+          []
+        );
+        setCode("");
+        Alert.alert("Xác minh thành công!");
+        console.log("gửi otp ok");
+      })
+      .catch((error) => {
+        Alert.alert("Lỗi xác minh: " + error.message);
+      });
+    setSuccessModalVisible(false);
+  };
 
   const handleButtonPress = () => {
     setIsModalVisible(true);
   };
 
-  const handleOTPChange = (newValue) => {
+  const handlePinChange = (newValue) => {
     setOTPValue(newValue);
-    // console.log(newValue);
+    console.log(newValue);
   };
 
-  const handleSendCode = () => {
-    const joinedOTP = otpValue.join("");
-    setSuccessModalVisible(true);
-    setTimeout(() => {
-      setSuccessModalVisible(false);
-    }, 2000);
-    // onModalClose();
-    // console.log("OTP:", joinedOTP);
-    navigation.navigate("Tab"); //Vào Home
-  };
+  // const handleSendCode = () => {
+  //   const joinedOTP = otpValue.join("");
+  //   setSuccessModalVisible(true);
+  //   setTimeout(() => {
+  //     setSuccessModalVisible(false);
+  //   }, 2000);
+  //   // onModalClose();
+  //   // console.log("OTP:", joinedOTP);
+  //   navigation.navigate("Tab"); //Vào Home
+  // };
 
   const renderModalContent = () => (
     <View
@@ -77,7 +122,7 @@ const LoginVerification = () => {
           length={6}
           disabled={false}
           value={otpValue}
-          onChange={handleOTPChange}
+          onChange={handlePinChange}
         />
       </View>
       <Text
@@ -92,7 +137,7 @@ const LoginVerification = () => {
         Quên mã pin
       </Text>
       <TouchableOpacity
-        onPress={handleSendCode}
+        onPress={confirmCode}
         style={{
           backgroundColor: colors.primary__800,
           padding: 10,
@@ -102,7 +147,7 @@ const LoginVerification = () => {
           fontFamily: "Poppins_500Medium",
         }}
       >
-        <Text style={{ color: "white", fontSize: 16 }}>Gửi</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>Đăng ký</Text>
       </TouchableOpacity>
 
       <Modal isVisible={isSuccessModalVisible}>
@@ -185,8 +230,8 @@ const LoginVerification = () => {
                 placeholder="000000"
                 placeholderTextColor="#BFBFBF"
                 keyboardType="numeric"
-                value={phoneNumber}
-                onChangeText={setPhoneNumber}
+                value={code}
+                onChangeText={setCode}
                 maxLength={6}
               />
             </View>
@@ -248,7 +293,7 @@ const LoginVerification = () => {
                 opacity: isButtonDisabled ? 0.5 : 1,
               }}
               onPress={handleButtonPress}
-              disabled={phoneNumber.trim() === ""}
+              disabled={code.trim() === ""}
             >
               <Text
                 style={{

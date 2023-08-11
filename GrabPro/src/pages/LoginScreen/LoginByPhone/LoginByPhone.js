@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -6,28 +6,53 @@ import {
   TouchableOpacity,
   TextInput,
   Keyboard,
+  Alert,
 } from "react-native";
 import styles from "./LoginByPhone.style";
 import Flag from "../../../../assets/imgs/Home/flag.png";
 import Heading from "../../../components/Heading/Heading";
 import { useNavigation } from "@react-navigation/native";
 import { useCustomFonts } from "../../../styles/fonts";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { firebaseConfig } from "../../../../config";
+import firebase from "firebase/compat/app";
 
 const LoginByPhone = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [verificationId, setVerificationId] = useState(null);
+  const recaptchaVerifier = useRef(null);
+
   const isButtonDisabled = phoneNumber.trim() === "";
   const fontsLoaded = useCustomFonts();
-
   const navigation = useNavigation();
+
+  const convertPhoneNumber = (phoneNumber) => {
+    // Bỏ đi số 0 ở đầu
+    const phoneNumberWithoutLeadingZero = phoneNumber.replace(/^0+/, "");
+    // Thêm dấu '+' và mã quốc gia
+    const formattedPhoneNumber = `+84${phoneNumberWithoutLeadingZero}`;
+
+    return formattedPhoneNumber;
+  };
+
+  const sendVerification = async () => {
+    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    try {
+      const verificationId = await phoneProvider.verifyPhoneNumber(
+        convertPhoneNumber(phoneNumber),
+        recaptchaVerifier.current
+      );
+      setVerificationId(verificationId);
+      setPhoneNumber("");
+      navigation.navigate("/verify", { verificationId, phoneNumber });
+    } catch (error) {
+      // Xử lý lỗi khi không nhận được verificationId
+      console.error(error);
+    }
+  };
 
   const handlePressOutside = () => {
     Keyboard.dismiss();
-  };
-
-  const handleButtonPress = () => {
-    if (phoneNumber.trim() !== "") {
-      navigation.navigate("/verify");
-    }
   };
 
   if (!fontsLoaded) {
@@ -36,7 +61,10 @@ const LoginByPhone = () => {
     return (
       <View style={styles.loginByPhoneContainer}>
         <Heading title="Bắt đầu" returnPath="/login" />
-
+        <FirebaseRecaptchaVerifierModal
+          ref={recaptchaVerifier}
+          firebaseConfig={firebaseConfig}
+        />
         <TouchableOpacity
           style={{ flex: 1 }}
           onPress={handlePressOutside}
@@ -101,7 +129,7 @@ const LoginByPhone = () => {
                 }}
                 placeholder="Nhập số điện thoại"
                 placeholderTextColor="#BFBFBF"
-                keyboardType="numeric"
+                keyboardType="phone-pad"
                 value={phoneNumber}
                 onChangeText={setPhoneNumber}
               />
@@ -129,7 +157,7 @@ const LoginByPhone = () => {
                 borderRadius: 10,
                 opacity: isButtonDisabled ? 0.5 : 1,
               }}
-              onPress={handleButtonPress}
+              onPress={sendVerification}
               disabled={phoneNumber.trim() === ""}
             >
               <Text
