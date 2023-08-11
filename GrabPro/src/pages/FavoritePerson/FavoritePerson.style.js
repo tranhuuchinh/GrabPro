@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: "Poppins_400Regular",
     marginTop: 3,
+    paddingRight: 25,
   },
   "favorite_item-circle":{
     display: "flex",

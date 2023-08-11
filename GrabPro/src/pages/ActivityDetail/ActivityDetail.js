@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, Pressable, ScrollView } from "react-native";
 import styles from "./ActivityDetail.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -11,10 +11,80 @@ import { useCustomFonts } from "../../styles/fonts";
 import Heading from "../../components/Heading/Heading";
 import Grab from "../../../assets/icons/ActivityDetail/ic_grab.png";
 import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
+import { useRoute } from "@react-navigation/native";
+import useAxios from "../../hooks/useAxios";
+import { axiosClient } from "../../api/axios";
+
+const truncateString = (inputString, maxLength) => {
+  if (inputString.length > maxLength) {
+    return inputString.substring(0, maxLength) + "...";
+  }
+  return inputString;
+};
+
+const formatDate = (inputDate) => {
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  const date = new Date(inputDate);
+  return date.toLocaleDateString("en-US", options);
+};
+
+const formatNumberWithDots = (inputNumber) => {
+  if (isNaN(inputNumber)) {
+    return inputNumber;
+  }
+
+  const formattedNumber = Number(inputNumber).toLocaleString("en-US");
+  return formattedNumber;
+};
 
 const ActivityDetail = () => {
   const fontsLoaded = useCustomFonts();
-  const [rating, setRating] = useState(0);
+  const route = useRoute();
+  const props = route.params;
+  const [rating, setRating] = useState(props.feedback);
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [trans, setTrans] = useState("");
+  const [isEditable, setIsEditable] = useState(true);
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    `/driver/${props.idDriver}`,
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      setName(response.data.fullname);
+      setCode(response.data.transport.code);
+      setTrans(response.data.transport.name);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    setRating(props.feedback);
+  }, [props]);
+
+  useEffect(() => {
+    setIsEditable(false);
+    const object = {
+      star: rating,
+    };
+    axiosClient.patch(`/orders/${props._id}`, object, {}, []).then((res) => {
+      if (res.status === "success") {
+        setIsEditable(true);
+      }
+    });
+  }, [rating]);
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -27,21 +97,21 @@ const ActivityDetail = () => {
               Chuyến đi đã hoàn thành
             </Text>
             <Text style={styles.dtactivity_heading_txt2}>
-              12 Jun 2023, 12:30 PM
+              {formatDate(props.updatedAt)}
             </Text>
           </View>
           <View style={styles.dtactivity_heading}>
             <Text style={styles.dtactivity_heading_txt1}>Mã đặt xe</Text>
-            <Text style={styles.dtactivity_heading_txt2}>A-52K7ZW7FGH</Text>
+            <Text style={styles.dtactivity_heading_txt2}>{props.code}</Text>
           </View>
         </View>
         <View style={styles.dtactivity_banner}>
           <View>
             <Text style={styles.dtactivity_banner_title1}>
-              Cảm ơn bạn đã chọn GrabCar
+              Cảm ơn bạn đã chọn {props.type}
             </Text>
             <Text style={styles.dtactivity_banner_title2}>
-              Bạn muốn đi đâu, GrabCar cân tất
+              Bạn muốn đi đâu, {props.type} cân tất
             </Text>
           </View>
           <Image
@@ -63,7 +133,11 @@ const ActivityDetail = () => {
             {[...Array(5)].map((star, index) => {
               index += 1;
               return (
-                <Pressable key={index} onPress={() => setRating(index)}>
+                <Pressable
+                  key={index}
+                  onPress={() => setRating(index)}
+                  disabled={!isEditable}
+                >
                   {index <= rating ? (
                     <FontAwesomeIcon
                       size={32}
@@ -92,9 +166,9 @@ const ActivityDetail = () => {
             ></Image>
           </View>
           <View style={styles["dactivity_item-right"]}>
-            <Text style={styles["dactivity_item-title"]}>Suni Hạ Linh</Text>
+            <Text style={styles["dactivity_item-title"]}>{name}</Text>
             <Text style={styles["dactivity_item-des"]}>
-              5912-434.76 • Honda Vision
+              {code} • {trans}
             </Text>
           </View>
         </View>
@@ -109,7 +183,7 @@ const ActivityDetail = () => {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                Ký túc xá Đại học KHTN - ĐHQG TPHCM
+                {truncateString(props.from.address, 45)}
               </Text>
             </View>
           </View>
@@ -120,14 +194,14 @@ const ActivityDetail = () => {
             </View>
             <View style={styles.dactivity_detail_right}>
               <Text style={styles.dactivity_detail_txt1}>
-                Điểm đến • 2.4 km
+                Điểm đến • {props.distance}
               </Text>
               <Text
                 style={styles.dactivity_detail_txt2}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                Trường ĐH Khoa Học Tự Nhiên
+                {truncateString(props.to.address, 45)}
               </Text>
             </View>
           </View>
@@ -139,28 +213,36 @@ const ActivityDetail = () => {
           <View style={styles.dactivity_payment_item}>
             <Text style={styles.dactivity_payment_txt1}>Cước phí</Text>
             <View style={styles.dactivity_payment_txt2}>
-              <Text style={styles.dactivity_payment_txt1}>16.000</Text>
+              <Text style={styles.dactivity_payment_txt1}>
+                {formatNumberWithDots(props.tax)}
+              </Text>
               <Text style={styles.dactivity_payment_d}>đ</Text>
             </View>
           </View>
           <View style={styles.dactivity_payment_item}>
             <Text style={styles.dactivity_payment_txt1}>Phí nền tảng</Text>
             <View style={styles.dactivity_payment_txt2}>
-              <Text style={styles.dactivity_payment_txt1}>2.000</Text>
+              <Text style={styles.dactivity_payment_txt1}>
+                {formatNumberWithDots(props.baseTax)}
+              </Text>
               <Text style={styles.dactivity_payment_d}>đ</Text>
             </View>
           </View>
           <View style={styles.dactivity_payment_item}>
             <Text style={styles.dactivity_payment_txt1}>Giảm giá</Text>
             <View style={styles.dactivity_payment_txt2}>
-              <Text style={styles.dactivity_payment_txt1}>-3.000</Text>
+              <Text style={styles.dactivity_payment_txt1}>
+                -{formatNumberWithDots(props.sale)}
+              </Text>
               <Text style={styles.dactivity_payment_d}>đ</Text>
             </View>
           </View>
           <View style={styles.dactivity_payment_item}>
             <Text style={styles.dactivity_payment_txt}>Tổng tiền</Text>
             <View style={styles.dactivity_payment_txt2}>
-              <Text style={styles.dactivity_payment_txt}>15.000</Text>
+              <Text style={styles.dactivity_payment_txt}>
+                {formatNumberWithDots(props.totalPrice)}
+              </Text>
               <Text style={styles.dactivity_payment_dt}>đ</Text>
             </View>
           </View>
@@ -170,7 +252,9 @@ const ActivityDetail = () => {
                 Thanh toán bằng tiền mặt
               </Text>
               <View style={styles.dactivity_payment_txt2}>
-                <Text style={styles.dactivity_payment_txt}>125.000</Text>
+                <Text style={styles.dactivity_payment_txt}>
+                  {formatNumberWithDots(props.totalPrice)}
+                </Text>
                 <Text style={styles.dactivity_payment_dt}>đ</Text>
               </View>
             </View>

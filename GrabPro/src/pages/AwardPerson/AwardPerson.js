@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image } from "react-native";
 import styles from "./AwardPerson.style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -6,9 +6,39 @@ import { useCustomFonts } from "../../styles/fonts";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import Heading from "../../components/Heading/Heading";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRoute } from "@react-navigation/native";
+import useAxios from "../../hooks/useAxios";
 
 const AwardPerson = () => {
   const fontsLoaded = useCustomFonts();
+  const [point, setPoint] = useState("");
+  const [next, setNext] = useState("");
+  const route = useRoute();
+  const props = route.params;
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    "/sales/awards",
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      response.data.forEach((item, index) => {
+        if (item.title === props.award) {
+          setPoint(response.data[index + 1].maxpoint);
+          setNext(response.data[index + 1].title);
+        }
+      });
+    }
+  }, [isLoading]);
+
+  const calculateDis = (a, b) => {
+    return ((a * 100) / b).toString() + "%";
+  };
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -17,7 +47,9 @@ const AwardPerson = () => {
         <Heading title="Hạng thành viên" returnPath="/account" />
         <View style={styles.awperson_banner}>
           <View style={styles["awperson_banner-card"]}>
-            <Text style={styles["awperson_banner-card-title"]}>Vàng</Text>
+            <Text style={styles["awperson_banner-card-title"]}>
+              {props.award}
+            </Text>
             <View
               style={{
                 display: "flex",
@@ -27,7 +59,14 @@ const AwardPerson = () => {
             >
               <View style={styles["awperson_banner-left"]}>
                 <View style={styles["awperson_banner-progressbar"]}>
-                  <View style={styles["awperson_banner-provalue"]}></View>
+                  <View
+                    style={{
+                      width: calculateDis(props.point, point),
+                      height: "100%",
+                      backgroundColor: "white",
+                      borderRadius: 5,
+                    }}
+                  ></View>
                 </View>
               </View>
               <View style={styles["awperson_banner-right"]}>
@@ -42,7 +81,7 @@ const AwardPerson = () => {
               </View>
             </View>
             <Text style={styles["awperson_banner-card-txt"]}>
-              Điểm cần để lên Diamond: 14
+              Điểm cần để lên {next}: {point - props.point}
             </Text>
             <LinearGradient
               style={styles["awperson_banner-circle1"]}
@@ -67,7 +106,7 @@ const AwardPerson = () => {
               alignItems: "center",
             }}
           >
-            <Text style={styles["awperson_award-mark"]}>136</Text>
+            <Text style={styles["awperson_award-mark"]}>{props.point}</Text>
             <Text style={styles["awperson_award-txt"]}>điểm GrabRewards</Text>
           </View>
         </View>

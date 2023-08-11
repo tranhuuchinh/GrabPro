@@ -5,7 +5,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../PersonalScreen.style";
 
-const PersonalItem = ({ title, mark, type, path }) => {
+const PersonalItem = ({ title, mark, type, path, props }) => {
   const navigation = useNavigation();
   const renderContent = () => {
     if (type === 1) {
@@ -45,7 +45,7 @@ const PersonalItem = ({ title, mark, type, path }) => {
   };
 
   const onPress = () => {
-    navigation.navigate(path);
+    navigation.navigate(path, props);
   };
 
   return (

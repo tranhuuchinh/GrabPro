@@ -55,6 +55,10 @@
     "@babel/core": "^7.19.3",
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9"
   },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+ },
   "resolutions": {
     "metro": "^0.73.7",
     "metro-resolver": "^0.73.7"

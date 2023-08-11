@@ -17,19 +17,19 @@ const PaymentItem = ({ item }) => {
   };
 
   const goDetail = () => {
-    navigation.navigate("/payment-detail");
+    navigation.navigate("/payment-detail", item);
   };
   return (
     <Pressable onPress={goDetail}>
       <View style={styles.payment_item}>
         <View style={styles.payment_item__left}>
-          <Text style={styles.payment_item__title}>{item.title}</Text>
-          <Text style={styles.payment_item__description}>
-            {item.description}
-          </Text>
+          <Text style={styles.payment_item__title}>Thanh toán</Text>
+          <Text style={styles.payment_item__description}>To {item.payfor}</Text>
         </View>
         <View style={styles.payment_item__right}>
-          <Text style={styles.payment_item__price}>{item.price}đ</Text>
+          <Text style={styles.payment_item__price}>
+            {item.idOrder.totalPrice}đ
+          </Text>
           <FontAwesomeIcon
             style={styles.payment_item__icon}
             icon={faChevronRight}

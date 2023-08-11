@@ -7,85 +7,33 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./PaymentScreen.style";
 import banner from "../../../assets/imgs/Personal/banner_profile.png";
 import ic_payment from "../../../assets/icons/Payment/ic_payment.png";
 import ic_qr from "../../../assets/icons/Payment/ic_qr.png";
 import PaymentItem from "./PaymentItem/PaymentItem";
 import { useCustomFonts } from "../../styles/fonts";
+import useAxios from "../../hooks/useAxios";
 
 const PaymentScreen = () => {
-  const data = [
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-    {
-      title: "Thanh toán",
-      description: "To Công ty TNHH",
-      price: "137.000",
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    "/bills?idUser=64cd144708afa47f3bda6ae6",
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      setOrders(response.data);
+    }
+  }, [isLoading]);
 
   const fontsLoaded = useCustomFonts();
-
   if (!fontsLoaded) return null;
 
   const HorizontalLine = () => {
@@ -111,7 +59,9 @@ const PaymentScreen = () => {
           </Pressable>
           <Pressable style={styles["payment_body-btn"]}>
             <Image style={styles["payment_body-icon"]} source={ic_qr} />
-            <Text style={styles["payment_body-btn--text"]}>Quét để thanh toán</Text>
+            <Text style={styles["payment_body-btn--text"]}>
+              Quét để thanh toán
+            </Text>
           </Pressable>
         </View>
         <HorizontalLine />
@@ -122,7 +72,7 @@ const PaymentScreen = () => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
-            {data.map((item, idx) => (
+            {orders.map((item, idx) => (
               <PaymentItem key={idx} item={item} />
             ))}
           </ScrollView>
