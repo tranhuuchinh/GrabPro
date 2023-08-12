@@ -8,515 +8,15 @@ import {
 import UserInfo from './UserInfo';
 import Rose from '../../assets/imgs/Rose.jpg';
 import ModalAdd from './Modal/ModalAdd';
-
-const price = '10 000 000 vnd';
-
-const listCustomer = [
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      },
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      },
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      },
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Khóa'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-];
-
-const listDriver = [
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-];
-
-const listStaff = [
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-  {
-    id: 'HEGSN12',
-    image: Rose,
-    name: 'Trần Anh Khôi',
-    phone: '083 235 5698',
-    address: '135B, Trần Hưng Đạo',
-    star: 4,
-    history: [
-      {
-        time: '20:00 14/06/2023',
-        location: '224, Nguyễn Văn Cừ',
-        stt: 'Hủy đơn'
-      }
-    ],
-    status: 'Hoạt động'
-  },
-];
-
+import useAxios from '../../hooks/useAxios';
 
 const User = () => {
+  const [listCustomer, setListCustomer] = useState([]);
+  const [listDriver, setListDriver] = useState([]);
+  const [listStaff, setListStaff] = useState([]);
+  const [listAccount, setListAccount] = useState([]);
+  const [listLocation, setListLocation] = useState([]);
+  const [listOrder, setListOrder] = useState([]);
   const [renderData, setRenderData] = useState(listCustomer);
   const [search, setSearch] = useState(renderData);
   const [isTab, setIsTap] = useState('Customer');
@@ -524,31 +24,54 @@ const User = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [indexItem, setIndexItem] = useState(-1);
   const [valueInput, setValueInput] = useState('');
+  const [dataSend, setDataSend] = useState({});
 
-  const handleTab = (e) => {
-    if (e.target.innerText === 'Customer'){
-      setIsTap('Customer');
-      setRenderData(listCustomer);
+  const [responseOrder, errorOrder, isLoadingOrder] = useAxios('get', '/orders', {}, {}, []);
+  const [responseCustomer, errorCustomer, isLoadingCustomer] = useAxios('get', '/user/customer', {}, {}, []);
+  const [responseDriver, errorDriver, isLoadingDriver] = useAxios('get', '/user/driver', {}, {}, []);
+  const [responseStaff, errorStaff, isLoadingStaff] = useAxios('get', '/user/hotline', {}, {}, []);
+  const [responseAccount, errorAccount, isLoadingAccount] = useAxios('get', '/user/account', {}, {}, []);
+  const [responseLocation, errorAccountLocation, isLoadingAccountLocation] = useAxios('get', '/user/location', {}, {}, []);
+
+  useEffect(() => {
+    if (isLoadingOrder === false && !errorOrder && responseOrder.data) {
+      setListOrder(responseOrder.data);
     }
-    else if (e.target.innerText === 'Driver') {
-      setIsTap('Driver');
-      setRenderData(listDriver);
+}, [responseOrder]);
+
+  useEffect(() => {
+    if (isLoadingCustomer === false && !errorCustomer && responseCustomer.data) {
+      setListCustomer(responseCustomer.data);
     }
-    else{
-      setIsTap('Staff');
-      setRenderData(listStaff);
+  }, [responseCustomer]);
+
+  useEffect(() => {
+    if (isLoadingDriver === false && !errorDriver && responseDriver.data) {
+      setListDriver(responseDriver.data);
     }
-  };
+  }, [responseDriver]);
 
-  const handleOpen = (id) => {
-    setIsOpen(true);
+  useEffect(() => {
+    if (isLoadingStaff === false && !errorStaff && responseStaff.data) {
+      setListStaff(responseStaff.data);
+    }
+  }, [responseStaff]);
 
-    setIndexItem(id);
-  }
+  useEffect(() => {
+    if (isLoadingAccount === false && !errorAccount && responseAccount.data) {
+      setListAccount(responseAccount.data);
+    }
+  }, [responseAccount]);
 
-  const handleChangeInput = (e) => {
-    setValueInput(() => e.target.value);
-  }
+  useEffect(() => {
+    if (isLoadingAccountLocation === false && !errorAccountLocation && responseLocation.data) {
+      setListLocation(responseLocation.data);
+    }
+  }, [responseLocation]);
+
+  useEffect(() => {
+    setRenderData(listCustomer);
+  }, [listCustomer])
 
   useEffect(() => {
     if (valueInput.trim() === '') {
@@ -559,6 +82,78 @@ const User = () => {
       setRenderData(filteredData);
     }
   }, [valueInput]);
+
+  const handleTab = (e) => {
+    if (e.target.innerText === 'Customer'){
+      setIsOpen(false);
+      setIsTap('Customer');
+      setRenderData(listCustomer);
+    }
+    else if (e.target.innerText === 'Driver') {
+      setIsOpen(false);
+      setIsTap('Driver');
+      setRenderData(listDriver);
+    }
+    else{
+      setIsOpen(false);
+      setIsTap('Staff');
+      setRenderData(listStaff);
+    }
+  };
+
+  const handlePhoneNumber = (id) => {
+    const account = listAccount.find(item => item._id === id)    
+
+    return account ? account.phone : ''
+  }
+
+  const handleLocation = (id) => {
+    if (id !== undefined) {
+      const location = listLocation.find(item => item._id === id)
+      
+      return location ? location.address : ''
+    }
+    return '';
+  }
+
+  const handleHistoryOrder = (id) => {
+    if (isTab === 'Customer') {
+      const listHistory = listOrder.filter(item => item.idCustomer === id);
+
+      return listHistory ? listHistory : [];
+    }
+    else if (isTab === 'Driver') {
+      const listHistory = listOrder.filter(item => item.idDriver === id);
+
+      return listHistory ? listHistory : [];
+    }
+    else{
+      return [];
+    }
+  }
+
+  const handleOpen = (id) => {
+    setIsOpen(true);
+
+    const data = {
+      id: renderData[id].idAccount,
+      code: id + 1,
+      name: renderData[id].fullname,
+      phone: handlePhoneNumber(renderData[id].idAccount),
+      location: handleLocation(renderData[id].location),
+      star: isTab === 'Customer' || isTab === 'Staff' ? 0 : renderData[id].rating,
+      listHistoryOrder: handleHistoryOrder(renderData[id].idAccount), 
+      type: isTab
+    }
+
+    setDataSend({...data});
+
+    setIndexItem(id);
+  }
+
+  const handleChangeInput = (e) => {
+    setValueInput(() => e.target.value);
+  }
 
   return (
     <div className={classes.user}>
@@ -594,20 +189,21 @@ const User = () => {
                     style={{backgroundColor: index%2 !== 0 ? '#F8F8F8' : '#fff'}}
                     onClick={() => handleOpen(index)}
                 >
-                  <p style={{width: '12%'}}>{item.id}</p>
-                  <p style={{width: '22%'}}>{item.name}</p>
-                  <p style={{width: '22%'}}>{item.phone}</p>
-                  <p style={{width: '28%'}}>{item.address}</p>
+                  <p style={{width: '12%'}}>{index + 1}</p>
+                  <p style={{width: '22%'}}>{item.fullname}</p>
+                  <p style={{width: '22%'}}>{handlePhoneNumber(item.idAccount)}</p>
+                  <p style={{width: '28%'}}>{handleLocation(item.location)}</p>
                   <p style={{
                               width: '16%',
                               color:
-                                item.status === 'Khóa'
+                                item.status === 1
                                   ? '#FF2F2F'
-                                  : item.status === 'Hoạt động'
+                                  : 'Hoạt động'
                                   ? '#00B14F'
                                   : 'black',
                             }}>
-                    {item.status}
+                    {/* {item.status === 1 ? 'Khóa' : item.status === 0 ? 'Hoạt động' : ''} */}
+                    Hoạt động
                   </p>
                 </div>
               ))
@@ -616,8 +212,8 @@ const User = () => {
         </div>
       </div>
 
-      <UserInfo isOpen={isOpen} content={renderData[indexItem]}  />
-      {isOpenModal && <ModalAdd onCloseModal={() => setIsOpenModal(false)} />}
+      <UserInfo isOpen={isOpen} content={dataSend} type={isTab} />
+      {isOpenModal && <ModalAdd onCloseModal={() => setIsOpenModal(false)} type={isTab}/>}
     </div>
   );
 };

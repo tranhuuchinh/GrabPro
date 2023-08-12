@@ -10,13 +10,11 @@
 
   &__data{
     display: flex;
-    // justify-content: space-between;
     align-items: center;
     column-gap: 2rem;
     margin-bottom: 2.8rem;
     
     &--item{
-      // width: 25%;
       flex: 1;
       display: flex;
       padding: 1.4rem;
@@ -38,7 +36,7 @@
         p{
           color: #336DD1;
           text-align: right;
-          font-size: 3.6rem;
+          font-size: 3.03rem;
           font-weight: 600;
           letter-spacing: 0.36px;
 
@@ -53,7 +51,7 @@
         h4{
           color: #336DD1;
           text-align: right;
-          font-size: 5.6rem;
+          font-size: 5.28rem;
           font-weight: 600;
           letter-spacing: 0.56px;
         }
@@ -136,7 +134,7 @@
         h4{
           color: #336DD1;
           text-align: right;
-          font-size: 5.6rem;
+          font-size: 5.28rem;
           font-weight: 600;
           letter-spacing: 0.56px;
         }

@@ -354,11 +354,12 @@
 
       &-wrapper{
         display: flex;
-        border: 1px solid rgba(204, 204, 204, 0.80);
+        // border: 1px solid rgba(204, 204, 204, 0.80);
 
         &-square{
           padding: 1rem;
           width: 50%;
+        border: 1px solid rgba(204, 204, 204, 0.80);
 
           h5{
             color: #008E3F;
@@ -387,7 +388,7 @@
           }
         }
         &-square:first-child{
-          border-right: 1px solid rgba(204, 204, 204, 0.80);
+          // border: 1px solid rgba(204, 204, 204, 0.80);
         }
       }
     }

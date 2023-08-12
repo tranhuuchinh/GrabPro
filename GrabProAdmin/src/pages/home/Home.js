@@ -7,12 +7,12 @@ import { Chart, LinearScale } from 'chart.js';
 import useAxios from '../../hooks/useAxios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-const price = '10 000 000 vnd';
-
 const Home = () => {
     const [isDown, setIsDown] = useState(false);
     const [contentUp, setContentUp] = useState('');
     const [contentDown, setContentDown] = useState('');
+    const [price, setPrice] = useState('');
+    const [dataHome, setDataHome] = useState({});
 
     //Calculate width, height chart
     const chartContainerRef = useRef(null);
@@ -20,31 +20,20 @@ const Home = () => {
     const [chartContainerHeight, setHeight] = useState(0);
 
     //Axios
-    const [response0d, error0d, isLoading0d] = useAxios('get', '/payments', {}, {}, []);
+    const [response, error, isLoading] = useAxios('get', '/homeAdmin', {}, {}, []);
     useEffect(() => {
-        if (isLoading0d === false && !error0d && response0d.data) {
-            console.log(response0d.data);
+        if (isLoading === false && !error && response.data) {
+            setDataHome({...response.data});
+            setPrice(`${response.data.totalSale} vnd`);
         }
-    }, [isLoading0d]);
+    }, [isLoading]);
 
     useEffect(() => {
         // Khi có API thì phải kiểm tra trước
         const spaceText = price.split(' ');
 
-        if (spaceText.length - 2 < 2) {
-            setIsDown(false);
-            setContentUp(spaceText[0] + ' ' + spaceText[1]);
-            setContentDown(() => {
-                let save = '';
-                for (let i = 2; i < spaceText.length - 1; i++) {
-                    save += spaceText[i] + ' ';
-                }
-                save = save + spaceText[spaceText.length - 1];
-
-                return save;
-            });
-        } else {
-            setIsDown(true);
+        if (spaceText.length - 2 < 2 && spaceText.length - 2 > 0) {
+            // setIsDown(false);
             setContentUp(spaceText[0] + ' ' + spaceText[1]);
             setContentDown(() => {
                 let save = '';
@@ -56,7 +45,24 @@ const Home = () => {
                 return save;
             });
         }
-    }, []);
+        else if (spaceText.length - 2 <= 0) {
+            setIsDown(true);
+            setContentUp(spaceText[0] + ' vnd');
+            setContentDown('');
+        } 
+        else {
+            setContentUp(spaceText[0] + ' ' + spaceText[1]);
+            setContentDown(() => {
+                let save = '';
+                for (let i = 2; i < spaceText.length - 1; i++) {
+                    save += spaceText[i] + ' ';
+                }
+                save = save + spaceText[spaceText.length - 1];
+
+                return save;
+            });
+        }
+    }, [price]);
 
     useEffect(() => {
         if (chartContainerRef.current) {
@@ -69,6 +75,24 @@ const Home = () => {
         Chart.register(LinearScale);
     }, []);
 
+    const handleFormatTime = () => {
+        if (dataHome && dataHome.timeUpdate) {
+            const dateString = dataHome.timeUpdate;
+
+            const dateObj = new Date(dateString);
+    
+            const hours = dateObj.getUTCHours();
+            const minutes = dateObj.getUTCMinutes();
+            const day = dateObj.getUTCDate();
+            const month = dateObj.getUTCMonth() + 1;
+            const year = dateObj.getUTCFullYear();
+    
+            const formattedString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes} ngày ${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+    
+            return formattedString;
+        }
+    }
+
     const data = [
         { name: 'January', Sales: 10 },
         { name: 'February', Sales: 20 },
@@ -80,15 +104,14 @@ const Home = () => {
     ];
     return (
         <div className={classes.home}>
-            <p className={classes.home__time}>Thống kê lúc 12:00 ngày 16/06/2023</p>
+            <p className={classes.home__time}>Thống kê lúc {handleFormatTime()}</p>
 
             <div className={classes.home__data}>
                 <div className={classes['home__data--item']}>
                     <div className={classes['home__data--item-left']}>
                         <span>Doanh thu hôm nay</span>
-                        <p id="price">
+                        <p id="price" style={{fontSize: isDown && '5rem'}}>
                             {contentUp}
-                            <br />
                             <span>{contentDown}</span>
                         </p>
                     </div>
@@ -104,7 +127,7 @@ const Home = () => {
                 <div className={classes['home__data--item']}>
                     <div className={classes['home__data--item-left']}>
                         <span>Tổng số đơn hàng</span>
-                        <h4>189</h4>
+                        <h4>{dataHome.totalOrder}</h4>
                     </div>
 
                     <div className={classes['home__data--item-right']}>
@@ -118,7 +141,7 @@ const Home = () => {
                 <div className={classes['home__data--item']}>
                     <div className={classes['home__data--item-left']}>
                         <span>Khách hàng mới</span>
-                        <h4>30</h4>
+                        <h4>{dataHome.totalCustomer}</h4>
                     </div>
 
                     <div className={classes['home__data--item-right']}>
@@ -135,7 +158,7 @@ const Home = () => {
                 <div className={classes['home__data--item']}>
                     <div className={classes['home__data--item-left']}>
                         <span>Tài xế mới</span>
-                        <h4>20</h4>
+                        <h4>{dataHome.totalDriver}</h4>
                     </div>
 
                     <div className={classes['home__data--item-right']}>
@@ -168,7 +191,7 @@ const Home = () => {
                             />
                             <p>Đơn hàng đặt qua ứng dụng</p>
                         </div>
-                        <h4>109</h4>
+                        <h4>{dataHome.totalOrderApp}</h4>
                     </div>
 
                     <div className={classes['home__order--about-same']}>
@@ -179,7 +202,7 @@ const Home = () => {
                             />
                             <p>Đơn hàng đặt qua Call center</p>
                         </div>
-                        <h4>109</h4>
+                        <h4>{dataHome.totalOrderCall}</h4>
                     </div>
                 </div>
             </div>

@@ -6,618 +6,148 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import OrderInfo from './OrderInfo';
 import Rose from '../../assets/imgs/Rose.jpg';
-
-const price = '10 000 000 vnd';
-
-const listApp = [
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã nhận'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã hủy'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Hoàn thành'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS12',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-];
-
-const listCall = [
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-  {
-    id: 'HEGS13',
-    customer: {
-      name: 'Trần Anh Khôi',
-      phone: '089 898 1234',
-      image: Rose,
-      feedback: {
-      star: 4,
-      content: ['Thân thiện', 'Nhiệt tình', 'Đúng giờ']
-    },
-    },
-    driver: {
-      name: 'Trần Duy Khương',
-      phone: '039 998 1634',
-      image: Rose,
-      licensePlate: '71B-99.999',
-      feedback: {
-        star: 4,
-        content: ['Hòa đồng', 'Vui tính']
-      },
-    },
-    pickupLocation: '135 Trần Hưng Đạo, quận 1, TPHCM',
-    destination: '224 Nguyễn Văn Cừ, quận 5, TPHCM',
-    price: '23 000',
-    sale: '10 000',
-    tolls: '5 000',
-    time: ['20:00 16/06/23', '20:05 16/06/23', '20:35 16/06/23'],
-    status: 'Đã tạo'
-  },
-];
+import useAxios from '../../hooks/useAxios';
+import moment from 'moment';
 
 const Order = () => {
+  const [listApp, setListApp] = useState([]);
+  const [listCall, setListCall] = useState([]);
+  const [listCustomer, setListCustomer] = useState([]);
+  const [listDriver, setListDriver] = useState([]);
+  const [listAccount, setListAccount] = useState([]);
   const [renderData, setRenderData] = useState(listApp);
   const [search, setSearch] = useState(renderData);
   const [isTab, setIsTap] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [indexItem, setIndexItem] = useState(-1);
+  // const [indexItem, setIndexItem] = useState(-1);
   const [valueInput, setValueInput] = useState('');
+  const [dataSend, setDataSend] = useState({});
+
+  const [response, error, isLoading] = useAxios('get', '/orders', {}, {}, []);
+  const [responseCustomer, errorCustomer, isLoadingCustomer] = useAxios('get', '/user/customer', {}, {}, []);
+  const [responseDriver, errorDriver, isLoadingDriver] = useAxios('get', '/user/driver', {}, {}, []);
+  const [responseAccount, errorAccount, isLoadingAccount] = useAxios('get', '/user/account', {}, {}, []);
+  
+  useEffect(() => {
+      if (isLoading === false && !error && response.data) {
+        setListApp(response.data.filter(item => item.method === 0));
+        setListCall(response.data.filter(item => item.method === 1));
+      }
+  }, [response]);
+
+  useEffect(() => {
+    if (isLoadingCustomer === false && !errorCustomer && responseCustomer.data) {
+      setListCustomer(responseCustomer.data);
+    }
+  }, [responseCustomer]);
+
+  useEffect(() => {
+    if (isLoadingDriver === false && !errorDriver && responseDriver.data) {
+      setListDriver(responseDriver.data);
+    }
+  }, [responseDriver]);
+
+  useEffect(() => {
+    if (isLoadingAccount === false && !errorAccount && responseAccount.data) {
+      setListAccount(responseAccount.data);
+    }
+  }, [responseAccount]);
+
+  useEffect(() => {
+    setRenderData(listApp);
+  }, [listApp])
+  
+  useEffect(() => {
+    setSearch(renderData);
+  }, [renderData]);
+
+
+  console.log('haha');
+  console.log(renderData);
+  console.log(search);
+  
+  useEffect(() => {
+    if (valueInput.trim() === '') {
+      if (isTab) setRenderData(listApp);
+      else setRenderData(listCall);
+    } else {
+      // Ngược lại, thực hiện tìm kiếm trong danh sách gốc
+      const filteredData = renderData.filter(item => handleGetCustomer(item.idCustomer).includes(valueInput));
+      setRenderData(filteredData);
+    }
+  }, [valueInput]);
 
   const handleTab = (e) => {
     if (e.target.innerText === 'Đặt qua ứng dụng'){
+      if (isTab) {
+        setIsOpen(false);
+      }
       setIsTap(true);
       setRenderData(listApp);
     }
     else {
+      if (!isTab) {
+        setIsOpen(false);
+      }
       setIsTap(false);
       setRenderData(listCall);
     }
   };
 
+  const handlePhoneNumber = (id) => {
+    const account = listAccount.find(item => item._id === id)    
+
+    return account ? account.phone : ''
+  }
+
+  const handleGetCustomer = (id) => {
+    const customer = listCustomer.find(item => item.idAccount === id);
+    return customer ? customer.fullname : '';
+  };
+
+  const handleGetDriver = (id) => {
+    const driver = listDriver.find(item => item.idAccount === id);
+    return driver ? driver.fullname : '';
+  };
+
+  const handleGetLicensePlateDriver = (id) => {
+    const driver = listDriver.find(item => item.idAccount === id);
+    return driver ? driver.transport.code : '';
+  };
+
+  const handleFormatTime = (time) => {
+    const momentObj = moment(time);
+
+    // Định dạng lại thành "20:00 16/06/23"
+    const formattedStr = momentObj.format("HH:mm DD/MM/YY");
+
+    return formattedStr;
+  }
+
   const handleOpen = (id) => {
     setIsOpen(true);
 
-    setIndexItem(id);
+    const data = {
+      id: renderData[id]._id,
+      code: renderData[id].code,
+      from: renderData[id].from.address,
+      to: renderData[id].to.address,
+      nameCustomer: handleGetCustomer(renderData[id].idCustomer),
+      phoneCustomer: handlePhoneNumber(renderData[id].idCustomer),
+      nameDriver: handleGetDriver(renderData[id].idDriver),
+      phoneDriver: handlePhoneNumber(renderData[id].idDriver),
+      licensePlate: handleGetLicensePlateDriver(renderData[id].idDriver),
+      sale: renderData[id].sale,
+      tax: renderData[id].tax,
+      price: renderData[id].totalPrice,
+      time: [handleFormatTime(renderData[id].updatedAt), handleFormatTime(renderData[id].updatedAt), handleFormatTime(renderData[id].updatedAt)],
+      star: renderData[id].feedback,
+      status: renderData[id].status
+    }
+
+    setDataSend({...data})
+
+    // setIndexItem(id);
   }
 
   const covertNum2String= (price) => {
@@ -626,25 +156,15 @@ const Order = () => {
     }
   }
 
-  const handleTotal = (price, sale, tolls) => {
-    const total = covertNum2String(price) - covertNum2String(sale) + covertNum2String(tolls);
+  const handleTotal = (price, sale, tax) => {
+    const total = covertNum2String('' + price) - covertNum2String('' + sale) + covertNum2String('' + tax);
 
-    return (total + '').replace(/\d(?=(?:\d{3})+$)/g, '$& ');;
+    return (total + '').replace(/\d(?=(?:\d{3})+$)/g, '$& ');
   }
 
   const handleChangeInput = (e) => {
-    setValueInput(() => e.target.value);
+    setValueInput(e.target.value);
   }
-
-  useEffect(() => {
-    if (valueInput.trim() === '') {
-      setRenderData(search);
-    } else {
-      // Ngược lại, thực hiện tìm kiếm trong danh sách gốc
-      const filteredData = renderData.filter(item => item.customer.name.includes(valueInput));
-      setRenderData(filteredData);
-    }
-  }, [valueInput]);
 
   return (
     <div className={classes.order}>
@@ -656,7 +176,7 @@ const Order = () => {
           </div>
 
           <div className={classes['order__header--right']}>
-            <input type='text' value={valueInput} onChange={(e) => handleChangeInput(e)} placeholder='Tìm kiếm'/>
+            <input type='text' onChange={(e) => handleChangeInput(e)} placeholder='Tìm kiếm'/>
             <FontAwesomeIcon icon={faSearch} className={classes['order__header--right-ic']}/>
           </div>
         </div>
@@ -679,36 +199,34 @@ const Order = () => {
                     style={{backgroundColor: index%2 !== 0 ? '#F8F8F8' : '#fff'}}
                     onClick={() => handleOpen(index)}
                 >
-                  <p style={{width: '12%'}}>{item.id}</p>
-                  <p style={{width: '20%'}}>{item.customer.name}</p>
-                  <p style={{width: '20%'}}>{item.driver.name}</p>
-                  <p style={{width: '12%'}}>{handleTotal(item.price, item.sale, item.tolls)}</p>
-                  <p style={{width: '20%'}}>{item.time[0]}</p>
+                  <p style={{width: '12%'}}>{index + 1}</p>
+                  <p style={{width: '20%'}}>{handleGetCustomer(item.idCustomer)}</p>
+                  <p style={{width: '20%'}}>{handleGetDriver(item.idDriver)}</p>
+                  <p style={{width: '12%'}}>{handleTotal(item.totalPrice, item.sale, item.tax)}</p>
+                  <p style={{width: '20%'}}>{handleFormatTime(item.updatedAt)}</p>
                   <p style={{
                               width: '16%',
                               color:
-                                item.status === 'Đã hủy'
+                                item.status === 3
                                   ? '#FF2F2F'
-                                  : item.status === 'Đã tạo'
+                                  : item.status === 0
                                   ? '#333'
-                                  : item.status === 'Đã nhận'
+                                  : item.status === 1
                                   ? '#F38522'
-                                  : item.status === 'Hoàn thành'
+                                  : item.status === 2
                                   ? '#00B14F'
                                   : 'black',
                             }}>
-                    {item.status}
+                    {item.status === 0 ? 'Đã tạo' : item.status === 1 ? 'Đã nhận' : item.status === 2 ? 'Hoàn thành' : 'Đã hủy'}
                   </p>
                 </div>
               ))
             }
           </div>
-
-          
         </div>
       </div>
 
-      <OrderInfo isOpen={isOpen} content={renderData[indexItem]}  />
+      <OrderInfo isOpen={isOpen} content={dataSend}  />
     </div>
   );
 };

@@ -8,18 +8,22 @@ import {
     faStar as star,
   } from '@fortawesome/free-regular-svg-icons';
 import Rose from '../../assets/imgs/Rose.jpg';
+import { axiosClient } from '../../api/axios';
 
-const UserInfo = ({isOpen, content}) => {
+const UserInfo = ({isOpen, content, type}) => {
   const [contentRender, setContentRender] = useState({
     id: '',
-    image: '',
+    code: '',
     name: '',
     phone: '',
-    address: '',
+    location: '',
     star: 0,
-    history: [],
-    status: ''
+    listHistoryOrder: [],
+    type: ''
   });
+  const [idAccount, setIdAccount] = useState('');
+
+  console.log(type);
 
   useEffect(() => {
     if (content !== undefined) {
@@ -27,36 +31,50 @@ const UserInfo = ({isOpen, content}) => {
     }
   }, [content])
 
+  const handleDeleteAccount = (id) => {
+    setIdAccount(id);
+  } 
+
+  useEffect(() => {
+    if (idAccount !== '') {
+      axiosClient.delete(`/user/${idAccount}?type=${type}`, {}).then((res) => {
+        if (res) {
+          window.location.reload();
+        }
+      });
+    }
+  }, [idAccount])
+
   return (
     <div className={classes.user__info} style={{width: isOpen ? '35%' : '0', padding: isOpen ? '2rem' : '0'}}>
     <div className={classes['user__info--header']}>
-      <p>{contentRender.id}</p>
+      <p>{contentRender.code}</p>
       <p style={{backgroundColor:
                     contentRender.status === 'Khóa'
                     ? '#da8d8d'
-                    : contentRender.status === 'Hoạt động'
+                    : 'Hoạt động'
                     ? '#99E0B9'
                     : 'black',
                 color:
                     contentRender.status === 'Khóa'
                     ? '#FF2F2F'
-                    : contentRender.status === 'Hoạt động'
+                    : 'Hoạt động'
                     ? '#00B14F'
                     : 'black'}}
-        >{contentRender.status}</p>
+        >Hoạt động</p>
     </div>
 
     <div className={classes['user__info--detail']}>
       <div className={classes['user__info--detail-wrapper']}>
-        <div className={classes['user__info--detail-img']}>
+        {/* <div className={classes['user__info--detail-img']}>
           <img src={contentRender.image} />
-        </div>
+        </div> */}
 
         <div className={classes['user__info--detail-content']}>
-          <div className={classes['user__info--detail-content-left']}>
+          <div className={classes['user__info--detail-content-left']} style={{width: contentRender.star === 0 && '100%'}}>
             <p>{contentRender.name}</p>
             <span>{contentRender.phone}</span>
-            <h6>135B Trần Hưng Đạo, phường Cầu Ông Lãnh, Quận 1, TPHCM</h6>
+            <h6>{contentRender.location}</h6>
           </div>
 
           <div className={classes['user__info--detail-content-right']}>
@@ -66,10 +84,10 @@ const UserInfo = ({isOpen, content}) => {
       </div>
     </div>
 
-    <div className={classes['user__info--history']}>
+    <div className={classes['user__info--history']} style={{display: contentRender.type === 'Staff' && 'none'}}>
       <h4>Lịch sử đơn hàng</h4>
       <div className={classes['user__info--history-list']} style={{backgroundColor: 'rgba(243, 243, 243, 0.95)', borderRadius: '6px', padding: '1rem 2rem', marginBottom: '1.8rem'}}>
-        {contentRender.history !== undefined ? contentRender.history.map((item, idx) => (
+        {contentRender.listHistoryOrder !== undefined ? contentRender.listHistoryOrder.map((item, idx) => (
           <div className={classes['user__info--history-row']}>
             <p>{item.time}</p>
             <h6>{item.location}</h6>
@@ -80,8 +98,8 @@ const UserInfo = ({isOpen, content}) => {
     </div>
 
     <div className={classes['user__info--destroy']}>
-      <button>{contentRender.status === 'Khóa' ? 'Mở khóa' : 'Khóa'}</button>
-      <button>Xóa Tài Khoản</button>
+      {/* <button>{contentRender.status === 'Khóa' ? 'Mở khóa' : 'Khóa'}</button> */}
+      <button onClick={() => handleDeleteAccount(contentRender.id)}>Xóa Tài Khoản</button>
     </div>
   </div>
   );
