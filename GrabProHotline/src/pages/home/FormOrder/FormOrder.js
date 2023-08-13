@@ -6,6 +6,7 @@ import ic_phone_black from '../../../assets/svg/phone_black.svg';
 import ic_user from '../../../assets/svg/user.svg';
 import ic_destination from '../../../assets/svg/destination.svg';
 import map from '../../../assets/imgs/map.jpg';
+// import { sendMessage, socketCallcenter, socketGeolocation } from '../../../service/socket';
 
 const tags = {
     WAITING: '#9A9A9A',
@@ -89,11 +90,36 @@ const FormOrder = () => {
                 <ButtonCT outlineBtn borderRadius medium>
                     Hủy
                 </ButtonCT>
-                <ButtonCT primary borderRadius medium>
+                <ButtonCT
+                    primary
+                    borderRadius
+                    medium
+                    // onClick={() =>
+                    //     sendMessage(socketCallcenter, 'customerBooking', {
+                    //         fullname: 'Tran Duy Khuong',
+                    //         phone: '0824704789',
+                    //         address: '135 Trần Hưng Đạo, Quận 1',
+                    //     })
+                    // }
+                >
                     Đặt đơn
                 </ButtonCT>
 
-                <ButtonCT outlineBtnBlue borderRadius medium>
+                <ButtonCT
+                    outlineBtnBlue
+                    borderRadius
+                    medium
+                    // onClick={() =>
+                    //     sendMessage(socketGeolocation, 'clientGeolocationResolved', {
+                    //         data: {
+                    //             fullname: 'Tran Duy Khuong 1',
+                    //             phone: '0824704789',
+                    //             address: '135 Trần Hưng Đạo, Quận 1',
+                    //         },
+                    //         geolocation: { lat: 123, lon: 234 },
+                    //     })
+                    // }
+                >
                     Đặt lại
                 </ButtonCT>
                 <ButtonCT outlineBtn borderRadius medium>

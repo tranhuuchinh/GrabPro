@@ -1,0 +1,33 @@
+.geo {
+    display: flex;
+    justify-content: space-between;
+
+    &__map {
+        padding: 20px;
+        flex: 1;
+    }
+
+    &__info {
+        width: 300px;
+        height: calc(100vh - 60px);
+        background-color: white;
+        box-shadow: -2px 0px 4px 0px rgba(0, 0, 0, 0.25);
+        padding: 20px;
+
+        h4 {
+            padding-bottom: 6px;
+        }
+
+        p {
+            padding: 2px;
+        }
+
+        input {
+            font-size: 1.4rem;
+            border: 1px solid #ccc;
+            padding: 6px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+}
