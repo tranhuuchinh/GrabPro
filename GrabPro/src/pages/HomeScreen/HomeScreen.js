@@ -17,6 +17,8 @@ import ImgBg from "../../../assets/imgs/Home/no1.jpeg";
 import { useNavigation } from "@react-navigation/native";
 import { useCustomFonts } from "../../styles/fonts";
 import useAxios from "../../hooks/useAxios";
+import StateManager from "../../service/commandbook/receiver";
+import { SetTypeCommand } from "../../service/commandbook/command";
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
@@ -55,15 +57,19 @@ const HomeScreen = () => {
   };
 
   const handlePressOto = () => {
+    const setType = new SetTypeCommand(StateManager, "GrabCar");
+    setType.execute();
     navigation.navigate("/bookcar-home");
   };
 
-  const handleButton2Press = () => {
-    // Xử lý khi nút 2 được nhấn
+  const handlePressBike = () => {
+    const setType = new SetTypeCommand(StateManager, "GrabBike");
+    setType.execute();
+    navigation.navigate("/bookcar-home");
   };
 
   if (!fontsLoaded) {
-    return null;  
+    return null;
   } else {
     return (
       <KeyboardAvoidingView style={styles.homeContainer}>
@@ -109,7 +115,7 @@ const HomeScreen = () => {
 
           <TouchableOpacity
             style={styles.homeBookBike}
-            onPress={handleButton2Press}
+            onPress={handlePressBike}
           >
             <Image
               style={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -38,6 +38,8 @@ import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
 import LoginScreen from "./src/pages/LoginScreen/LoginScreen";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
+
+import { socketCustomer, socketDriver } from "./src/service/socket";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -194,6 +196,24 @@ const Tab = () => {
 };
 
 const App = () => {
+  useEffect(() => {
+    socketCustomer.on("connect", () => {
+      console.log("Connected to server customer");
+    });
+
+    socketCustomer.on("customerClient", (message) => {
+      console.log(message);
+    });
+
+    socketCustomer.on("disconnect", () => {
+      console.log("Disconnected from server customer");
+    });
+
+    return () => {
+      socketCustomer.disconnect();
+    };
+  }, []);
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

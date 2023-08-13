@@ -24,7 +24,7 @@ const LoginScreen = () => {
     console.log(errorReg);
   }, [responseReg, errorReg]);
   const handleButtonPress = () => {
-    // navigation.navigate("/lgphone");
+    // navigation.navigate("/lgphone");z
   };
   if (!fontsLoaded) {
     return null;
