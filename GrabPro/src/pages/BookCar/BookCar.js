@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Text, View, Pressable, ToastAndroid } from "react-native";
+import { Image, Text, View, Pressable } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faChevronLeft,
@@ -7,12 +7,14 @@ import {
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
-import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
+import Map from "../../assets/imgs/BookCar/masicle2.png";
 import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from "./BookCar.style";
 import { useCustomFonts } from "../../styles/fonts";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
+import StateManager from "../../service/commandbook/receiver";
+import { SetTimeCommand } from "../../service/commandbook/command";
 
 const BookCar = () => {
   const fontsLoaded = useCustomFonts();
@@ -21,6 +23,10 @@ const BookCar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+
+  //Thay đổi thời gian thì gọi lại đoạn code này
+  const setTime = new SetTimeCommand(StateManager, "Thời gian đặt trước");
+  setTime.execute();
 
   const handleDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;
@@ -59,7 +65,10 @@ const BookCar = () => {
     return (
       <View style={styles.bookcar__container}>
         <View style={styles["bookcar__container-maps"]}>
-          <Image source={HaLinh} style={{ width: "100%", height: "100%" }} />
+          <Image
+            source={Map}
+            style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+          />
         </View>
 
         <Pressable

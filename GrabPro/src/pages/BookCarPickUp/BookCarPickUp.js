@@ -1,15 +1,22 @@
 import React from "react";
+import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft, faA } from "@fortawesome/free-solid-svg-icons";
-import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
+import Map from "../../assets/imgs/BookCar/masicle.png";
 import styles from "./BookCarPickUp.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
+import StateManager from "../../service/commandbook/receiver";
 
 const BookCarPickUp = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+
+  //Ở chỗ này lấy được location hiện tại của bản thân và đích đến để hiển thị lên bản đồ
+  const getStateCommand = StateManager.getState(); //Lấy được tung độ và hoành độ của đích đến
+
+  console.log(getStateCommand);
 
   const handleBack = () => {
     navigation.goBack();
@@ -21,7 +28,10 @@ const BookCarPickUp = () => {
     return (
       <View style={styles.bookcarchoicedes__container}>
         <View style={styles["bookcarchoicedes__container-maps"]}>
-          <Image source={HaLinh} style={{ width: "100%", height: "100%" }} />
+          <Image
+            source={Map}
+            style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+          />
         </View>
 
         <Pressable

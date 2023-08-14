@@ -31,8 +31,8 @@
     "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.2",
     "firebase": "^9.23.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.9",
     "react-native-gesture-handler": "~2.9.0",
@@ -49,7 +49,8 @@
     "react-redux": "^8.1.1",
     "react-router-native": "^6.14.0",
     "recoil": "^0.7.7",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
@@ -58,7 +59,7 @@
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
- },
+  },
   "resolutions": {
     "metro": "^0.73.7",
     "metro-resolver": "^0.73.7"
