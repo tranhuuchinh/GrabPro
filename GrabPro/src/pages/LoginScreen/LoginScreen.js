@@ -24,12 +24,9 @@ const LoginScreen = () => {
   //   console.log(responseReg);
   // }, []);
   const handleButtonPress = () => {
-<<<<<<< HEAD
     navigation.navigate("/lgphone");
     // console.log(responseReg);
-=======
     // navigation.navigate("/lgphone");z
->>>>>>> 0ff92a30d70c2313f0ad78f069b779a75dc6e0d4
   };
   if (!fontsLoaded) {
     return null;
