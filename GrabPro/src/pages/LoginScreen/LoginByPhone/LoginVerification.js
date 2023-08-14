@@ -25,6 +25,7 @@ import { firebaseConfig } from "../../../../config";
 import firebase from "firebase/compat/app";
 import { log } from "react-native-reanimated";
 import useAxios from "../../../hooks/useAxios";
+import axios from "axios";
 
 const LoginVerification = () => {
   const [code, setCode] = useState("");
@@ -32,21 +33,42 @@ const LoginVerification = () => {
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
   const [otpValue, setOTPValue] = useState(["", "", "", "", "", ""]);
+  const [passSend, setPassSend] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const route = useRoute();
   const { verificationId, phoneNumber } = route.params;
   const [object, setObject] = useState({});
 
   useEffect(() => {
+    const joinedString = otpValue.join("");
     // Cập nhật giá trị của object bằng hàm setObject
     setObject({
       phone: phoneNumber,
-      password: otpValue,
+      password: joinedString,
       role: "customer",
     });
+    // console.log(joinedString);
   }, []);
+
+  const sendApiRequest = async (object) => {
+    try {
+      const [responseReg, errorReg, isLoadingReg] = useAxios(
+        "post",
+        "/auth/register?role=customer",
+        object,
+        {},
+        []
+      );
+
+      console.log(responseReg);
+      // Xử lý response từ API
+    } catch (error) {
+      // Xử lý lỗi từ API
+    }
+  };
 
   const confirmCode = () => {
     const credential = firebase.auth.PhoneAuthProvider.credential(
@@ -57,21 +79,29 @@ const LoginVerification = () => {
       .auth()
       .signInWithCredential(credential)
       .then((userCredential) => {
-        const [responseReg, errorReg, isLoadingReg] = useAxios(
-          "post",
-          "/auth/register?role=customer",
-          { phone: "09875456436", password: "123", role: "customer" },
-          {},
-          []
-        );
         setCode("");
+        setSuccessModalVisible(false);
         Alert.alert("Xác minh thành công!");
         console.log("gửi otp ok");
+        // Gom giá trị của otpValue thành chuỗi
+        const joinedString = otpValue.join("");
+        object.password = joinedString;
+        console.log(object);
+        // Thực hiện gọi API bằng axios
+        axios
+          .post("http://192.168.1.5:3000/auth/register?role=customer", object)
+          .then((response) => {
+            // Xử lý phản hồi từ API
+          })
+          .catch((error) => {
+            Alert.alert("Lỗi khi gọi API: " + error.message);
+          });
+
+        navigation.navigate("Tab"); //Vào Home
       })
       .catch((error) => {
         Alert.alert("Lỗi xác minh: " + error.message);
       });
-    setSuccessModalVisible(false);
   };
 
   const handleButtonPress = () => {
