@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageMap from "../../assets/imgs/Home/image3.png";
 import styles from "./HomePage.style";
 import { useNavigation } from "@react-navigation/native";
@@ -16,16 +16,59 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCustomFonts } from "../../styles/fonts";
+import {
+  socketDriver,
+  disconnect,
+  sendMessage,
+  connect,
+  listenForMessage,
+} from "../../service/socket";
 
 const HomePage = () => {
   const fontsLoaded = useCustomFonts();
   const [isConnected, setIsConnected] = useState(false);
   const [isIncome, setIsIncome] = useState(false);
   const navigation = useNavigation();
+  let socketDriverInstance;
+  const [initialState, setInitialState] = useState(false);
 
   const handleToggleConnect = () => {
     setIsConnected((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (isConnected) {
+      socketDriverInstance = connect();
+      setInitialState(true);
+
+      //Chỗ này làm đăng nhập đăng kí gì đó bỏ IDUser vô chỗ IDAccount
+      sendMessage("setID", "IdAccount");
+
+      //Lắng nghe sự kiện bên socket gửi v
+      listenForMessage("driverClient", (data) => {
+        console.log("Received message from server:", data);
+
+        //Chỗ này gửi object gồm vị trí tài xế và id tài xế lên
+        // sendMessage("driverClient", inforDriver);
+      });
+    } else if (!isConnected && initialState === true) {
+      console.log("Disconnected from server Driver");
+      disconnect();
+      setInitialState(false);
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    if (isConnected && socketDriver) {
+      socketDriver.on("disconnect", () => {
+        console.log("Loss internet => Reconnect...");
+        socketDriverInstance = connect();
+
+        //Chỗ này cũng bỏ idUser vô chỗ IdAccount
+        sendMessage("setID", "IdAccount");
+      });
+    }
+  }, []);
 
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
