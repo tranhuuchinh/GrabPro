@@ -6,8 +6,7 @@ import User from '../pages/User/User';
 import NotFound from '../pages/notFound';
 import Layout from './../layouts/index';
 import SideBar from '../components/SideBar/SideBar';
-import Login from '../pages/auth/Login';
-import ForgotPassword from '../pages/auth/ForgotPassword';
+import Login from '../pages/Login/Login';
 
 const Navigation = () => {
     const authenticated = true;
@@ -15,7 +14,7 @@ const Navigation = () => {
         <main>
             <Routes>
                 <Route path="/login" name="login" element={<Login />} />
-                <Route path="/forgot" name="forgot" element={<ForgotPassword />} />
+                {/* <Route path="/forgot" name="forgot" element={<ForgotPassword />} /> */}
 
                 <Route element={<Layout />}>
                     <Route path="/" name="home" element={<Home />} />
@@ -31,3 +30,4 @@ const Navigation = () => {
 };
 
 export default Navigation;
+

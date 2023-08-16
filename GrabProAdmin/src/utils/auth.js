@@ -1,31 +1,39 @@
 const { localStorage } = global.window;
 
 const auth = {
-  login(data) {
-    const { user, isSuccess } = data;
-    const { userName, _id } = user;
+    login(datas) {
+        const { data, status, access_token, refresh_token } = datas;
+        localStorage.access_token = access_token;
 
-    localStorage.userName = userName;
-    localStorage.userId = _id;
-    localStorage.isSuccess = isSuccess;
-    localStorage.role = user.role;
-  },
+        const { phone, email, role, updatedAt, _id } = data;
+        localStorage._id = _id;
+        localStorage.phone = phone;
+        localStorage.email = email;
+        localStorage.role = role;
+        localStorage.updatedAt = updatedAt;
+        localStorage.role = role;
+    },
 
-  userId() {
-    return localStorage.userId;
-  },
+    getAccessToken() {
+        return localStorage.access_token;
+    },
 
-  username() {
-    return localStorage.userName;
-  },
+    userId() {
+        return localStorage.userId;
+    },
 
-  role() {
-    return localStorage.role;
-  },
+    username() {
+        return localStorage.userName;
+    },
 
-  logout() {
-    localStorage.clear();
-  },
+    role() {
+        return localStorage.role;
+    },
+
+    logout() {
+        localStorage.clear();
+    },
 };
 
 export default auth;
+

@@ -2,7 +2,8 @@ import axios from 'axios';
 import qs from 'qs';
 
 const axiosClient = axios.create({
-    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    // baseURL: process.env.REACT_APP_API_ENDPOINT,
+    baseURL: 'http://192.168.1.10:3000',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -40,3 +41,4 @@ const axiosPrivate = axios.create({
 });
 
 export { axiosClient, axiosPrivate };
+

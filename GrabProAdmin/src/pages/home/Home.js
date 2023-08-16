@@ -23,7 +23,7 @@ const Home = () => {
     const [response, error, isLoading] = useAxios('get', '/homeAdmin', {}, {}, []);
     useEffect(() => {
         if (isLoading === false && !error && response.data) {
-            setDataHome({...response.data});
+            setDataHome({ ...response.data });
             setPrice(`${response.data.totalSale} vnd`);
         }
     }, [isLoading]);
@@ -44,13 +44,11 @@ const Home = () => {
 
                 return save;
             });
-        }
-        else if (spaceText.length - 2 <= 0) {
+        } else if (spaceText.length - 2 <= 0) {
             setIsDown(true);
             setContentUp(spaceText[0] + ' vnd');
             setContentDown('');
-        } 
-        else {
+        } else {
             setContentUp(spaceText[0] + ' ' + spaceText[1]);
             setContentDown(() => {
                 let save = '';
@@ -80,18 +78,20 @@ const Home = () => {
             const dateString = dataHome.timeUpdate;
 
             const dateObj = new Date(dateString);
-    
+
             const hours = dateObj.getUTCHours();
             const minutes = dateObj.getUTCMinutes();
             const day = dateObj.getUTCDate();
             const month = dateObj.getUTCMonth() + 1;
             const year = dateObj.getUTCFullYear();
-    
-            const formattedString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes} ngày ${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
-    
+
+            const formattedString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes} ngày ${
+                day < 10 ? '0' : ''
+            }${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+
             return formattedString;
         }
-    }
+    };
 
     const data = [
         { name: 'January', Sales: 10 },
@@ -110,7 +110,7 @@ const Home = () => {
                 <div className={classes['home__data--item']}>
                     <div className={classes['home__data--item-left']}>
                         <span>Doanh thu hôm nay</span>
-                        <p id="price" style={{fontSize: isDown && '5rem'}}>
+                        <p id="price" style={{ fontSize: isDown && '5rem' }}>
                             {contentUp}
                             <span>{contentDown}</span>
                         </p>
@@ -211,3 +211,4 @@ const Home = () => {
 };
 
 export default Home;
+
