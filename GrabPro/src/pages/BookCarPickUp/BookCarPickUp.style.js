@@ -7,7 +7,13 @@ const styles = StyleSheet.create({
     position: "relative"
   }, 
   "bookcarchoicedes__container-maps": {
+    marginTop: 100
     // zIndex: 0
+  },
+  map: {
+    // flex: 1,
+    width: '100%',
+    height: 300,
   },
   "bookcarchoicedes__container-back": {
     position: "absolute",

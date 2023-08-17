@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -38,6 +38,7 @@ import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
 import LoginScreen from "./src/pages/LoginScreen/LoginScreen";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
+import * as Permissions from 'expo-permissions';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -194,14 +195,30 @@ const Tab = () => {
 };
 
 const App = () => {
+  //   // Function to get permission for location
+  //   const requestLocationPermission = async () => {
+  //     const { status } = await Permissions.askAsync(Permissions.LOCATION);
+      
+  //     if (status === 'granted') {
+  //       console.log('You can use Geolocation');
+  
+  //       return true;
+  //     } else {
+  //       console.log('You cannot use Geolocation');
+  //       return false;
+  //     }
+  //   };
+  // useEffect(() => {
+  //   requestLocationPermission();
+  // })
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="/splash" component={SplashScreen} />
+        {/* <Stack.Screen name="/splash" component={SplashScreen} />
         <Stack.Screen name="/wait" component={WaitScreen} />
         <Stack.Screen name="/login" component={LoginScreen} />
         <Stack.Screen name="/lgphone" component={LoginByPhone} />
-        <Stack.Screen name="/verify" component={LoginVerification} />
+        <Stack.Screen name="/verify" component={LoginVerification} /> */}
         <Stack.Screen name="Tab" component={Tab} />
       </Stack.Navigator>
     </NavigationContainer>
