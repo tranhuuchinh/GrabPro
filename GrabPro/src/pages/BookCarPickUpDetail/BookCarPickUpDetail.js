@@ -14,6 +14,7 @@ import StateManager from "../../service/commandbook/receiver";
 import {
   SetToCommand,
   SetFromCommand,
+  setDistance
 } from "../../service/commandbook/command";
 
 const historyList = [

@@ -8,6 +8,7 @@ class StateManager {
     this.id = null;
     this.from = null;
     this.to = null;
+    this.distance = null;
     this.time = null;
     this.type = null;
   }
@@ -24,6 +25,10 @@ class StateManager {
     this.to = y;
   }
 
+  setDistance(dt) {
+    this.distance = dt;
+  }
+
   setTime(time) {
     this.time = time;
   }
@@ -37,6 +42,7 @@ class StateManager {
       id: this.id,
       from: this.from,
       to: this.to,
+      distance: this.distance,
       time: this.time,
       type: this.type,
     };

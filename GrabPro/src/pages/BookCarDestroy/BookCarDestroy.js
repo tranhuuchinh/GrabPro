@@ -23,8 +23,24 @@ const BookCarDestroy = () => {
   };
 
   useEffect(() => {
-    const getStateCommand = StateManager.getState(); //Lấy dữ liệu gửi qua socket
-    sendMessage(socketCustomer, "customerClient", getStateCommand);
+    // const getStateCommand = StateManager.getState(); //Lấy dữ liệu gửi qua socket
+    // sendMessage(socketCustomer, "customerClient", getStateCommand);
+    const object = {
+      idUser: "64cd144708afa47f3bda6ae6",
+      from: {
+        address: "135B Trần Hưng Đạo",
+        lat: 123.4,
+        lng: 234.5,
+      },
+      to: {
+        address: "225 Nguyễn Văn Cừ",
+        lat: 145.2,
+        lng: 112.9,
+      },
+      distance: 20,
+      type: "4seats",
+    };
+    sendMessage(socketCustomer, "customerClient", object);
   }, []);
 
   // Hủy đặt

@@ -39,6 +39,17 @@ class SetToCommand extends Command {
   }
 }
 
+class SetDistanceCommand extends Command {
+  constructor(receiver, y) {
+    super(receiver);
+    this.distance = y;
+  }
+
+  execute() {
+    this.receiver.setDistance(this.distance);
+  }
+}
+
 class SetTimeCommand extends Command {
   constructor(receiver, y) {
     super(receiver);
@@ -75,6 +86,7 @@ export {
   SetIdCommand,
   SetFromCommand,
   SetToCommand,
+  SetDistanceCommand,
   SetTimeCommand,
   SetTypeCommand,
   GetStateCommand,
