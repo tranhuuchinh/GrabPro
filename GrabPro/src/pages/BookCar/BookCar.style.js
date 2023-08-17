@@ -4,10 +4,26 @@ import { preventAutoHide } from 'expo-app-loading/node_modules/expo-splash-scree
 
 const styles = StyleSheet.create({
   bookcar__container: {
-    position: "relative"
+    position: "relative",
   }, 
   "bookcar__container-maps": {
     // zIndex: 0
+    // flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  map: {
+    // flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  address: {
+    fontSize: 16,
+    marginBottom: 20,
   },
   "bookcar__container-back": {
     position: "absolute",

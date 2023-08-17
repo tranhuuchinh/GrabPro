@@ -12,18 +12,20 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
 
-  const [responseReg, errorReg, isLoadingReg] = useAxios(
-    "post",
-    "/auth/register?role=customer",
-    { phone: "0987545644356565636", password: "123", role: "customer" },
-    {},
-    []
-  );
+  // const [responseReg, errorReg, isLoadingReg] = useAxios(
+  //   "post",
+  //   "/auth/register?role=customer",
+  //   { phone: "09875456443565423432326", password: "123", role: "customer" },
+  //   {},
+  //   []
+  // );
 
-  useEffect(() => {
-    console.log(errorReg);
-  }, [responseReg, errorReg]);
+  // useEffect(() => {
+  //   console.log(responseReg);
+  // }, []);
   const handleButtonPress = () => {
+    navigation.navigate("/lgphone");
+    // console.log(responseReg);
     // navigation.navigate("/lgphone");z
   };
   if (!fontsLoaded) {

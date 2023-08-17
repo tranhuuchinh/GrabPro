@@ -5,6 +5,14 @@
       "bundler": "metro"
     },
     "name": "GrabPro",
-    "slug": "GrabPro"
+    "slug": "GrabPro",
+    "android": {
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    },
+    "ios": {
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location for..."
+      }
+    }
   }
 }

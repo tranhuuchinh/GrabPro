@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View, TextInput } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faLocationDot,
@@ -76,20 +76,24 @@ const BookCarPickUpDetail = () => {
               size={24}
               color="green"
             />
-            <Text
+
+          <TextInput
+            style={styles["bookcarpickupdetail__container-search-up-title"]}
+            placeholder="Tìm địa điểm đón/nhận hàng"
+          />
+            {/* <Text
               style={styles["bookcarpickupdetail__container-search-up-title"]}
             >
               Tìm địa điểm đón/nhận hàng
-            </Text>
+            </Text> */}
           </View>
 
           <View style={styles["bookcarpickupdetail__container-search-down"]}>
             <FontAwesomeIcon icon={faLocationDot} size={24} color="gray" />
-            <Text
+            <TextInput 
               style={styles["bookcarpickupdetail__container-search-down-title"]}
-            >
-              227 Nguyễn Văn Cừ
-            </Text>
+              placeholder="227 Nguyễn Văn Cừ"
+            />
           </View>
         </View>
 

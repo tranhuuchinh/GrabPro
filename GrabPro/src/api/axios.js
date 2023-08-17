@@ -2,10 +2,12 @@ import axios from "axios";
 import qs from "qs";
 import { API_ENDPOINT } from "@env";
 
-console.log(API_ENDPOINT);
+// console.log(API_ENDPOINT);
 
 const axiosClient = axios.create({
+  // baseURL: "http://192.168.1.6:3000",
   baseURL: API_ENDPOINT,
+
   headers: {
     "Content-Type": "application/json",
   },
