@@ -40,6 +40,8 @@ import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
 import * as Permissions from 'expo-permissions';
 
+import { socketCustomer, socketDriver } from "./src/service/socket";
+
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
@@ -211,6 +213,24 @@ const App = () => {
   // useEffect(() => {
   //   requestLocationPermission();
   // })
+  useEffect(() => {
+    socketCustomer.on("connect", () => {
+      console.log("Connected to server customer");
+    });
+
+    socketCustomer.on("customerClient", (message) => {
+      console.log(message);
+    });
+
+    socketCustomer.on("disconnect", () => {
+      console.log("Disconnected from server customer");
+    });
+
+    return () => {
+      socketCustomer.disconnect();
+    };
+  }, []);
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

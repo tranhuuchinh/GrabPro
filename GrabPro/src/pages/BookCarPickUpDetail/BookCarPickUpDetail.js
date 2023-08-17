@@ -10,6 +10,11 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 import styles from "./BookCarPickUpDetail.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
+import StateManager from "../../service/commandbook/receiver";
+import {
+  SetToCommand,
+  SetFromCommand,
+} from "../../service/commandbook/command";
 
 const historyList = [
   {
@@ -32,6 +37,18 @@ const historyList = [
 const BookCarPickUpDetail = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+
+  //Chọn địa điểm đến
+  // location là object:
+  // {
+  //   title: 'Tên địa điểm',
+  //   latitude: 12,
+  //   altitude: 23
+  // }
+  // const setFrom = new SetFromCommand(StateManager, location);
+  // setFrom.execute();
+  // const setDestination = new SetToCommand(StateManager, location);
+  // setDestination.execute();
 
   if (!fontsLoaded) {
     return null;

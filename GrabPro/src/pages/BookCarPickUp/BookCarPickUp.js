@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Image, Pressable, Text, View, TextInput, Button } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faChevronLeft, faA } from "@fortawesome/free-solid-svg-icons";
-import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
+import Map from "../../assets/imgs/BookCar/masicle.png";
 import styles from "./BookCarPickUp.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
@@ -10,10 +10,16 @@ import MapView, { Polyline, Marker } from "react-native-maps";
 import axios from 'axios';
 import * as Permissions from 'expo-permissions';
 import * as Location from "expo-location";
+import StateManager from "../../service/commandbook/receiver";
 
 const BookCarPickUp = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+
+  //Ở chỗ này lấy được location hiện tại của bản thân và đích đến để hiển thị lên bản đồ
+  const getStateCommand = StateManager.getState(); //Lấy được tung độ và hoành độ của đích đến
+
+  console.log(getStateCommand);
 
   const handleBack = () => {
     navigation.goBack();

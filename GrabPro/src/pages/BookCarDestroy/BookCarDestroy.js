@@ -7,6 +7,8 @@ import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from "./BookCarDestroy.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
+import StateManager from "../../service/commandbook/receiver";
+import { socketCustomer, sendMessage } from "../../service/socket";
 
 const BookCarDestroy = () => {
   const fontsLoaded = useCustomFonts();
@@ -21,16 +23,22 @@ const BookCarDestroy = () => {
   };
 
   useEffect(() => {
-    const timeOut = setTimeout(() => {
-      if (!cancel) {
-        navigation.navigate("/bookcar-coming");
-      }
-    }, 4000);
+    const getStateCommand = StateManager.getState(); //Lấy dữ liệu gửi qua socket
+    sendMessage(socketCustomer, "customerClient", getStateCommand);
+  }, []);
 
-    return () => {
-      clearTimeout(timeOut);
-    };
-  }, [cancel]);
+  // Hủy đặt
+  // useEffect(() => {
+  //   const timeOut = setTimeout(() => {
+  //     if (!cancel) {
+  //       navigation.navigate("/bookcar-coming");
+  //     }
+  //   }, 4000);
+
+  //   return () => {
+  //     clearTimeout(timeOut);
+  //   };
+  // }, [cancel]);
 
   if (!fontsLoaded) {
     return null;

@@ -7,7 +7,7 @@ import {
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
-import HaLinh from "../../../assets/imgs/Favorite/halinh.png";
+import Map from "../../assets/imgs/BookCar/masicle2.png";
 import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from "./BookCar.style";
 import { useCustomFonts } from "../../styles/fonts";
@@ -16,6 +16,8 @@ import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 // import Geolocation from "@react-native-community/geolocation";
+import StateManager from "../../service/commandbook/receiver";
+import { SetTimeCommand } from "../../service/commandbook/command";
 
 const BookCar = () => {
   const fontsLoaded = useCustomFonts();
@@ -90,6 +92,9 @@ const BookCar = () => {
 
     getInitialLocation();
   }, []);
+  //Thay đổi thời gian thì gọi lại đoạn code này
+  const setTime = new SetTimeCommand(StateManager, "Thời gian đặt trước");
+  setTime.execute();
 
   const handleDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;
@@ -156,28 +161,7 @@ const BookCar = () => {
           {/* <Button title="Reverse Geocode" onPress={reverseGeocode} /> */}
         </View>
 
-        <View>
-          <Text>Search for a place:</Text>
-          <TextInput
-            style={{ borderWidth: 1, padding: 5 }}
-            value={searchKeyword}
-            onChangeText={(text) => setSearchKeyword(text)}
-          />
-          <Button title="Search" onPress={searchPlaces} />
 
-          <FlatList
-            data={searchResults}
-            keyExtractor={(item) => item.place_id.toString()}
-            renderItem={({ item }) => (
-              <View style={{ paddingVertical: 5 }}>
-                <Text>Name: {item.display_name}</Text>
-                <Text>Latitude: {item.lat}</Text>
-                <Text>Longitude: {item.lon}</Text>
-                <Text>Distance: {distance}</Text>
-              </View>
-            )}
-          />
-        </View>
 
         <Pressable
           style={styles["bookcar__container-back"]}
@@ -195,6 +179,28 @@ const BookCar = () => {
             display: "none"
           }}
         >
+                  <View>
+          <Text>Search for a place:</Text>
+          <TextInput
+            style={{ borderWidth: 1, padding: 5 }}
+            value={searchKeyword}
+            onChangeText={(text) => setSearchKeyword(text)}
+          />
+          <Button title="Search" onPress={searchPlaces} />
+
+          {/* <FlatList
+            data={searchResults}
+            keyExtractor={(item) => item.place_id.toString()}
+            renderItem={({ item }) => (
+              <View style={{ paddingVertical: 5 }}>
+                <Text>Name: {item.display_name}</Text>
+                <Text>Latitude: {item.lat}</Text>
+                <Text>Longitude: {item.lon}</Text>
+                <Text>Distance: {distance}</Text>
+              </View>
+            )}
+          /> */}
+        </View>
           <View style={styles["bookcar__container-timer"]}>
             <Text style={styles["bookcar__container-timer-title"]}>
               Chọn khung giờ:

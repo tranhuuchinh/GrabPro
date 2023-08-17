@@ -15,6 +15,8 @@ import Favor from "../../assets/imgs/BookCar/Favor.png";
 import styles from "./BookCarHome.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
+import StateManager from "../../service/commandbook/receiver";
+import { SetToCommand } from "../../service/commandbook/command";
 
 const locations = [
   {
@@ -45,7 +47,16 @@ const BookCarHome = () => {
   const handlePressBack = () => {
     navigation.goBack();
   };
-  const handlePressLocation = () => {
+  const handlePressLocation = (location) => {
+    //Chọn địa điểm đến
+    // location là object:
+    // {
+    //   title: 'Tên địa điểm',
+    //   latitude: 12,
+    //   altitude: 23
+    // }
+    const setDestination = new SetToCommand(StateManager, location);
+    setDestination.execute();
     navigation.navigate("/bookcar-pickup");
   };
   const handlePressBookCar = () => {
@@ -101,7 +112,10 @@ const BookCarHome = () => {
 
           <View style={{ marginTop: 20 }}>
             {locations.map((location, index) => (
-              <Pressable onPress={() => handlePressLocation()} key={index}>
+              <Pressable
+                onPress={() => handlePressLocation(location)}
+                key={index}
+              >
                 <View style={styles["bookcar__container-location"]}>
                   <View style={{ width: "10%" }}>
                     <Image
