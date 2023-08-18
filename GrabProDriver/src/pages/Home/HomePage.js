@@ -1,3 +1,8 @@
+import * as Location from "expo-location";
+import MapView from "react-native-maps";
+import geolib from "geolib";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Marker } from "react-native-maps";
 import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 import ImageMap from "../../assets/imgs/Home/image3.png";
@@ -16,6 +21,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCustomFonts } from "../../styles/fonts";
+import ModalCustom from "../../components/ModalCustom/ModalCustom";
 import {
   socketDriver,
   disconnect,
@@ -31,10 +37,94 @@ const HomePage = () => {
   const navigation = useNavigation();
   let socketDriverInstance;
   const [initialState, setInitialState] = useState(false);
+  //lấy vị trí hiện tại
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [destination, setDestination] = useState(null);
+  // const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [coordinate, setCoordinate] = useState([]);
+  const [ids, setID] = useState();
 
   const handleToggleConnect = () => {
     setIsConnected((prev) => !prev);
   };
+
+  // Tọa độ điểm gần đây
+  const nearbyCoords = {
+    latitude: 10.76414,
+    longitude: 106.68225,
+  };
+
+  const retrieveIdFromStorage = async () => {
+    try {
+      const _id = await AsyncStorage.getItem("_id");
+      if (_id !== null) {
+        setID(_id);
+        // console.log("Giá trị _id từ AsyncStorage:", _id);
+        console.log("fdsfjs" + ids);
+      } else {
+        console.log("Không tìm thấy giá trị _id trong AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy giá trị _id từ AsyncStorage:", error);
+    }
+  };
+
+  //Lấy vị trí hiện tại
+  const getLocationAsync = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission denied");
+      return;
+    }
+
+    try {
+      const location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation(location.coords);
+      // In tọa độ ra console
+      console.log("Latitude:", location.coords.latitude);
+      console.log("Longitude:", location.coords.longitude);
+
+      // Tính khoảng cách bằng cách tính khoảng cách Euclidean giữa hai điểm
+      const distance = Math.sqrt(
+        Math.pow(location.coords.latitude - nearbyCoords.latitude, 2) +
+          Math.pow(location.coords.longitude - nearbyCoords.longitude, 2)
+      );
+      console.log("Distance to Nearby Point:", distance * 111139, "meters");
+      // Với 111139 là giá trị đổi từ độ sang mét tại vĩ độ Hồ Chí Minh
+    } catch (error) {
+      console.error("Error getting location:", error);
+    }
+  };
+
+  useEffect(() => {
+    getLocationAsync();
+    retrieveIdFromStorage();
+    if (isConnected && socketDriver) {
+      socketDriver.on("disconnect", () => {
+        console.log("Loss internet => Reconnect...");
+        socketDriverInstance = connect();
+
+        //Chỗ này cũng bỏ idUser vô chỗ IdAccount
+        sendMessage("setID", "IdAccount");
+      });
+    }
+  }, []);
+  //End
+
+  // Tính khoảng cách giữa hai tọa độ
+  // const calculateDistance = () => {
+  //   const pointA = {
+  //     latitude: currentLocation.latitude,
+  //     longitude: currentLocation.longitude,
+  //   };
+  //   const pointB = { latitude: otherLatitude, longitude: otherLongitude };
+
+  //   const distance = geolib.getDistance(pointA, pointB);
+  //   console.log("Distance in meters:", distance);
+  // };
+
+  // // Gọi hàm tính khoảng cách khi cần
+  // calculateDistance();
 
   useEffect(() => {
     if (isConnected) {
@@ -58,17 +148,17 @@ const HomePage = () => {
     }
   }, [isConnected]);
 
-  useEffect(() => {
-    if (isConnected && socketDriver) {
-      socketDriver.on("disconnect", () => {
-        console.log("Loss internet => Reconnect...");
-        socketDriverInstance = connect();
+  // useEffect(() => {
+  //   if (isConnected && socketDriver) {
+  //     socketDriver.on("disconnect", () => {
+  //       console.log("Loss internet => Reconnect...");
+  //       socketDriverInstance = connect();
 
-        //Chỗ này cũng bỏ idUser vô chỗ IdAccount
-        sendMessage("setID", "IdAccount");
-      });
-    }
-  }, []);
+  //       //Chỗ này cũng bỏ idUser vô chỗ IdAccount
+  //       sendMessage("setID", "IdAccount");
+  //     });
+  //   }
+  // }, []);
 
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
@@ -80,10 +170,27 @@ const HomePage = () => {
       <View style={styles.homePageContainer}>
         <View style={{ flex: 1, position: "relative" }}>
           <View style={styles.homePageImage}>
-            <Image
+            {/* <Image
               source={ImageMap}
               style={{ width: "100%", height: "100%" }}
-            />
+            /> */}
+            {currentLocation && (
+              <MapView
+                style={{ width: "100%", height: "100%" }}
+                initialRegion={{
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude,
+                  latitudeDelta: 0.001,
+                  longitudeDelta: 0.0005,
+                }}
+              >
+                {/* Hiển thị đánh dấu tại vị trí người dùng */}
+                {currentLocation && (
+                  <Marker coordinate={currentLocation} title="Your location" />
+                )}
+                {}
+              </MapView>
+            )}
           </View>
 
           <View
@@ -451,6 +558,7 @@ const HomePage = () => {
             </View>
           </View>
         </View>
+        {/* <ModalCustom /> */}
       </View>
     );
   }

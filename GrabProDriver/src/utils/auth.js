@@ -1,76 +1,92 @@
-const { localStorage } = global.window;
+// const { localStorage } = global.window;
+// import localStorage =
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const retrieveIdFromStorage = async () => {
+  try {
+    const _id = await AsyncStorage.getItem("_id");
+    if (_id !== null) {
+      console.log("Giá trị _id từ AsyncStorage:", _id);
+    } else {
+      console.log("Không tìm thấy giá trị _id trong AsyncStorage");
+    }
+  } catch (error) {
+    console.error("Lỗi khi lấy giá trị _id từ AsyncStorage:", error);
+  }
+};
 const auth = {
-  login(data) {
-    localStorage.name = data.data.user.name;
-    localStorage.email = data.data.user.email;
-    localStorage.gender = data.data.user.gender;
-    localStorage.dob = data.data.user.dob;
-    localStorage.phone = data.data.user.phone;
-    localStorage.role = data.data.user.role;
-    localStorage._id = data.data.user._id;
-    localStorage.avatar = data.data.user.photo;
-    localStorage.accessToken = data.access_token;
+  login(datas) {
+    const { data } = datas; // Destructure data từ tham số datas
+    // Lưu _id vào AsyncStorage
+    AsyncStorage.setItem("_id", data._id);
+    AsyncStorage.setItem("phone", data.phone);
+    AsyncStorage.setItem("role", data.role);
+    const storedId = AsyncStorage.getItem("_id");
+    // retrieveIdFromStorage();
   },
 
-  setAccessToken(token) {
-    localStorage.accessToken = token;
-  },
+  // setAccessToken(token) {
+  //   localStorage.access_token = token;
+  // },
 
-  getAccessToken() {
-    return localStorage.accessToken;
-  },
+  // setID(_id) {
+  //   localStorage._id = _id;
+  // },
 
-  getID() {
-    return localStorage._id;
-  },
+  // getAccessToken() {
+  //   return localStorage.access_token;
+  // },
 
-  getPhone() {
-    return localStorage.phone;
-  },
+  // getID() {
+  //   return localStorage._id;
+  // },
 
-  role() {
-    return localStorage.role;
-  },
+  // getPhone() {
+  //   return localStorage.phone;
+  // },
 
-  getInfo() {
-    return {
-      name: localStorage.name || "",
-      gender: localStorage.gender || "",
-      dob: localStorage.dob || "",
-      phone: `${localStorage.phone.substring(
-        0,
-        2
-      )}*****${localStorage.phone.substring(
-        localStorage.phone.length - 3,
-        localStorage.phone.length
-      )}`,
-      email: localStorage.email || "",
-    };
-  },
+  // role() {
+  //   return localStorage.role;
+  // },
 
-  getAvatar() {
-    return !localStorage.avatar ||
-      localStorage.avatar === "undefined" ||
-      localStorage.avatar === "null"
-      ? ""
-      : localStorage.avatar;
-  },
+  // getInfo() {
+  //   return {
+  //     name: localStorage.name || "",
+  //     gender: localStorage.gender || "",
+  //     dob: localStorage.dob || "",
+  //     phone: `${localStorage.phone.substring(
+  //       0,
+  //       2
+  //     )}*****${localStorage.phone.substring(
+  //       localStorage.phone.length - 3,
+  //       localStorage.phone.length
+  //     )}`,
+  //     email: localStorage.email || "",
+  //   };
+  // },
 
-  updateAvatar(avt) {
-    localStorage.avatar = avt;
-  },
+  // getAvatar() {
+  //   return !localStorage.avatar ||
+  //     localStorage.avatar === "undefined" ||
+  //     localStorage.avatar === "null"
+  //     ? ""
+  //     : localStorage.avatar;
+  // },
 
-  updateInfo(userInfo) {
-    localStorage.name = userInfo.name;
-    localStorage.gender = userInfo.gender;
-    localStorage.dob = userInfo.dob;
-    localStorage.email = userInfo.email;
-  },
+  // updateAvatar(avt) {
+  //   localStorage.avatar = avt;
+  // },
 
-  logout() {
-    localStorage.clear();
-  },
+  // updateInfo(userInfo) {
+  //   localStorage.name = userInfo.name;
+  //   localStorage.gender = userInfo.gender;
+  //   localStorage.dob = userInfo.dob;
+  //   localStorage.email = userInfo.email;
+  // },
+
+  // logout() {
+  //   localStorage.clear();
+  // },
 };
 
 export default auth;

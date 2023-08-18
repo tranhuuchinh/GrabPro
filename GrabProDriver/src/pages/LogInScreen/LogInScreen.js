@@ -1,9 +1,13 @@
 import React, { useRef, useState } from "react";
-import { Text, View, Pressable, TextInput } from "react-native";
+import { Text, View, Pressable, TextInput, Alert } from "react-native";
 import styles from "./LogInScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
+import useAxios from "../../hooks/useAxios";
+import { axiosClient } from "../../api/axios";
+import auth from "../../utils/auth";
+import axios from "axios";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -19,8 +23,11 @@ const LogInScreen = () => {
   const PhoneInput = useRef();
   const [isPass, setIsEmail] = useState(true);
   const [isPhone, setIsPhone] = useState(true);
+  const [idDriver, setIdDriver] = useState("");
 
-  const submitForm = () => {
+  const submitForm = (e) => {
+    e.preventDefault();
+
     if (!phoneValid(phone)) {
       setIsPhone(false);
       PhoneInput.current.focus();
@@ -28,6 +35,7 @@ const LogInScreen = () => {
     } else {
       setIsPhone(true);
     }
+
     if (password.length < 4) {
       setIsEmail(false);
       PassInput.current.focus();
@@ -35,10 +43,36 @@ const LogInScreen = () => {
     } else {
       setIsEmail(true);
     }
+    try {
+      axios
+        .post("http://192.168.1.11:3000/auth/login?role=driver", {
+          phone: phone,
+          password: password,
+          loginType: "phone",
+        })
+        .then(async (response) => {
+          // console.log(response.data);
 
-    if (isPhone && isPass) {
-      navigation.navigate("/home");
+          if (
+            response.data.status == "success" &&
+            response.data.data.role == "driver"
+          ) {
+            const dataRes = await auth.login(response.data);
+            navigation.navigate("/home");
+          }
+        })
+        .catch((error) => {
+          // Alert.alert("Tài khoản không tồn tại! Vui lòng kiểm tra lại");
+        });
+      // navigation.navigate("/home");
+    } catch (error) {
+      // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
+      console.error("Đăng nhập thất bại:", error);
     }
+
+    // if (isPhone && isPass) {
+    //   navigation.navigate("/home");
+    // }
   };
 
   if (!fontsLoaded) {
