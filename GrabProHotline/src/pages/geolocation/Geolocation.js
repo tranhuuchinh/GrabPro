@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import classes from './Geolocation.module.scss';
-import map from '../../assets/imgs/map.jpg';
 import ic_position from '../../assets/svg/address.svg';
 import { DirectionsService, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import ButtonCT from '../../components/button/ButtonCT';
 import Geocode from 'react-geocode';
 import { forEach } from 'lodash';
+import socketManagerInstance, { sendMessage, socketGeolocation } from '../../service/socket';
+import Swal from 'sweetalert2';
 
-Geocode.setApiKey('AIzaSyDkTtbU7pL_A95hw-6vtA0fydLMLoqFnS0');
+Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
 Geocode.setLanguage('vn');
 
 const containerStyle = {
@@ -17,7 +18,7 @@ const containerStyle = {
 
 const Geolocation = () => {
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: 'AIzaSyDkTtbU7pL_A95hw-6vtA0fydLMLoqFnS0',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_API,
         id: 'google-map-script',
         language: 'vi',
         region: 'vn',
@@ -27,12 +28,15 @@ const Geolocation = () => {
         scaledSize: isLoaded ? new window.google.maps.Size(36, 36) : null,
     };
 
+    const [message, setMessage] = useState('');
+    const [stack, setStack] = useState([]);
     const [map, setMap] = useState(null);
     const [search, setSearch] = useState('');
     const [address, setAddress] = useState('Hà Nội');
     const [geocode, setGeocode] = useState({ lat: 37.7749, lng: -122.4194 });
     const [newGeocode, setNewGeocode] = useState(null);
 
+    const [noHome, setNoHome] = useState('');
     const [street, setStreet] = useState('');
     const [ward, setWard] = useState('');
     const [district, setDistrict] = useState('');
@@ -49,12 +53,22 @@ const Geolocation = () => {
         setMap(null);
     }, []);
 
+    const fitBoundsToMarkers = (newGeocode) => {
+        const bounds = new window.google.maps.LatLngBounds();
+        bounds.extend(geocode);
+        bounds.extend(newGeocode);
+        map.fitBounds(bounds);
+    };
+
     const handleSplitAddress = (address) => {
         const addressList = address.split(', ');
         const filteredArray = addressList.filter((item, idx) => {
             if (addressList.length - idx <= 5) return item;
         });
-        setStreet(filteredArray[0]);
+        const noHomeSplit = filteredArray[0].split(' ');
+        setNoHome(noHomeSplit[0]);
+        noHomeSplit.splice(0, 1);
+        setStreet(noHomeSplit.join(' '));
         setWard(filteredArray[1]);
         setDistrict(filteredArray[2]);
         setCity(filteredArray[3]);
@@ -76,12 +90,27 @@ const Geolocation = () => {
         Geocode.fromAddress(address).then(
             (response) => {
                 const { lat, lng } = response.results[0].geometry.location;
+                console.log(response);
                 if (type === 'NEW') {
                     setNewGeocode({ lat, lng });
+                    fitBoundsToMarkers({
+                        lat,
+                        lng,
+                    });
                 } else if (type === 'SEARCH') {
                     setNewGeocode({ lat, lng });
                     getAddress(lat, lng);
-                } else setGeocode({ lat, lng });
+                    fitBoundsToMarkers({
+                        lat,
+                        lng,
+                    });
+                } else {
+                    setGeocode({ lat, lng });
+                    fitBoundsToMarkers({
+                        lat,
+                        lng,
+                    });
+                }
             },
             (error) => {
                 console.error(error);
@@ -90,10 +119,14 @@ const Geolocation = () => {
     };
 
     const handleMapClickPosition = (event) => {
-        const newLat = event.latLng.lat();
-        const newLng = event.latLng.lng();
-        setNewGeocode({ lat: newLat, lng: newLng });
-        getAddress(newLat, newLng);
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        setNewGeocode({ lat, lng });
+        getAddress(lat, lng);
+        fitBoundsToMarkers({
+            lat,
+            lng,
+        });
     };
 
     const handleReGeocode = () => {
@@ -105,12 +138,100 @@ const Geolocation = () => {
     }, [address]);
 
     // Xử lý khác
-    // const myInput = document.getElementsByTagName('input');
+    useEffect(() => {
+        const myInput = document.getElementsByTagName('input');
 
-    // forEach()
-    // myInput.addEventListener('focus', function () {
-    //     this.select();
-    // });
+        forEach(myInput, (item) => {
+            item.addEventListener('focus', function () {
+                this.select();
+            });
+        });
+    }, []);
+
+    const handleContinue = () => {
+        console.log(message);
+
+        setStack((prev) => prev.filter((item) => item !== 'geocodeStart'));
+        const tmp = message;
+        tmp.data.geocodeStart = newGeocode;
+        tmp.data.addressStart = noHome + ' ' + street + ', ' + ward + ', ' + district + ', ' + city;
+        setMessage(tmp);
+
+        setAddress(message.data.addressEnd);
+        handleSplitAddress(message.data.addressEnd);
+    };
+
+    const handleComplete = () => {
+        if (stack[0] === 'geocodeStart') {
+            const tmp = message;
+            tmp.data.geocodeStart = newGeocode || geocode;
+            tmp.data.addressStart = noHome + ' ' + street + ', ' + ward + ', ' + district + ', ' + city;
+            setMessage(tmp);
+        } else {
+            const tmp = message;
+            tmp.data.geocodeEnd = newGeocode || geocode;
+            tmp.data.addressEnd = noHome + ' ' + street + ', ' + ward + ', ' + district + ', ' + city;
+            setMessage(tmp);
+        }
+        setStack([]);
+        setAddress('');
+        setGeocode({ lat: '', lng: '' });
+        setNoHome('');
+        setStreet('');
+        setWard('');
+        setDistrict('');
+        setCity('');
+    };
+
+    useEffect(() => {
+        if (stack.length == 0) {
+            console.log(message);
+            sendMessage(socketGeolocation, 'clientGeolocationResolved', message);
+        }
+    }, [stack]);
+
+    useEffect(() => {
+        socketGeolocation.on('connect', () => {
+            console.log('Connected to server geolocation');
+        });
+
+        socketGeolocation.on('GEOLOCATION_CLIENT', async (message) => {
+            console.log(message);
+            await Swal.fire({
+                title: 'Định vị mới',
+                text: message.data.phone,
+                icon: 'info',
+                confirmButtonText: 'Định vị',
+            });
+
+            const tmp = [];
+            if (message.data.geocodeStart === undefined) {
+                tmp.push('geocodeStart');
+                setAddress(message.data.addressStart);
+                handleSplitAddress(message.data.addressStart);
+                message.data.geocodeStart = {};
+            }
+            if (message.data.geocodeEnd === undefined) {
+                if (tmp.length === 0) {
+                    setAddress(message.data.addressEnd);
+                    handleSplitAddress(message.data.addressEnd);
+                }
+                tmp.push('geocodeEnd');
+                message.data.geocodeEnd = {};
+            }
+            setMessage(message);
+            setStack(tmp);
+        });
+
+        socketGeolocation.on('disconnect', () => {
+            console.log('Disconnected from server geolocation');
+            socketManagerInstance.reconnect(socketGeolocation);
+        });
+
+        return () => {
+            socketGeolocation.disconnect();
+        };
+    }, []);
 
     return (
         <div className={classes.geo}>
@@ -164,6 +285,7 @@ const Geolocation = () => {
                     style={{ float: 'right' }}
                     onClick={() => {
                         getLatLng(search, 'SEARCH');
+                        setSearch('');
                     }}
                 >
                     Tìm kiếm
@@ -174,8 +296,15 @@ const Geolocation = () => {
                 <br />
                 <input
                     type="text"
+                    name="noHome"
+                    placeholder="Số nhà"
+                    value={noHome}
+                    onChange={(e) => setNoHome(e.target.value)}
+                />
+                <input
+                    type="text"
                     name="street"
-                    placeholder="Số nhà/Đường"
+                    placeholder="Đường"
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                 />
@@ -200,6 +329,11 @@ const Geolocation = () => {
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                 />
+                <br />
+
+                <ButtonCT outlineBtnBlue borderRadius medium style={{ float: 'right' }} onClick={handleReGeocode}>
+                    Định vị lại
+                </ButtonCT>
 
                 <br />
                 <br />
@@ -210,28 +344,18 @@ const Geolocation = () => {
                 <p>
                     <strong>Lng: </strong> {newGeocode ? newGeocode.lng : geocode.lng}
                 </p>
-                <br />
-
-                <ButtonCT outlineBtnBlue borderRadius medium style={{ float: 'right' }} onClick={handleReGeocode}>
-                    Định vị lại
-                </ButtonCT>
 
                 <br />
                 <br />
-                <br />
-                <br />
-                <ButtonCT
-                    primary
-                    borderRadius
-                    medium
-                    block
-                    onClick={() => {
-                        handleSplitAddress('135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, TP HCM');
-                        setAddress('135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, TP HCM');
-                    }}
-                >
-                    Xác nhận
-                </ButtonCT>
+                {stack.length == 2 ? (
+                    <ButtonCT primary borderRadius medium block onClick={handleContinue}>
+                        Xác nhận & Tiếp tục
+                    </ButtonCT>
+                ) : (
+                    <ButtonCT primary borderRadius medium block onClick={handleComplete}>
+                        Hoàn thành
+                    </ButtonCT>
+                )}
             </div>
         </div>
     );
