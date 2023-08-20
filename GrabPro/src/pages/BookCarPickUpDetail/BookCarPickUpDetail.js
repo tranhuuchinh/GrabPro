@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Image, Pressable, Text, View, TextInput } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -16,28 +16,18 @@ import {
   SetFromCommand,
   setDistance
 } from "../../service/commandbook/command";
+import { useRoute } from "@react-navigation/native";
 
-const historyList = [
-  {
-    title: "145/44 Đường 3 Tháng 2",
-    detail:
-      "145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456 là lá la",
-  },
-  {
-    title: "145/44 Đường 3 Tháng 2",
-    detail:
-      "145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456 là lá la",
-  },
-  {
-    title: "145/44 Đường 3 Tháng 2",
-    detail:
-      "145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456 là lá la",
-  },
-];
+const apiKey = '5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114'
 
 const BookCarPickUpDetail = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+
+  // Lấy dữ liệu từ BookCarHome gửi qua bằng navigate
+  const route = useRoute();
+  const locationFrom = route.params.from;
+  const locationTo = route.params.to;
 
   //Chọn địa điểm đến
   // location là object:
@@ -50,6 +40,57 @@ const BookCarPickUpDetail = () => {
   // setFrom.execute();
   // const setDestination = new SetToCommand(StateManager, location);
   // setDestination.execute();
+
+  const [text, setText] = useState(locationFrom.info);
+  const [dataSearch, setDataSearch] = useState([]);
+
+  const handleChangeText = async (newText) => {
+    setText(newText); // Cập nhật giá trị của TextInput
+  
+    // Gọi API để lấy danh sách địa điểm dựa trên newText
+    // ?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&text=Namibian%20Brewery
+    const apiUrl = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${apiKey}&text=${newText}`;
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+  
+      // Kiểm tra dữ liệu trả về có khác undefined hay không
+      if (data && data.features && Array.isArray(data.features)) {
+        // Lọc chỉ lấy các địa điểm ở Việt Nam
+        const vietnamLocations = data.features.filter((location) =>
+          location.properties.country === "Vietnam" || location.properties.country === "Viet Nam"
+        );
+  
+        setDataSearch(vietnamLocations.slice(0, 3)); 
+      } else {
+        console.log("Dữ liệu API không hợp lệ");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleLocation = (location) => {
+      //Chọn địa điểm đến
+      // location là object:
+      // {
+      //   title: 'Tên địa điểm',
+      //   latitude: 12,
+      //   altitude: 23
+      // }
+
+      const locationFrom = {
+        name: location.properties.name,
+        lat: location.geometry.coordinates[1],
+        lng: location.geometry.coordinates[0]
+      }
+
+      const setFrom = new SetFromCommand(StateManager, locationFrom);
+      setFrom.execute();
+      navigation.navigate("/bookcar-pickup", {locationFrom: {latitude: location.geometry.coordinates[1] , longitude: location.geometry.coordinates[0]}, locationTo: locationTo});
+      // const setDestination = new SetToCommand(StateManager, location);
+      // setDestination.execute();
+  }
 
   if (!fontsLoaded) {
     return null;
@@ -79,7 +120,8 @@ const BookCarPickUpDetail = () => {
 
           <TextInput
             style={styles["bookcarpickupdetail__container-search-up-title"]}
-            placeholder="Tìm địa điểm đón/nhận hàng"
+            value={text}
+            onChangeText={handleChangeText}
           />
             {/* <Text
               style={styles["bookcarpickupdetail__container-search-up-title"]}
@@ -90,22 +132,23 @@ const BookCarPickUpDetail = () => {
 
           <View style={styles["bookcarpickupdetail__container-search-down"]}>
             <FontAwesomeIcon icon={faLocationDot} size={24} color="gray" />
-            <TextInput 
+            <Text 
               style={styles["bookcarpickupdetail__container-search-down-title"]}
               placeholder="227 Nguyễn Văn Cừ"
-            />
+            >{locationTo.properties.housenumber}{locationTo.properties.housenumber ? ' ' : ''}{locationTo.properties.street}{locationTo.properties.street ? ',' : ''} {locationTo.properties.county}, {locationTo.properties.locality}</Text>
           </View>
         </View>
 
         <View style={styles["bookcarpickupdetail__container-list"]}>
-          <Text style={styles["bookcarpickupdetail__container-list-title"]}>
+          {/* <Text style={styles["bookcarpickupdetail__container-list-title"]}>
             Lịch sử
-          </Text>
+          </Text> */}
 
-          {historyList.map((history, index) => (
+          {dataSearch && dataSearch.map((location, index) => (
             <Pressable
               style={styles["bookcarpickupdetail__container-history"]}
               key={index}
+              onPress={() =>handleLocation(location)}
             >
               <View style={{ width: "10%", marginRight: 6 }}>
                 <FontAwesomeIcon icon={faClock} size={24} color="#727272" />
@@ -115,7 +158,7 @@ const BookCarPickUpDetail = () => {
                 <Text
                   style={styles["bookcarpickupdetail__container-history-title"]}
                 >
-                  145/44 Đường 3 Tháng 2
+                  {location.properties.label}
                 </Text>
                 <Text
                   style={
@@ -124,8 +167,7 @@ const BookCarPickUpDetail = () => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456
-                  là lá la
+                  {location.properties.housenumber}{location.properties.housenumber ? ' ' : ''}{location.properties.street}{location.properties.street ? ',' : ''} {location.properties.county}, {location.properties.locality}
                 </Text>
               </View>
             </Pressable>

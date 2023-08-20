@@ -62,8 +62,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#EFF9F8",
-    marginVertical: 14,
+    // marginVertical: 14,
     paddingVertical: 14,
     paddingLeft: 22,
     paddingRight: 10
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20  
+    marginVertical: 20,
   },
   "bookcar__container-payment-left": {
     width: "60%",

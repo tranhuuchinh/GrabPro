@@ -57,13 +57,13 @@ const HomeScreen = () => {
   };
 
   const handlePressOto = () => {
-    const setType = new SetTypeCommand(StateManager, "GrabCar");
+    const setType = new SetTypeCommand(StateManager, "4seats");
     setType.execute();
     navigation.navigate("/bookcar-home");
   };
 
   const handlePressBike = () => {
-    const setType = new SetTypeCommand(StateManager, "GrabBike");
+    const setType = new SetTypeCommand(StateManager, "motorbike");
     setType.execute();
     navigation.navigate("/bookcar-home");
   };

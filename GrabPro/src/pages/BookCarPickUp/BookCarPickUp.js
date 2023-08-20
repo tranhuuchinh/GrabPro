@@ -11,6 +11,8 @@ import axios from 'axios';
 import * as Permissions from 'expo-permissions';
 import * as Location from "expo-location";
 import StateManager from "../../service/commandbook/receiver";
+import { useRoute } from "@react-navigation/native";
+import { SetFromCommand } from "../../service/commandbook/command";
 
 const BookCarPickUp = () => {
   const fontsLoaded = useCustomFonts();
@@ -19,16 +21,30 @@ const BookCarPickUp = () => {
   //Ở chỗ này lấy được location hiện tại của bản thân và đích đến để hiển thị lên bản đồ
   const getStateCommand = StateManager.getState(); //Lấy được tung độ và hoành độ của đích đến
 
-  console.log(getStateCommand);
+  // Lấy dữ liệu từ BookCarHome gửi qua bằng navigate
+  const route = useRoute();
+  const destinationSearch = route.params.locationTo;
 
   const handleBack = () => {
     navigation.goBack();
   };
 
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [destination, setDestination] = useState(null);
-  // const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [coordinate, setCoordinate] = useState([]);
+  const [dataAddress, setDataAddress] = useState("");
+  const [nameAddress, setNameAddress] = useState("");
+
+  const getAddress = async (latitude, longitude) => {
+    const address = await Location.reverseGeocodeAsync({
+      latitude: latitude,
+      longitude: longitude,
+    });
+
+    if (address.length > 0) {
+      const formattedAddress = `${address[0].name ? address[0].name : ''} ${address[0].street ? address[0].street : ''}, ${address[0].subregion ? address[0].subregion : ''}, ${address[0].region ? address[0].region : ''}`;
+      setDataAddress(formattedAddress);
+      setNameAddress(`${address[0].name ? address[0].name : ''} ${address[0].street ? address[0].street : ''}`);
+    }
+  }
 
   const getLocationAsync = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -39,56 +55,58 @@ const BookCarPickUp = () => {
 
     try {
       const location = await Location.getCurrentPositionAsync({});
-      setCurrentLocation(location.coords);
+
+      getAddress(location.coords.latitude, location.coords.longitude);
+      
+      setCurrentLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
     } catch (error) {
       console.error("Error getting location:", error);
     }
+    // else{
+    //   setCurrentLocation(route.params.locationFrom);
+    //   getAddress(route.params.locationFrom.lat, route.params.locationFrom.lng);
+    // }
   };
 
   useEffect(() => {
     getLocationAsync();
   }, []);
 
-  // Tính toán và hiển thị đường đi khi destination thay đổi
-useEffect(() => {
-  if (currentLocation && destination) {
-    var request = new XMLHttpRequest();
+  useEffect(() => {
+    if (currentLocation) {
+      const setLocationFrom = {
+        name: nameAddress,
+        lat: currentLocation.latitude,
+        lng: currentLocation.longitude
+      };
+  
+      const setFrom = new SetFromCommand(StateManager, setLocationFrom);
+      setFrom.execute();
+    }
+  }, [nameAddress])
 
-    request.open('GET', `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&start=${currentLocation.longitude},${currentLocation.latitude}&end=${destination.longitude},${destination.latitude}`);
-
-    request.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
-
-    request.onreadystatechange = function () {
-      if (this.readyState === 4) {
-        const responseObj = JSON.parse(this.responseText);
-
-        const coordinatesA = responseObj.features[0].geometry.coordinates.map((coord) => {
-          return {
-            latitude: coord[1],
-            longitude: coord[0],
-          }
-        });
-        setCoordinate(coordinatesA);
-      }
-    };
-
-    request.send();
-  }
-}, [currentLocation, destination]);
+  useEffect(() => {
+    if (route.params.locationFrom) {
+      setCurrentLocation(route.params.locationFrom);
+      getAddress(route.params.locationFrom.lat, route.params.locationFrom.lng);
+    }
+  }, [route.params.locationFrom]);
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
       <View style={styles.bookcarchoicedes__container}>
-        {/* <View style={styles["bookcarchoicedes__container-maps"]}>
-          <Image source={HaLinh} style={{ width: "100%", height: "100%" }} />
-        </View> */}
-
           {currentLocation && (
             <MapView
             style={{ width: '100%', height: '100%' }}
             initialRegion={{
+              latitude: currentLocation.latitude,
+              longitude: currentLocation.longitude,
+              latitudeDelta: 0.001,
+              longitudeDelta: 0.0005,
+            }}
+            region={{
               latitude: currentLocation.latitude,
               longitude: currentLocation.longitude,
               latitudeDelta: 0.001,
@@ -102,30 +120,8 @@ useEffect(() => {
                 title="Your location"
               />
             )}
-            {
-              coordinate.length - 1 > 0 && (
-                <Marker
-                coordinate={coordinate[coordinate.length - 1]}
-                title="Destination"
-                icon={faChevronLeft}
-                pinColor="green"
-              />
-              )
-            }
-
-            <Polyline
-              coordinates={coordinate}
-              strokeColor="#58BC6B"
-              strokeWidth={3}
-            />
            </MapView>
           )}
-
-          {/* <Button style={{
-            position: "absolute",
-            bottom: 0,
-          }} title="haha" onPress={() => setDestination({latitude: 10.1231, longitude: 106.1231})} /> */}
-
 
         <Pressable
           style={styles["bookcarchoicedes__container-back"]}
@@ -147,21 +143,21 @@ useEffect(() => {
               <Text
                 style={styles["bookcarchoicedes__container-location-title"]}
               >
-                Trường Đại học Khoa học tự nhiên
+                {nameAddress}
               </Text>
               <Text
                 style={styles["bookcarchoicedes__container-location-content"]}
                 ellipsizeMode="tail"
                 numberOfLines={1}
               >
-                135b Trần Hưng Đạo, P.Cầu Ông Lãnh, Q.1, Hồ Chí Minh
+                {dataAddress}
               </Text>
             </View>
 
             <Pressable
               style={styles["bookcarchoicedes__container-location-button"]}
               onPress={() => {
-                navigation.navigate("/bookcar-pickup-dt");
+                navigation.navigate("/bookcar-pickup-dt", {from: {coor: currentLocation, info: dataAddress}, to: destinationSearch});
               }}
             >
               <Text

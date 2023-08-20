@@ -18,31 +18,15 @@ import { useNavigation } from "@react-navigation/native";
 import StateManager from "../../service/commandbook/receiver";
 import { SetToCommand } from "../../service/commandbook/command";
 
-const locations = [
-  {
-    title: "145/44 Đường 3 Tháng 2",
-    detail:
-      "145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456 là lá la",
-  },
-  {
-    title: "145/44 Đường 3 Tháng 2",
-    detail:
-      "145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456 là lá la",
-  },
-  {
-    title: "145/44 Đường 3 Tháng 2",
-    detail:
-      "145/44 Đường 3 Tháng 2, P.11, Q.10, Hồ Chí Minh, 7haha 123 456 là lá la",
-  },
-];
+const apiKey = '5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114'
 
 const BookCarHome = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
 
   const [text, setText] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [dataSearch, setDataSearch] = useState([]);
+
 
   const handlePressBack = () => {
     navigation.goBack();
@@ -55,17 +39,47 @@ const BookCarHome = () => {
     //   latitude: 12,
     //   altitude: 23
     // }
-    const setDestination = new SetToCommand(StateManager, location);
+
+    const setLocationTo = {
+      name: location.properties.name,
+      lat: location.geometry.coordinates[1],
+      lng: location.geometry.coordinates[0]
+    };
+
+    const setDestination = new SetToCommand(StateManager, setLocationTo);
     setDestination.execute();
-    navigation.navigate("/bookcar-pickup");
+    navigation.navigate("/bookcar-pickup", { locationFrom: null, locationTo: location});
   };
   const handlePressBookCar = () => {
     navigation.navigate("/bookcar-book");
   };
 
-  const handleChangeText = (inputText) => {
-    setText(inputText);
+  const handleChangeText = async (newText) => {
+    setText(newText); // Cập nhật giá trị của TextInput
+  
+    // Gọi API để lấy danh sách địa điểm dựa trên newText
+    const apiUrl = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${apiKey}&text=${newText}`;
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+  
+      // Kiểm tra dữ liệu trả về có khác undefined hay không
+      if (data && data.features && Array.isArray(data.features)) {
+        // Lọc chỉ lấy các địa điểm ở Việt Nam
+        const vietnamLocations = data.features.filter((location) =>
+          location.properties.country === "Vietnam" || location.properties.country === "Viet Nam"
+        );
+  
+        setDataSearch(vietnamLocations.slice(0, 3)); 
+      } else {
+        console.log("Dữ liệu API không hợp lệ");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
+  
 
   if (!fontsLoaded) {
     return null;
@@ -111,7 +125,7 @@ const BookCarHome = () => {
           </View>
 
           <View style={{ marginTop: 20 }}>
-            {locations.map((location, index) => (
+            {dataSearch && dataSearch.map((location, index) => (
               <Pressable
                 onPress={() => handlePressLocation(location)}
                 key={index}
@@ -126,14 +140,14 @@ const BookCarHome = () => {
 
                   <View style={{ width: "70%" }}>
                     <Text style={styles["bookcar__container-location-title"]}>
-                      {location.title}
+                      {location.properties.label}
                     </Text>
                     <Text
                       style={styles["bookcar__container-location-content"]}
                       numberOfLines={1}
                       ellipsizeMode="tail"
                     >
-                      {location.detail}
+                      {location.properties.housenumber}{location.properties.housenumber ? ' ' : ''}{location.properties.street}{location.properties.street ? ',' : ''} {location.properties.county}, {location.properties.locality}
                     </Text>
                   </View>
 
@@ -146,6 +160,7 @@ const BookCarHome = () => {
                 </View>
               </Pressable>
             ))}
+
           </View>
 
           <View style={styles["bookcar__container-movemore"]}>

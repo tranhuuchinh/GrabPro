@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 23,
     padding: 10,
-    marginBottom: 30,
   },
   "bookcarpickupdetail__container-search-up": {
     display: "flex",

@@ -23,18 +23,21 @@ const BookCar = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
 
+  const getStateCommand = StateManager.getState();
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [active, setActive] = useState('4seats');
 
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  // const [latitude, setLatitude] = useState(null);
+  // const [longitude, setLongitude] = useState(null);
   // 10.7681 106.6953 10.7625 106.6827
 
-  const [location1, setLocation1] = useState({ latitude: 10.7681, longitude: 106.6953 });
-  const [location2, setLocation2] = useState({ latitude: 10.7625, longitude: 106.6827 });
+  const [locationFrom, setLocationFrom] = useState({ latitude: getStateCommand.from.lat, longitude: getStateCommand.from.lng });
+  const [locationTo, setLocationTo] = useState({ latitude: getStateCommand.to.lat, longitude: getStateCommand.to.lng });
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [coordinate, setCoordinate] = useState([]);
   const [distance, setDistance] = useState(null);
 
   const deg2rad = (deg) => {
@@ -42,13 +45,13 @@ const BookCar = () => {
   };
 
   const calculateDistance = () => {
-    if (location1.latitude !== 0 && location1.longitude !== 0 && location2.latitude !== 0 && location2.longitude !== 0) {
+    if (locationFrom.latitude !== 0 && locationFrom.longitude !== 0 && locationTo.latitude !== 0 && locationTo.longitude !== 0) {
       const R = 6371; // Earth's radius in kilometers
-      const dLat = deg2rad(location2.latitude - location1.latitude);
-      const dLon = deg2rad(location2.longitude - location1.longitude);
+      const dLat = deg2rad(locationTo.latitude - locationFrom.latitude);
+      const dLon = deg2rad(locationTo.longitude - locationFrom.longitude);
       const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(location1.latitude)) * Math.cos(deg2rad(location2.latitude)) *
+        Math.cos(deg2rad(locationFrom.latitude)) * Math.cos(deg2rad(locationTo.latitude)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const distance = R * c; // Distance in kilometers
@@ -58,40 +61,33 @@ const BookCar = () => {
     }
   };
 
-  const searchPlaces = async () => {
-    try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${searchKeyword}`;
-      const response = await axios.get(url);
-      const results = response.data;
-
-      setSearchResults(results);
-      
-      // Lấy tọa độ của địa điểm đầu tiên trong kết quả tìm kiếm
-      if (results.length > 0) {
-        const firstResult = results[0];
-        setLatitude(parseFloat(firstResult.lat));
-        setLongitude(parseFloat(firstResult.lon));
-      } else {
-        // Nếu không có kết quả, xóa tọa độ hiện tại
-        setLatitude(null);
-        setLongitude(null);
-      }
-
-      calculateDistance();
-    } catch (error) {
-      console.error('Error searching places:', error);
-    }
-  };
-
+  // Tính toán và hiển thị đường đi khi destination thay đổi
   useEffect(() => {
-    const getInitialLocation = async () => {
-      // Một ví dụ tạm thời: sử dụng tọa độ của Hà Nội
-      setLatitude(21.0285);
-      setLongitude(105.8542);
-    };
+    if (locationFrom && locationTo) {
+      var request = new XMLHttpRequest();
 
-    getInitialLocation();
+      request.open('GET', `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&start=${locationFrom.longitude},${locationFrom.latitude}&end=${locationTo.longitude},${locationTo.latitude}`);
+
+      request.setRequestHeader('Accept', 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8');
+
+      request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          const responseObj = JSON.parse(this.responseText);
+
+          const coordinatesA = responseObj.features[0].geometry.coordinates.map((coord) => {
+            return {
+              latitude: coord[1],
+              longitude: coord[0],
+            }
+          });
+          setCoordinate(coordinatesA);
+        }
+      };
+
+      request.send();
+    }
   }, []);
+
   //Thay đổi thời gian thì gọi lại đoạn code này
   const setTime = new SetTimeCommand(StateManager, "Thời gian đặt trước");
   setTime.execute();
@@ -133,32 +129,47 @@ const BookCar = () => {
         </View> */}
         <View style={styles["bookcar__container-maps"]}>
           {/* Hiển thị bản đồ */}
-          <MapView
-            style={styles.map}
+          {locationFrom && locationTo && (
+            <MapView
+            style={{ width: '100%', height: '100%' }}
             initialRegion={{
-              latitude: latitude,
-              longitude: longitude,
-              latitudeDelta: 0.001,
-              longitudeDelta: 0.0005,
+              latitude: locationFrom.latitude,
+              longitude: locationFrom.longitude,
+              latitudeDelta: 0.08,
+              longitudeDelta: 0.016,
             }}
             region={{
-              latitude: latitude,
-              longitude: longitude,
-              latitudeDelta: 0.001,
-              longitudeDelta: 0.0005,
+              latitude: locationFrom.latitude,
+              longitude: locationFrom.longitude,
+              latitudeDelta: 0.08,
+              longitudeDelta: 0.016,
             }}
-            >
+          >
             {/* Hiển thị đánh dấu tại vị trí người dùng */}
-            {latitude && longitude && (
+            {locationFrom && (
               <Marker
-                coordinate={{ latitude, longitude }}
+                coordinate={locationFrom}
                 title="Your location"
               />
             )}
-          </MapView>
-          {/* <Text style={styles.text}>Current Address:</Text> */}
-          {/* <Text style={styles.address}>{address}</Text> */}
-          {/* <Button title="Reverse Geocode" onPress={reverseGeocode} /> */}
+            {
+              coordinate.length - 1 > 0 && (
+                <Marker
+                coordinate={coordinate[coordinate.length - 1]}
+                title="Destination"
+                icon={faChevronLeft}
+                pinColor="green"
+              />
+              )
+            }
+
+            <Polyline
+              coordinates={coordinate}
+              strokeColor="#58BC6B"
+              strokeWidth={3}
+            />
+           </MapView>
+          )}
         </View>
 
 
@@ -176,31 +187,9 @@ const BookCar = () => {
             backgroundColor: "#fff",
             width: "100%",
             bottom: 0,
-            display: "none"
+            zIndex: 10
           }}
         >
-                  <View>
-          <Text>Search for a place:</Text>
-          <TextInput
-            style={{ borderWidth: 1, padding: 5 }}
-            value={searchKeyword}
-            onChangeText={(text) => setSearchKeyword(text)}
-          />
-          <Button title="Search" onPress={searchPlaces} />
-
-          {/* <FlatList
-            data={searchResults}
-            keyExtractor={(item) => item.place_id.toString()}
-            renderItem={({ item }) => (
-              <View style={{ paddingVertical: 5 }}>
-                <Text>Name: {item.display_name}</Text>
-                <Text>Latitude: {item.lat}</Text>
-                <Text>Longitude: {item.lon}</Text>
-                <Text>Distance: {distance}</Text>
-              </View>
-            )}
-          /> */}
-        </View>
           <View style={styles["bookcar__container-timer"]}>
             <Text style={styles["bookcar__container-timer-title"]}>
               Chọn khung giờ:
@@ -241,24 +230,54 @@ const BookCar = () => {
             )}
           </View>
 
-          <View style={styles["bookcar__container-location"]}>
-            <View style={{ width: "10%" }}>
-              <Image source={CarV2} style={{ width: 41, height: 37 }} />
-            </View>
+          <Pressable onPress={()=> setActive('4seats')}>
+            <View style={{
+              ...styles["bookcar__container-location"],
+              backgroundColor: active === '4seats' ? "#EFF9F8" : '#fff' // 'initial' hoặc giá trị mặc định của background color
+            }} onPress={()=> setActive('4seats')}>
+              <View style={{ width: "10%" }}>
+                <Image source={CarV2} style={{ width: 41, height: 37 }} />
+              </View>
 
-            <View style={{ width: "60%", marginLeft: 20 }}>
-              <Text style={styles["bookcar__container-location-title"]}>
-                GrabCar
-              </Text>
-              <Text style={styles["bookcar__container-location-content"]}>
-                Tối đa 4 hành khách
+              <View style={{ width: "60%", marginLeft: 20 }}>
+                <Text style={styles["bookcar__container-location-title"]}>
+                  GrabCar
+                </Text>
+                <Text style={styles["bookcar__container-location-content"]}>
+                  Tối đa 4 hành khách
+                </Text>
+              </View>
+
+              <Text style={styles["bookcar__container-location-price"]}>
+                61.000đ
               </Text>
             </View>
+          </Pressable>
 
-            <Text style={styles["bookcar__container-location-price"]}>
-              61.000đ
-            </Text>
-          </View>
+          <Pressable onPress={()=> setActive('7seats')}>
+            <View style={{
+              ...styles["bookcar__container-location"],
+              backgroundColor: active === '7seats' ? "#EFF9F8" : '#fff' // 'initial' hoặc giá trị mặc định của background color
+            }}>
+              <View style={{ width: "10%" }}>
+                <Image source={CarV2} style={{ width: 41, height: 37 }} />
+              </View>
+
+              <View style={{ width: "60%", marginLeft: 20 }}>
+                <Text style={styles["bookcar__container-location-title"]}>
+                  GrabCar
+                </Text>
+                <Text style={styles["bookcar__container-location-content"]}>
+                  Tối đa 7 hành khách
+                </Text>
+              </View>
+
+              <Text style={styles["bookcar__container-location-price"]}>
+                61.000đ
+              </Text>
+            </View>
+          </Pressable>
+
 
           <View style={styles["bookcar__container-payment"]}>
             <Pressable style={styles["bookcar__container-payment-left"]}>
