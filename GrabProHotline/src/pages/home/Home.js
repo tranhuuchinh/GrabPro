@@ -6,6 +6,8 @@ import ic_phone from '../../assets/svg/phone.svg';
 import AddressItem from './AddressItem/AddressItem';
 import FormOrder from './FormOrder/FormOrder';
 import useAxios from '../../hooks/useAxios';
+import { RecoilRoot, useRecoilState } from 'recoil';
+import { nameRecoil, phoneRecoil } from './recoil';
 
 const dataOrders = [
     {
@@ -43,9 +45,12 @@ const dataAddresses = [
     '135B Trần Hưng Đạo, phường Cầu Ông Lãnh, quận 1, TPHCM',
 ];
 
-const Home = () => {
+const HomeRecoil = () => {
     //Axios
     const [response0d, error0d, isLoading0d] = useAxios('get', '/payments', {}, {}, []);
+    const [phone, setPhone] = useRecoilState(phoneRecoil);
+    const [name, setName] = useRecoilState(nameRecoil);
+
     useEffect(() => {
         if (isLoading0d === false && !error0d && response0d.data) {
             console.log(response0d.data);
@@ -68,8 +73,8 @@ const Home = () => {
                     <div className={classes['home__body-call-info']}>
                         <span>DK</span>
                         <div>
-                            <h3>Duy Khương</h3>
-                            <p>039 649 2049</p>
+                            <h3>{name}</h3>
+                            <p>{phone}</p>
                         </div>
                     </div>
                     <div className={classes['home__body-call-time']}>
@@ -101,5 +106,13 @@ const Home = () => {
         </div>
     );
 };
+
+function Home() {
+    return (
+        <RecoilRoot>
+            <HomeRecoil />
+        </RecoilRoot>
+    );
+}
 
 export default Home;

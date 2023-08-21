@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classes from './FormOrder.module.scss';
 import ButtonCT from '../../../components/button/ButtonCT';
 import ic_address from '../../../assets/svg/address.svg';
 import ic_phone_black from '../../../assets/svg/phone_black.svg';
 import ic_user from '../../../assets/svg/user.svg';
 import ic_destination from '../../../assets/svg/destination.svg';
-import map from '../../../assets/imgs/map.jpg';
-// import { sendMessage, socketCallcenter, socketGeolocation } from '../../../service/socket';
+import { useRecoilState } from 'recoil';
+import { nameRecoil, phoneRecoil } from '../recoil';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+
+import { sendMessage, socketCallcenter, socketGeolocation } from '../../../service/socket';
 
 const tags = {
     WAITING: '#9A9A9A',
@@ -15,6 +18,38 @@ const tags = {
 };
 
 const FormOrder = () => {
+    const [phone, setPhone] = useRecoilState(phoneRecoil);
+    const [name, setName] = useRecoilState(nameRecoil);
+
+    const [noHomeStart, setNoHomeStart] = useState('');
+    const [streetStart, setStreetStart] = useState('');
+    const [wardStart, setWardStart] = useState('');
+    const [districtStart, setDistrictStart] = useState('');
+    const [cityStart, setCityStart] = useState('');
+
+    const [noHomeEnd, setNoHomeEnd] = useState('');
+    const [streetEnd, setStreetEnd] = useState('');
+    const [wardEnd, setWardEnd] = useState('');
+    const [districtEnd, setDistrictEnd] = useState('');
+    const [cityEnd, setCityEnd] = useState('');
+
+    const [typeTransport, setTypeTransport] = useState('motobike');
+
+    const handlePlaceSelectStart = (place) => {
+        let idx = place.value.terms.length - 1;
+        setCityStart(place.value.terms[idx--].value);
+        setDistrictStart(place.value.terms[idx--].value);
+        setWardStart(idx > 0 ? place.value.terms[idx--].value : '');
+        setStreetStart(place.value.terms[idx].value);
+    };
+    const handlePlaceSelectEnd = (place) => {
+        let idx = place.value.terms.length - 1;
+        setCityEnd(place.value.terms[idx--].value);
+        setDistrictEnd(place.value.terms[idx--].value);
+        setWardEnd(idx > 0 ? place.value.terms[idx--].value : '');
+        setStreetEnd(place.value.terms[idx].value);
+    };
+
     return (
         <div className={classes.formOrder}>
             <div className={classes.formOrder__title}>
@@ -29,43 +64,216 @@ const FormOrder = () => {
                     <p>Hoàn thành</p>
                 </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ flex: '1' }}>
-                    <div className={classes['formOrder__input']}>
-                        <label htmlFor="phone">
-                            <img src={ic_phone_black} width={16} alt="" />
-                        </label>
-                        <input type="text" name="phone" style={{ width: '80%' }} />
-                    </div>
-                    <div className={classes['formOrder__input']}>
-                        <label htmlFor="name">
-                            <img src={ic_user} width={16} alt="" />
-                        </label>
-                        <input type="text" name="name" style={{ width: '80%' }} />
-                    </div>
+            <div>
+                <div className={classes['formOrder__input_info']}>
+                    <label htmlFor="phone">
+                        <img src={ic_phone_black} width={16} alt="" />
+                    </label>
+                    <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
                 </div>
-                <div style={{ flex: '3', marginLeft: '40px' }}>
-                    <div className={classes['formOrder__input']}>
-                        <label htmlFor="">
-                            <img src={ic_address} width={16} alt="" />
-                        </label>
-                        <input type="text" name="street" placeholder="Số nhà/Đường" />
-                        <input type="text" name="ward" placeholder="Xã/Phường" />
-                        <input type="text" name="district" placeholder="Quận/Huyện" />
-                        <input type="text" name="city" placeholder="Tỉnh/Thành phố" />
-                    </div>
-                    <div className={classes['formOrder__input']}>
-                        <label htmlFor="">
-                            <img src={ic_destination} width={16} alt="" />
-                        </label>
-                        <input type="text" name="street" placeholder="Số nhà/Đường" />
-                        <input type="text" name="ward" placeholder="Xã/Phường" />
-                        <input type="text" name="district" placeholder="Quận/Huyện" />
-                        <input type="text" name="city" placeholder="Tỉnh/Thành phố" />
-                    </div>
+                <div className={classes['formOrder__input_info']}>
+                    <label htmlFor="name">
+                        <img src={ic_user} width={16} alt="" />
+                    </label>
+                    <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
             </div>
-            <h4>Thông tin đơn</h4>
+            <br />
+            <div style={{ marginBottom: '10px' }}>
+                <GooglePlacesAutocomplete
+                    apiKey={process.env.REACT_APP_GOOGLE_API}
+                    apiOptions={{ language: 'vi', region: 'VN' }}
+                    autocompletionRequest={{
+                        componentRestrictions: {
+                            country: ['VN'],
+                        },
+                        types: ['route'],
+                    }}
+                    selectProps={{
+                        value: '',
+                        onChange: handlePlaceSelectStart,
+                    }}
+                />
+            </div>
+            <div className={classes['formOrder__input']}>
+                <label htmlFor="">
+                    <img src={ic_address} width={16} alt="" />
+                </label>
+                <input
+                    type="text"
+                    name="noHome"
+                    placeholder="Số nhà"
+                    style={{ width: '80px' }}
+                    value={noHomeStart}
+                    onChange={(e) => setNoHomeStart(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="street"
+                    placeholder="Đường"
+                    value={streetStart}
+                    onChange={(e) => setStreetStart(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="ward"
+                    placeholder="Xã/Phường"
+                    value={wardStart}
+                    onChange={(e) => setWardStart(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="district"
+                    placeholder="Quận/Huyện"
+                    value={districtStart}
+                    onChange={(e) => setDistrictStart(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Tỉnh/Thành phố"
+                    value={cityStart}
+                    onChange={(e) => setCityStart(e.target.value)}
+                />
+            </div>
+            <div style={{ marginBottom: '10px', marginTop: '20px' }}>
+                <GooglePlacesAutocomplete
+                    apiKey={process.env.REACT_APP_GOOGLE_API}
+                    apiOptions={{ language: 'vi', region: 'VN' }}
+                    autocompletionRequest={{
+                        componentRestrictions: {
+                            country: ['VN'],
+                        },
+                        types: ['route'],
+                    }}
+                    selectProps={{
+                        value: '',
+                        onChange: handlePlaceSelectEnd,
+                    }}
+                />
+            </div>
+            <div className={classes['formOrder__input']}>
+                <label htmlFor="">
+                    <img src={ic_destination} width={16} alt="" />
+                </label>
+                <input
+                    type="text"
+                    name="noHome"
+                    placeholder="Số nhà"
+                    style={{ width: '80px' }}
+                    value={noHomeEnd}
+                    onChange={(e) => setNoHomeEnd(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="street"
+                    placeholder="Đường"
+                    value={streetEnd}
+                    onChange={(e) => setStreetEnd(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="ward"
+                    placeholder="Xã/Phường"
+                    value={wardEnd}
+                    onChange={(e) => setWardEnd(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="district"
+                    placeholder="Quận/Huyện"
+                    value={districtEnd}
+                    onChange={(e) => setDistrictEnd(e.target.value)}
+                />
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Tỉnh/Thành phố"
+                    value={cityEnd}
+                    onChange={(e) => setCityEnd(e.target.value)}
+                />
+            </div>
+
+            <h4>Loại xe</h4>
+            <label htmlFor="motobike" style={{ marginRight: '10px', cursor: 'pointer' }}>
+                Xe máy
+            </label>
+            <input
+                required
+                type="radio"
+                name="typeTransport"
+                id="motobike"
+                value="motobike"
+                style={{ marginRight: '60px' }}
+                onChange={(e) => setTypeTransport(e.target.value)}
+                checked={typeTransport === 'motobike'}
+            />
+            <label htmlFor="4seats" style={{ marginRight: '10px', cursor: 'pointer' }}>
+                4 chổ
+            </label>
+            <input
+                required
+                type="radio"
+                name="typeTransport"
+                id="4seats"
+                value="4seats"
+                style={{ marginRight: '60px' }}
+                onChange={(e) => setTypeTransport(e.target.value)}
+                checked={typeTransport === '4seats'}
+            />
+            <label htmlFor="7seats" style={{ marginRight: '10px', cursor: 'pointer' }}>
+                7 chổ
+            </label>
+            <input
+                required
+                type="radio"
+                name="typeTransport"
+                id="7seats"
+                value="7seats"
+                onChange={(e) => setTypeTransport(e.target.value)}
+                checked={typeTransport === '7seats'}
+            />
+
+            <div className={classes.formOrder__btn}>
+                <ButtonCT outlineBtn borderRadius medium>
+                    Hủy
+                </ButtonCT>
+                <ButtonCT
+                    primary
+                    borderRadius
+                    medium
+                    onClick={() =>
+                        sendMessage(socketCallcenter, 'customerBooking', {
+                            name,
+                            phone,
+                            addressStart:
+                                noHomeStart +
+                                ' ' +
+                                streetStart +
+                                ', ' +
+                                wardStart +
+                                ', ' +
+                                districtStart +
+                                ', ' +
+                                cityStart,
+                            addressEnd:
+                                noHomeEnd + ' ' + streetEnd + ', ' + wardEnd + ', ' + districtEnd + ', ' + cityEnd,
+                            type: typeTransport,
+                        })
+                    }
+                >
+                    Đặt đơn
+                </ButtonCT>
+
+                <ButtonCT outlineBtnBlue borderRadius medium>
+                    Đặt lại
+                </ButtonCT>
+                <ButtonCT outlineBtn borderRadius medium>
+                    Hủy đơn
+                </ButtonCT>
+            </div>
+
+            {/* <h4>Thông tin đơn</h4>
             <div className={classes.formOrder__info}>
                 <div className={classes['formOrder__info-item']}>
                     <h5>Quãng đường</h5>
@@ -84,52 +292,7 @@ const FormOrder = () => {
                     <h5>Thời gian tạo</h5>
                     <p>10:02 24/06/2023</p>
                 </div>
-            </div>
-
-            <div className={classes.formOrder__btn}>
-                <ButtonCT outlineBtn borderRadius medium>
-                    Hủy
-                </ButtonCT>
-                <ButtonCT
-                    primary
-                    borderRadius
-                    medium
-                    // onClick={() =>
-                    //     sendMessage(socketCallcenter, 'customerBooking', {
-                    //         fullname: 'Tran Duy Khuong',
-                    //         phone: '0824704789',
-                    //         address: '135 Trần Hưng Đạo, Quận 1',
-                    //     })
-                    // }
-                >
-                    Đặt đơn
-                </ButtonCT>
-
-                <ButtonCT
-                    outlineBtnBlue
-                    borderRadius
-                    medium
-                    // onClick={() =>
-                    //     sendMessage(socketGeolocation, 'clientGeolocationResolved', {
-                    //         data: {
-                    //             fullname: 'Tran Duy Khuong 1',
-                    //             phone: '0824704789',
-                    //             address: '135 Trần Hưng Đạo, Quận 1',
-                    //         },
-                    //         geolocation: { lat: 123, lon: 234 },
-                    //     })
-                    // }
-                >
-                    Đặt lại
-                </ButtonCT>
-                <ButtonCT outlineBtn borderRadius medium>
-                    Hủy đơn
-                </ButtonCT>
-            </div>
-
-            <div className={classes.formOrder__map}>
-                <img src={map} alt="" width={'100%'} />
-            </div>
+            </div> */}
         </div>
     );
 };

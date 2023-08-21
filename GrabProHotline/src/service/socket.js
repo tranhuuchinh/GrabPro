@@ -11,14 +11,20 @@ class SocketManager {
         return SocketManager.instance;
     }
 
+    reconnect(socket) {
+        if (!socket.connected) {
+            socket.connect();
+        }
+    }
+
     sendMessage(socket, channel, message) {
         socket.emit(channel, message);
     }
 }
 
-// const socketManagerInstance = new SocketManager();
+const socketManagerInstance = new SocketManager();
 
-// export const { socketCallcenter, socketGeolocation } = socketManagerInstance;
-// export const sendMessage = socketManagerInstance.sendMessage.bind(socketManagerInstance);
+export const { socketCallcenter, socketGeolocation } = socketManagerInstance;
+export const sendMessage = socketManagerInstance.sendMessage.bind(socketManagerInstance);
 
-// export default socketManagerInstance;
+export default socketManagerInstance;

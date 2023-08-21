@@ -18,10 +18,10 @@
         }
     }
 
-    &__input {
+    &__input_info {
         margin-bottom: 10px;
         display: flex;
-        justify-content: space-between;
+        align-items: center;
 
         label {
           margin-right: 10px;
@@ -31,7 +31,26 @@
           font-size: 1.4rem;
           border: 1px solid #ccc;
           padding: 6px;
+          width: 200px;
+        }
+    }
+
+    &__input {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        label {
+          margin-right: 10px;
+        }
+
+        input {
+          font-size: 1.4rem;
+          border: 1px solid #ccc;
+          padding: 10px 6px;
           width: 23%;
+          margin: 0 4px;
         }
     }
 
@@ -60,7 +79,9 @@
     }
 
     &__btn {
-        float: right;
+        display: flex;
+        justify-content: end;
+        margin: 16px 0;
     }
 
     &__map {
