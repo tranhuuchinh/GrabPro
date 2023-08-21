@@ -1,12 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './Geolocation.module.scss';
 import ic_position from '../../assets/svg/address.svg';
 import { DirectionsService, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import ButtonCT from '../../components/button/ButtonCT';
 import Geocode from 'react-geocode';
 import { forEach } from 'lodash';
+import GgMap from './plugin/GgMapPlugin';
+import Nominatim from './plugin/NominatimPlugin';
+import GGMapLogo from '../../assets/imgs/GGMapLogo.png';
+import NominatimLogo from '../../assets/imgs/Nominatim.png';
+import Success from '../../assets/imgs/Success.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import socketManagerInstance, { sendMessage, socketGeolocation } from '../../service/socket';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
+
+const apiKeyNominatim = '5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114';
 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
 Geocode.setLanguage('vn');
@@ -41,6 +50,8 @@ const Geolocation = () => {
     const [ward, setWard] = useState('');
     const [district, setDistrict] = useState('');
     const [city, setCity] = useState('');
+
+    const [typeMap, setTypeMap] = useState('GoogleMaps');
 
     const onLoad = React.useCallback(function callback(mapInstance) {
         const bounds = new window.google.maps.LatLngBounds(geocode);
@@ -86,36 +97,37 @@ const Geolocation = () => {
         );
     };
 
-    const getLatLng = (address, type) => {
-        Geocode.fromAddress(address).then(
-            (response) => {
-                const { lat, lng } = response.results[0].geometry.location;
-                console.log(response);
-                if (type === 'NEW') {
-                    setNewGeocode({ lat, lng });
-                    fitBoundsToMarkers({
-                        lat,
-                        lng,
-                    });
-                } else if (type === 'SEARCH') {
-                    setNewGeocode({ lat, lng });
-                    getAddress(lat, lng);
-                    fitBoundsToMarkers({
-                        lat,
-                        lng,
-                    });
-                } else {
-                    setGeocode({ lat, lng });
-                    fitBoundsToMarkers({
-                        lat,
-                        lng,
-                    });
-                }
-            },
-            (error) => {
-                console.error(error);
+    const getLatLng = async (address, type) => {
+        if (typeMap === 'GoogleMaps') {
+            const ggMap = new GgMap(process.env.REACT_APP_GOOGLE_API);
+            const location = await ggMap.getLocation(address);
+    
+            if (type === 'NEW') {
+                setNewGeocode(location);
+            } else if (type === 'SEARCH') {
+                setNewGeocode(location);
+                getAddress(location.lat, location.lng);
+            } else {
+                setGeocode(location);
             }
-        );
+
+            fitBoundsToMarkers(location);
+        }
+        else{
+            const nominatim = new Nominatim(apiKeyNominatim);
+            const location = await nominatim.getLocation(address);
+    
+            if (type === 'NEW') {
+                setNewGeocode(location);
+            } else if (type === 'SEARCH') {
+                setNewGeocode(location);
+                getAddress(location.lat, location.lng);
+            } else {
+                setGeocode(location);
+            }
+
+            fitBoundsToMarkers(location);
+        }
     };
 
     const handleMapClickPosition = (event) => {
@@ -331,7 +343,7 @@ const Geolocation = () => {
                 />
                 <br />
 
-                <ButtonCT outlineBtnBlue borderRadius medium style={{ float: 'right' }} onClick={handleReGeocode}>
+                <ButtonCT outlineBtnBlue borderRadius medium style={{float: 'right', display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}} onClick={handleReGeocode}>
                     Định vị lại
                 </ButtonCT>
 
@@ -348,14 +360,35 @@ const Geolocation = () => {
                 <br />
                 <br />
                 {stack.length == 2 ? (
-                    <ButtonCT primary borderRadius medium block onClick={handleContinue}>
+                    <ButtonCT primary borderRadius medium block onClick={handleContinue} style={{display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}}>
                         Xác nhận & Tiếp tục
                     </ButtonCT>
                 ) : (
-                    <ButtonCT primary borderRadius medium block onClick={handleComplete}>
+                    <ButtonCT primary borderRadius medium block onClick={handleComplete} style={{display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}}>
                         Hoàn thành
                     </ButtonCT>
                 )}
+                <br />
+                <br />
+
+                <div>
+                    <button onClick={() => {setTypeMap('GoogleMaps'), toast.success('Bạn đang sử dụng Google Maps', {
+                        position: toast.POSITION.TOP_LEFT
+                    });}}>
+                        <img src={Success} className={classes.geo__img} style={{display: typeMap === 'GoogleMaps' ? 'inline' : 'none'}}/>
+                        <img src={GGMapLogo} />
+                        <p>Google Maps</p>
+
+                    </button>
+                    <button onClick={() => {setTypeMap('Nominatim'), toast.success('Bạn đang sử dụng Nominatim', {
+                        position: toast.POSITION.TOP_LEFT
+                    });}}>
+                        <img src={Success} className={classes.geo__img} style={{display: typeMap === 'GoogleMaps' ? 'none' : 'inline-block'}}/>
+                        <img src={NominatimLogo} />
+                        <p>Nominatim</p>
+                    </button>
+                    <ToastContainer />
+                </div>
             </div>
         </div>
     );
