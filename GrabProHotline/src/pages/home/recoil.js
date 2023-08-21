@@ -9,3 +9,13 @@ export const nameRecoil = atom({
     key: 'nameRecoil',
     default: '',
 });
+
+export const ordersRecoil = atom({
+    key: 'ordersRecoil',
+    default: [],
+});
+
+export const locationsRecoil = atom({
+    key: 'locationsRecoil',
+    default: [],
+});

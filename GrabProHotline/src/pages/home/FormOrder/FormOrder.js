@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './FormOrder.module.scss';
 import ButtonCT from '../../../components/button/ButtonCT';
 import ic_address from '../../../assets/svg/address.svg';
@@ -6,7 +6,7 @@ import ic_phone_black from '../../../assets/svg/phone_black.svg';
 import ic_user from '../../../assets/svg/user.svg';
 import ic_destination from '../../../assets/svg/destination.svg';
 import { useRecoilState } from 'recoil';
-import { nameRecoil, phoneRecoil } from '../recoil';
+import { locationsRecoil, nameRecoil, ordersRecoil, phoneRecoil } from '../recoil';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 import { sendMessage, socketCallcenter, socketGeolocation } from '../../../service/socket';
@@ -20,6 +20,8 @@ const tags = {
 const FormOrder = () => {
     const [phone, setPhone] = useRecoilState(phoneRecoil);
     const [name, setName] = useRecoilState(nameRecoil);
+    const [orders, setOrders] = useRecoilState(ordersRecoil);
+    const [locations, setLocations] = useRecoilState(locationsRecoil);
 
     const [noHomeStart, setNoHomeStart] = useState('');
     const [streetStart, setStreetStart] = useState('');
@@ -50,6 +52,55 @@ const FormOrder = () => {
         setStreetEnd(place.value.terms[idx].value);
     };
 
+    const handleGetAddress = () => {
+        sendMessage(socketCallcenter, 'queryAddress', phone);
+    };
+
+    useEffect(() => {
+        socketCallcenter.on('connect', () => {
+            console.log('Connected to server callcenter');
+        });
+
+        socketCallcenter.on('getUser', (message) => {
+            console.log(message);
+            if (message) {
+                setName(message.fullname);
+                setOrders(message.listOrder);
+
+                // Handle locations
+                const locationsSet = {};
+                for (let i = 0; i < message.favoriteLocations.length; i++) {
+                    const e = message.favoriteLocations[i];
+                    if (!locationsSet[e.address]) {
+                        locationsSet[e.address] = [e];
+                    } else {
+                        locationsSet[e.address].push(e);
+                    }
+                }
+                console.log(locationsSet);
+                const tmp = [];
+                for (let e in locationsSet) {
+                    tmp.push({
+                        data: locationsSet[e][0],
+                        number: locationsSet[e].length,
+                    });
+                }
+                tmp.sort((a, b) => a.number > b.number);
+                console.log(tmp);
+                setLocations(tmp);
+            }
+        });
+
+        socketCallcenter.on('disconnect', () => {
+            console.log('Disconnected from server callcenter');
+            socketManagerInstance.reconnect(socketCallcenter);
+        });
+
+        return () => {
+            socketCallcenter.disconnect();
+        };
+    }, []);
+
     return (
         <div className={classes.formOrder}>
             <div className={classes.formOrder__title}>
@@ -69,7 +120,13 @@ const FormOrder = () => {
                     <label htmlFor="phone">
                         <img src={ic_phone_black} width={16} alt="" />
                     </label>
-                    <input type="text" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <input
+                        type="text"
+                        name="phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        onBlur={handleGetAddress}
+                    />
                 </div>
                 <div className={classes['formOrder__input_info']}>
                     <label htmlFor="name">

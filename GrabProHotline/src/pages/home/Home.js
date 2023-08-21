@@ -6,8 +6,8 @@ import ic_phone from '../../assets/svg/phone.svg';
 import AddressItem from './AddressItem/AddressItem';
 import FormOrder from './FormOrder/FormOrder';
 import useAxios from '../../hooks/useAxios';
-import { RecoilRoot, useRecoilState } from 'recoil';
-import { nameRecoil, phoneRecoil } from './recoil';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import { locationsRecoil, nameRecoil, ordersRecoil, phoneRecoil } from './recoil';
 
 const dataOrders = [
     {
@@ -50,6 +50,8 @@ const HomeRecoil = () => {
     const [response0d, error0d, isLoading0d] = useAxios('get', '/payments', {}, {}, []);
     const [phone, setPhone] = useRecoilState(phoneRecoil);
     const [name, setName] = useRecoilState(nameRecoil);
+    const orders = useRecoilValue(ordersRecoil);
+    const locations = useRecoilValue(locationsRecoil);
 
     useEffect(() => {
         if (isLoading0d === false && !error0d && response0d.data) {
@@ -61,7 +63,7 @@ const HomeRecoil = () => {
             <div className={classes.home__left}>
                 <h4 className={classes['home__left-title']}>Đơn hàng gần đây</h4>
                 <div className={classes['home__left-list']}>
-                    {dataOrders.map((item, idx) => (
+                    {orders.map((item, idx) => (
                         <div key={+idx}>
                             <OrderItem item={item} />
                         </div>
@@ -96,7 +98,7 @@ const HomeRecoil = () => {
             <div className={classes.home__right}>
                 <h4 className={classes['home__right-title']}>Địa chỉ nổi bật</h4>
                 <div className={classes['home__right-list']}>
-                    {dataAddresses.map((item, idx) => (
+                    {locations.map((item, idx) => (
                         <div key={+idx}>
                             <AddressItem item={item} />
                         </div>
