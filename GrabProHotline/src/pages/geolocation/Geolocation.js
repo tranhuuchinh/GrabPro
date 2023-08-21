@@ -6,8 +6,18 @@ import { DirectionsService, GoogleMap, Marker, useJsApiLoader } from '@react-goo
 import ButtonCT from '../../components/button/ButtonCT';
 import Geocode from 'react-geocode';
 import { forEach } from 'lodash';
+import GgMap from './plugin/GgMapPlugin';
+import Nominatim from './plugin/NominatimPlugin';
+import GGMapLogo from '../../assets/imgs/GGMapLogo.png';
+import NominatimLogo from '../../assets/imgs/Nominatim.png';
+import Success from '../../assets/imgs/Success.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-Geocode.setApiKey('AIzaSyDkTtbU7pL_A95hw-6vtA0fydLMLoqFnS0');
+const apiKeyGGMaps = 'AIzaSyBczGGMwmlrHDB0VMlrdE7Cx-xyBPCFKdA';
+const apiKeyNominatim = '5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114';
+
+Geocode.setApiKey(apiKeyGGMaps);
 Geocode.setLanguage('vn');
 
 const containerStyle = {
@@ -17,7 +27,7 @@ const containerStyle = {
 
 const Geolocation = () => {
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: 'AIzaSyDkTtbU7pL_A95hw-6vtA0fydLMLoqFnS0',
+        googleMapsApiKey: apiKeyGGMaps,
         id: 'google-map-script',
         language: 'vi',
         region: 'vn',
@@ -38,6 +48,8 @@ const Geolocation = () => {
     const [district, setDistrict] = useState('');
     const [city, setCity] = useState('');
 
+    const [typeMap, setTypeMap] = useState('GoogleMaps');
+
     const onLoad = React.useCallback(function callback(mapInstance) {
         const bounds = new window.google.maps.LatLngBounds(geocode);
         mapInstance.fitBounds(bounds);
@@ -48,6 +60,13 @@ const Geolocation = () => {
     const onUnmount = React.useCallback(function callback(map) {
         setMap(null);
     }, []);
+
+    const fitBoundsToMarkers = (newGeocode) => {
+        const bounds = new window.google.maps.LatLngBounds();
+        bounds.extend(geocode);
+        bounds.extend(newGeocode);
+        map.fitBounds(bounds);
+    };
 
     const handleSplitAddress = (address) => {
         const addressList = address.split(', ');
@@ -64,6 +83,7 @@ const Geolocation = () => {
         Geocode.fromLatLng(lat, lng).then(
             (response) => {
                 const address = response.results[0].formatted_address;
+                console.log(address)
                 handleSplitAddress(address);
             },
             (error) => {
@@ -72,21 +92,37 @@ const Geolocation = () => {
         );
     };
 
-    const getLatLng = (address, type) => {
-        Geocode.fromAddress(address).then(
-            (response) => {
-                const { lat, lng } = response.results[0].geometry.location;
-                if (type === 'NEW') {
-                    setNewGeocode({ lat, lng });
-                } else if (type === 'SEARCH') {
-                    setNewGeocode({ lat, lng });
-                    getAddress(lat, lng);
-                } else setGeocode({ lat, lng });
-            },
-            (error) => {
-                console.error(error);
+    const getLatLng = async (address, type) => {
+        if (typeMap === 'GoogleMaps') {
+            const ggMap = new GgMap(apiKeyGGMaps);
+            const location = await ggMap.getLocation(address);
+    
+            if (type === 'NEW') {
+                setNewGeocode(location);
+            } else if (type === 'SEARCH') {
+                setNewGeocode(location);
+                getAddress(location.lat, location.lng);
+            } else {
+                setGeocode(location);
             }
-        );
+
+            fitBoundsToMarkers(location);
+        }
+        else{
+            const nominatim = new Nominatim(apiKeyNominatim);
+            const location = await nominatim.getLocation(address);
+    
+            if (type === 'NEW') {
+                setNewGeocode(location);
+            } else if (type === 'SEARCH') {
+                setNewGeocode(location);
+                getAddress(location.lat, location.lng);
+            } else {
+                setGeocode(location);
+            }
+
+            fitBoundsToMarkers(location);
+        }
     };
 
     const handleMapClickPosition = (event) => {
@@ -103,6 +139,10 @@ const Geolocation = () => {
     useEffect(() => {
         getLatLng(address);
     }, [address]);
+
+    // useEffect(() => {
+    //     const widthButton = document.getElementById('button1');
+    // }, []);
 
     // Xử lý khác
     // const myInput = document.getElementsByTagName('input');
@@ -212,7 +252,7 @@ const Geolocation = () => {
                 </p>
                 <br />
 
-                <ButtonCT outlineBtnBlue borderRadius medium style={{ float: 'right' }} onClick={handleReGeocode}>
+                <ButtonCT outlineBtnBlue borderRadius medium onClick={handleReGeocode} style={{float: 'right', display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}}>
                     Định vị lại
                 </ButtonCT>
 
@@ -229,9 +269,29 @@ const Geolocation = () => {
                         handleSplitAddress('135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, TP HCM');
                         setAddress('135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, TP HCM');
                     }}
+                    style={{display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}}
                 >
                     Xác nhận
                 </ButtonCT>
+
+                <div>
+                    <button id='button1' onClick={() => {setTypeMap('GoogleMaps'), toast.success('Bạn đang sử dụng Google Maps', {
+                        position: toast.POSITION.TOP_LEFT
+                    });}}>
+                        <img src={Success} className={classes.geo__img} style={{display: typeMap === 'GoogleMaps' ? 'inline' : 'none'}}/>
+                        <img src={GGMapLogo} />
+                        <p>Google Maps</p>
+
+                    </button>
+                    <button onClick={() => {setTypeMap('Nominatim'), toast.success('Bạn đang sử dụng Nominatim', {
+                        position: toast.POSITION.TOP_LEFT
+                    });}}>
+                        <img src={Success} className={classes.geo__img} style={{display: typeMap === 'GoogleMaps' ? 'none' : 'inline-block'}}/>
+                        <img src={NominatimLogo} />
+                        <p>Nominatim</p>
+                    </button>
+                    <ToastContainer />
+                </div>
             </div>
         </div>
     );
