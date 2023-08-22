@@ -20,7 +20,7 @@ const useAxios = (method, api, body, options, deps) => {
         signal: axiosController.signal,
       })
         .then((response) => {
-          console.log("response" + response);
+          // console.log("response" + response);
           setResponse(response);
         })
         .catch((error) => {

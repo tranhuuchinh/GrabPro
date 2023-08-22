@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import styles from "./ReceiveBill.style";
 import { useCustomFonts } from "../../styles/fonts";
@@ -11,9 +11,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-const ReceiveBill = () => {
+const ReceiveBill = ({ orderData, point }) => {
   const fontsLoaded = useCustomFonts();
   const [state, setState] = useState(1);
+  const [pointNum, setPointNum] = useState("");
+  const [nameCustomer, setNameCustomer] = useState("");
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    console.log(orderData);
+    console.log(point);
+    if (point == 2) {
+    } else if (point == 3) {
+    }
+  }, [orderData, point]);
 
   if (!fontsLoaded) {
     return null;

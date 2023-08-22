@@ -3,8 +3,8 @@ import qs from "qs";
 import { API_ENDPOINT } from "@env";
 
 const axiosClient = axios.create({
-  baseURL: API_ENDPOINT,
-  // baseURL: "http://192.168.1.11:3000",
+  // baseURL: API_ENDPOINT,
+  baseURL: "http://192.168.1.5:3002",
   headers: {
     "Content-Type": "application/json",
   },

@@ -2,7 +2,7 @@ import * as Location from "expo-location";
 import MapView from "react-native-maps";
 import geolib from "geolib";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Marker } from "react-native-maps";
+import { Marker, Polyline } from "react-native-maps";
 import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 import ImageMap from "../../assets/imgs/Home/image3.png";
@@ -29,6 +29,8 @@ import {
   connect,
   listenForMessage,
 } from "../../service/socket";
+import useAxios from "../../hooks/useAxios";
+import ReceiveBill from "../../components/ReceiveBill/ReceiveBill";
 
 const HomePage = () => {
   const fontsLoaded = useCustomFonts();
@@ -43,6 +45,36 @@ const HomePage = () => {
   // const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [coordinate, setCoordinate] = useState([]);
   const [ids, setID] = useState();
+  const [fromCoordinates, setFromCoordinates] = useState(null);
+  const [toCoordinates, setToCoordinates] = useState(null);
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    `/orders/64c89a27ac10cccaf400b8d9`,
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (response && response.data !== undefined) {
+      // Lấy tọa độ từ dữ liệu response và cập nhật vào state
+      setFromCoordinates({
+        latitude: response.data.from.latitude,
+        longitude: response.data.from.altitude,
+      });
+
+      setToCoordinates({
+        latitude: response.data.to.latitude,
+        longitude: response.data.to.altitude,
+      });
+    }
+  }, [isLoading]);
+  useEffect(() => {
+    console.log("Vinh 1");
+    console.log(fromCoordinates);
+    console.log(toCoordinates);
+  }, [fromCoordinates, toCoordinates]);
 
   const handleToggleConnect = () => {
     setIsConnected((prev) => !prev);
@@ -51,7 +83,7 @@ const HomePage = () => {
   // Tọa độ điểm gần đây
   const nearbyCoords = {
     latitude: 10.76414,
-    longitude: 106.68225,
+    longitude: 106.68224,
   };
 
   const retrieveIdFromStorage = async () => {
@@ -81,6 +113,8 @@ const HomePage = () => {
       const location = await Location.getCurrentPositionAsync({});
       setCurrentLocation(location.coords);
       // In tọa độ ra console
+      console.log("Vinh 2");
+      console.log("Latitude:", location.coords);
       console.log("Latitude:", location.coords.latitude);
       console.log("Longitude:", location.coords.longitude);
 
@@ -97,8 +131,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getLocationAsync();
-    retrieveIdFromStorage();
+    setShowModalReceiveBill(false);
     if (isConnected && socketDriver) {
       socketDriver.on("disconnect", () => {
         console.log("Loss internet => Reconnect...");
@@ -111,22 +144,9 @@ const HomePage = () => {
   }, []);
   //End
 
-  // Tính khoảng cách giữa hai tọa độ
-  // const calculateDistance = () => {
-  //   const pointA = {
-  //     latitude: currentLocation.latitude,
-  //     longitude: currentLocation.longitude,
-  //   };
-  //   const pointB = { latitude: otherLatitude, longitude: otherLongitude };
-
-  //   const distance = geolib.getDistance(pointA, pointB);
-  //   console.log("Distance in meters:", distance);
-  // };
-
-  // // Gọi hàm tính khoảng cách khi cần
-  // calculateDistance();
-
   useEffect(() => {
+    getLocationAsync();
+    retrieveIdFromStorage();
     if (isConnected) {
       socketDriverInstance = connect();
       setInitialState(true);
@@ -163,6 +183,26 @@ const HomePage = () => {
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
   };
+
+  //Modal
+  const [showModal, setShowModal] = useState(false);
+  const [showModalReceiveBill, setShowModalReceiveBill] = useState(false);
+  const [statePoint, setStatePoint] = useState(0);
+  useEffect(() => {
+    if (response?.data) {
+      setShowModal(true); // Hiển thị modal khi có dữ liệu response
+      setTimeout(() => {
+        setShowModal(false);
+        setShowModalReceiveBill(true);
+      }, 5000);
+    }
+  }, [response]);
+
+  const handleMarkerPress = (markerNumber) => {
+    console.log(`Pressed marker number ${markerNumber}`);
+    setStatePoint(markerNumber);
+  };
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -170,10 +210,6 @@ const HomePage = () => {
       <View style={styles.homePageContainer}>
         <View style={{ flex: 1, position: "relative" }}>
           <View style={styles.homePageImage}>
-            {/* <Image
-              source={ImageMap}
-              style={{ width: "100%", height: "100%" }}
-            /> */}
             {currentLocation && (
               <MapView
                 style={{ width: "100%", height: "100%" }}
@@ -184,9 +220,45 @@ const HomePage = () => {
                   longitudeDelta: 0.0005,
                 }}
               >
-                {/* Hiển thị đánh dấu tại vị trí người dùng */}
                 {currentLocation && (
-                  <Marker coordinate={currentLocation} title="Your location" />
+                  <Marker
+                    coordinate={currentLocation}
+                    title="Vị trí hiện tại"
+                    description="Địa điểm hiện tại của bạn"
+                    onPress={() => handleMarkerPress(1)}
+                  />
+                )}
+
+                {fromCoordinates && (
+                  <Marker
+                    coordinate={fromCoordinates}
+                    title="Địa điểm đón"
+                    description="Địa điểm đón khách"
+                    pinColor="purple"
+                    onPress={() => handleMarkerPress(2)}
+                  />
+                )}
+
+                {toCoordinates && (
+                  <Marker
+                    coordinate={toCoordinates}
+                    title="Địa điểm trả"
+                    description="Địa điểm trả khách"
+                    pinColor="blue"
+                    onPress={() => handleMarkerPress(3)}
+                  />
+                )}
+
+                {fromCoordinates && toCoordinates && (
+                  <Polyline
+                    coordinates={[
+                      currentLocation,
+                      fromCoordinates,
+                      toCoordinates,
+                    ]}
+                    strokeColor="#FF0000"
+                    strokeWidth={2}
+                  />
                 )}
                 {}
               </MapView>
@@ -558,7 +630,10 @@ const HomePage = () => {
             </View>
           </View>
         </View>
-        {/* <ModalCustom /> */}
+        {showModal && <ModalCustom orderData={response?.data} />}
+        {showModalReceiveBill && (
+          <ReceiveBill orderData={response?.data} point={statePoint} />
+        )}
       </View>
     );
   }

@@ -52,7 +52,6 @@ const LogInScreen = () => {
         })
         .then(async (response) => {
           // console.log(response.data);
-
           if (
             response.data.status == "success" &&
             response.data.data.role == "driver"
