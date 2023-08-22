@@ -29,18 +29,6 @@ const BookCarPickUpDetail = () => {
   const locationFrom = route.params.from;
   const locationTo = route.params.to;
 
-  //Chọn địa điểm đến
-  // location là object:
-  // {
-  //   title: 'Tên địa điểm',
-  //   latitude: 12,
-  //   altitude: 23
-  // }
-  // const setFrom = new SetFromCommand(StateManager, location);
-  // setFrom.execute();
-  // const setDestination = new SetToCommand(StateManager, location);
-  // setDestination.execute();
-
   const [text, setText] = useState(locationFrom.info);
   const [dataSearch, setDataSearch] = useState([]);
 
@@ -48,7 +36,6 @@ const BookCarPickUpDetail = () => {
     setText(newText); // Cập nhật giá trị của TextInput
   
     // Gọi API để lấy danh sách địa điểm dựa trên newText
-    // ?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&text=Namibian%20Brewery
     const apiUrl = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${apiKey}&text=${newText}`;
     try {
       const response = await fetch(apiUrl);
@@ -71,16 +58,8 @@ const BookCarPickUpDetail = () => {
   };
 
   const handleLocation = (location) => {
-      //Chọn địa điểm đến
-      // location là object:
-      // {
-      //   title: 'Tên địa điểm',
-      //   latitude: 12,
-      //   altitude: 23
-      // }
-
       const locationFrom = {
-        name: location.properties.name,
+        address: location.properties.name,
         lat: location.geometry.coordinates[1],
         lng: location.geometry.coordinates[0]
       }
@@ -88,8 +67,6 @@ const BookCarPickUpDetail = () => {
       const setFrom = new SetFromCommand(StateManager, locationFrom);
       setFrom.execute();
       navigation.navigate("/bookcar-pickup", {locationFrom: {latitude: location.geometry.coordinates[1] , longitude: location.geometry.coordinates[0]}, locationTo: locationTo});
-      // const setDestination = new SetToCommand(StateManager, location);
-      // setDestination.execute();
   }
 
   if (!fontsLoaded) {

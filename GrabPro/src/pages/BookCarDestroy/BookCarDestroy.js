@@ -23,38 +23,46 @@ const BookCarDestroy = () => {
   };
 
   useEffect(() => {
-    // const getStateCommand = StateManager.getState(); //Lấy dữ liệu gửi qua socket
-    // sendMessage(socketCustomer, "customerClient", getStateCommand);
-    const object = {
-      idUser: "64cd144708afa47f3bda6ae6",
-      from: {
-        address: "135B Trần Hưng Đạo",
-        lat: 123.4,
-        lng: 234.5,
-      },
-      to: {
-        address: "225 Nguyễn Văn Cừ",
-        lat: 145.2,
-        lng: 112.9,
-      },
-      distance: 20,
-      type: "4seats",
-    };
-    sendMessage(socketCustomer, "customerClient", object);
+    const getStateCommand = StateManager.getState(); //Lấy dữ liệu gửi qua socket
+
+    if (getStateCommand.time === null) {
+      const dataOrder = {
+        idUser: "64cd144708afa47f3bda6ae6",
+        from: getStateCommand.from,
+        to: getStateCommand.to,
+        distance: getStateCommand.distance,
+        type: getStateCommand.type,
+      };
+
+      sendMessage(socketCustomer, "customerClient", dataOrder);
+    }
+    else{
+      const dataOrder = {
+        idUser: "64cd144708afa47f3bda6ae6",
+        from: getStateCommand.from,
+        to: getStateCommand.to,
+        time: getStateCommand.time,
+        distance: getStateCommand.distance,
+        type: getStateCommand.type,
+      };
+
+      sendMessage(socketCustomer, "customerClient", dataOrder);
+    }
+
   }, []);
 
   // Hủy đặt
-  // useEffect(() => {
-  //   const timeOut = setTimeout(() => {
-  //     if (!cancel) {
-  //       navigation.navigate("/bookcar-coming");
-  //     }
-  //   }, 4000);
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      if (!cancel) {
+        navigation.navigate("/bookcar-coming");
+      }
+    }, 4000);
 
-  //   return () => {
-  //     clearTimeout(timeOut);
-  //   };
-  // }, [cancel]);
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [cancel]);
 
   if (!fontsLoaded) {
     return null;

@@ -41,7 +41,7 @@ const BookCarHome = () => {
     // }
 
     const setLocationTo = {
-      name: location.properties.name,
+      address: location.properties.name,
       lat: location.geometry.coordinates[1],
       lng: location.geometry.coordinates[0]
     };

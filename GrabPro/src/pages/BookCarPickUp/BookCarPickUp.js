@@ -53,19 +53,21 @@ const BookCarPickUp = () => {
       return;
     }
 
-    try {
-      const location = await Location.getCurrentPositionAsync({});
-
-      getAddress(location.coords.latitude, location.coords.longitude);
-      
-      setCurrentLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
-    } catch (error) {
-      console.error("Error getting location:", error);
+    if (getStateCommand.from === null) {
+      try {
+        const location = await Location.getCurrentPositionAsync({});
+  
+        getAddress(location.coords.latitude, location.coords.longitude);
+        
+        setCurrentLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
     }
-    // else{
-    //   setCurrentLocation(route.params.locationFrom);
-    //   getAddress(route.params.locationFrom.lat, route.params.locationFrom.lng);
-    // }
+    else{
+      setCurrentLocation({latitude: getStateCommand.from.lat, longitude: getStateCommand.from.lng});
+      getAddress(getStateCommand.from.lat, getStateCommand.from.lng);
+    }
   };
 
   useEffect(() => {
@@ -75,7 +77,7 @@ const BookCarPickUp = () => {
   useEffect(() => {
     if (currentLocation) {
       const setLocationFrom = {
-        name: nameAddress,
+        address: nameAddress,
         lat: currentLocation.latitude,
         lng: currentLocation.longitude
       };
@@ -88,7 +90,7 @@ const BookCarPickUp = () => {
   useEffect(() => {
     if (route.params.locationFrom) {
       setCurrentLocation(route.params.locationFrom);
-      getAddress(route.params.locationFrom.lat, route.params.locationFrom.lng);
+      getAddress(route.params.locationFrom.latitude, route.params.locationFrom.longitude);
     }
   }, [route.params.locationFrom]);
 

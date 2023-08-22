@@ -7,17 +7,14 @@ import {
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
-import Map from "../../assets/imgs/BookCar/masicle2.png";
 import CarV2 from "../../assets/imgs/BookCar/CarV2.png";
 import styles from "./BookCar.style";
 import { useCustomFonts } from "../../styles/fonts";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-// import Geolocation from "@react-native-community/geolocation";
 import StateManager from "../../service/commandbook/receiver";
-import { SetTimeCommand } from "../../service/commandbook/command";
+import { SetTimeCommand, SetTypeCommand, SetDistanceCommand } from "../../service/commandbook/command";
 
 const BookCar = () => {
   const fontsLoaded = useCustomFonts();
@@ -29,39 +26,36 @@ const BookCar = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [active, setActive] = useState('4seats');
-
-  // const [latitude, setLatitude] = useState(null);
-  // const [longitude, setLongitude] = useState(null);
-  // 10.7681 106.6953 10.7625 106.6827
+  const [dateActive, setDateActive] = useState(false);
+  const [timeActive, setTimeActive] = useState(false);
 
   const [locationFrom, setLocationFrom] = useState({ latitude: getStateCommand.from.lat, longitude: getStateCommand.from.lng });
   const [locationTo, setLocationTo] = useState({ latitude: getStateCommand.to.lat, longitude: getStateCommand.to.lng });
-  const [searchKeyword, setSearchKeyword] = useState('');
   const [coordinate, setCoordinate] = useState([]);
-  const [distance, setDistance] = useState(null);
 
-  const deg2rad = (deg) => {
-    return deg * (Math.PI / 180);
-  };
+  // const deg2rad = (deg) => {
+  //   return deg * (Math.PI / 180);
+  // };
 
-  const calculateDistance = () => {
-    if (locationFrom.latitude !== 0 && locationFrom.longitude !== 0 && locationTo.latitude !== 0 && locationTo.longitude !== 0) {
-      const R = 6371; // Earth's radius in kilometers
-      const dLat = deg2rad(locationTo.latitude - locationFrom.latitude);
-      const dLon = deg2rad(locationTo.longitude - locationFrom.longitude);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(locationFrom.latitude)) * Math.cos(deg2rad(locationTo.latitude)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = R * c; // Distance in kilometers
-      setDistance(distance.toFixed(2)); // Set distance with 2 decimal places
-    } else {
-      setDistance(null);
-    }
-  };
+  // // Hàm tính khoảng cách đường chim bay
+  // const calculateDistance = () => {
+  //   if (locationFrom.latitude !== 0 && locationFrom.longitude !== 0 && locationTo.latitude !== 0 && locationTo.longitude !== 0) {
+  //     const R = 6371; // Earth's radius in kilometers
+  //     const dLat = deg2rad(locationTo.latitude - locationFrom.latitude);
+  //     const dLon = deg2rad(locationTo.longitude - locationFrom.longitude);
+  //     const a =
+  //       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+  //       Math.cos(deg2rad(locationFrom.latitude)) * Math.cos(deg2rad(locationTo.latitude)) *
+  //       Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  //     const distance = R * c; // Distance in kilometers
+      
+  //     const setDistance = new SetDistanceCommand(StateManager, parseFloat(distance.toFixed(2)));
+  //     setDistance.execute();
+  //   }
+  // };
 
-  // Tính toán và hiển thị đường đi khi destination thay đổi
+  // Tính toán và hiển thị đường đi và khoảng cách đường chim bay
   useEffect(() => {
     if (locationFrom && locationTo) {
       var request = new XMLHttpRequest();
@@ -80,6 +74,10 @@ const BookCar = () => {
               longitude: coord[0],
             }
           });
+
+          const setDistance = new SetDistanceCommand(StateManager, responseObj.features[0].properties.segments[0].distance);
+          setDistance.execute();
+
           setCoordinate(coordinatesA);
         }
       };
@@ -88,23 +86,76 @@ const BookCar = () => {
     }
   }, []);
 
-  //Thay đổi thời gian thì gọi lại đoạn code này
-  const setTime = new SetTimeCommand(StateManager, "Thời gian đặt trước");
-  setTime.execute();
+  const handlePressOto4seats = () => {
+    setActive('4seats');
+    const setType = new SetTypeCommand(StateManager, "4seats");
+    setType.execute();
+  };
+
+  const handlePressOto7seats = () => {
+    setActive('7seats');
+    const setType = new SetTypeCommand(StateManager, "7seats");
+    setType.execute();
+  };
+
+  // Hàm kiểm tra ngày có hợp lệ không
+  const isDateValid = (date) => {
+    const currentDate = new Date();
+    return date >= currentDate;
+  };
 
   const handleDateChange = (event, selected) => {
-    const currentDate = selected || selectedDate;
-    // setShowDatePicker(Platform.OS === 'ios'); // For iOS only
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
-    setShowTimePicker(true);
+    const currentDate = new Date(); // Lấy ngày hiện tại
+    const checkSelectedDate =  currentDate || selected;
+
+    if (isDateValid(checkSelectedDate)) {
+      setShowDatePicker(false);
+      setSelectedDate(checkSelectedDate);
+      setShowTimePicker(true);
+      setDateActive(true);
+    } else {
+      setShowDatePicker(false);
+    }
+  };
+
+  // Hàm kiểm tra giờ có hợp lệ không
+  const isTimeValid = (time) => {
+    const currentHour = new Date().getHours();
+    const currentMinute = new Date().getMinutes();
+    
+    // Lấy giờ và phút đã chọn
+    const selectedHour = time.getHours();
+    const selectedMinute = time.getMinutes();
+    
+    // So sánh giờ và phút đã chọn với giờ hiện tại
+    if (selectedHour > currentHour) {
+      return true; // Giờ đã chọn sau giờ hiện tại
+    } else if (selectedHour === currentHour && selectedMinute >= currentMinute) {
+      return true; // Giờ và phút đã chọn sau giờ và phút hiện tại
+    } else {
+      return false; // Giờ và phút đã chọn trước giờ hiện tại
+    }
   };
 
   const handleTimeChange = (event, selected) => {
     const currentDate = selected || selectedDate;
-    setShowTimePicker(false);
-    setSelectedDate(currentDate);
+
+    if (isTimeValid(currentDate)) {
+      setShowTimePicker(false);
+      setSelectedDate(currentDate);
+      setTimeActive(true);
+    } else {
+      setShowTimePicker(false);
+    }
   };
+
+  useEffect(() => {
+    if (timeActive) {
+      //Thay đổi thời gian thì gọi lại đoạn code này
+      const setTime = new SetTimeCommand(StateManager, selectedDate);
+      setTime.execute();
+    }
+  }, [timeActive])
 
   // Format the selected date as dd/mm/yyyy
   const formattedDate = selectedDate.toLocaleDateString("en-GB", {
@@ -124,9 +175,6 @@ const BookCar = () => {
   } else {
     return (
       <View style={styles.bookcar__container}>
-        {/* <View style={styles["bookcar__container-maps"]}>
-          <Image source={HaLinh} style={{ width: "100%", height: "100%" }} />
-        </View> */}
         <View style={styles["bookcar__container-maps"]}>
           {/* Hiển thị bản đồ */}
           {locationFrom && locationTo && (
@@ -136,13 +184,13 @@ const BookCar = () => {
               latitude: locationFrom.latitude,
               longitude: locationFrom.longitude,
               latitudeDelta: 0.08,
-              longitudeDelta: 0.016,
+              longitudeDelta: 0.05,
             }}
             region={{
               latitude: locationFrom.latitude,
               longitude: locationFrom.longitude,
               latitudeDelta: 0.08,
-              longitudeDelta: 0.016,
+              longitudeDelta: 0.05,
             }}
           >
             {/* Hiển thị đánh dấu tại vị trí người dùng */}
@@ -172,8 +220,6 @@ const BookCar = () => {
           )}
         </View>
 
-
-
         <Pressable
           style={styles["bookcar__container-back"]}
           onPress={() => navigation.goBack()}
@@ -196,8 +242,8 @@ const BookCar = () => {
             </Text>
 
             <Text style={styles["bookcar__container-timer-content"]}>
-              {formattedTime ? formattedTime : "hh:mm"}{" "}
-              {formattedDate ? formattedDate : "dd/mm/yyyy"}
+              {!timeActive ? "hh:mm" : formattedTime}{" "}
+              {!dateActive ? "dd/mm/yyyy" : formattedDate}
             </Text>
 
             {!showDatePicker && !showTimePicker && (
@@ -230,7 +276,7 @@ const BookCar = () => {
             )}
           </View>
 
-          <Pressable onPress={()=> setActive('4seats')}>
+          <Pressable onPress={()=> handlePressOto4seats()}>
             <View style={{
               ...styles["bookcar__container-location"],
               backgroundColor: active === '4seats' ? "#EFF9F8" : '#fff' // 'initial' hoặc giá trị mặc định của background color
@@ -254,7 +300,7 @@ const BookCar = () => {
             </View>
           </Pressable>
 
-          <Pressable onPress={()=> setActive('7seats')}>
+          <Pressable onPress={()=> handlePressOto7seats()}>
             <View style={{
               ...styles["bookcar__container-location"],
               backgroundColor: active === '7seats' ? "#EFF9F8" : '#fff' // 'initial' hoặc giá trị mặc định của background color
