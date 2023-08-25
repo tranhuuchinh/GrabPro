@@ -31,6 +31,7 @@ import {
 } from "../../service/socket";
 import useAxios from "../../hooks/useAxios";
 import ReceiveBill from "../../components/ReceiveBill/ReceiveBill";
+import auth from "../../utils/auth";
 
 const HomePage = () => {
   const fontsLoaded = useCustomFonts();
@@ -62,7 +63,7 @@ const HomePage = () => {
   useEffect(() => {
     const [response, error, isLoading] = useAxios(
       "get",
-      `/orders/64c89a27ac10cccaf400b8d9`,
+      `/orders/${idOrder}`,
       {},
       {},
       []
@@ -81,6 +82,8 @@ const HomePage = () => {
         latitude: response.data.to.latitude,
         longitude: response.data.to.altitude,
       }));
+
+      auth.type(response.data);
       console.log("fdfjsjkdhkgksdjhfshkj", fromCoordinates);
     }
   }, [idOrder]);
@@ -212,10 +215,6 @@ const HomePage = () => {
       getLocationAsync();
     }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
-
     if (isConnected) {
       socketDriverInstance = connect();
       setInitialState(true);
@@ -223,7 +222,7 @@ const HomePage = () => {
       //Chỗ này làm đăng nhập đăng kí gì đó bỏ IDUser vô chỗ IDAccount
       const object = {
         idAccount: idDriver,
-        type: "4seats", //Type là loại xe của tài xế
+        type: AsyncStorage.getItem("type"), //Type là loại xe của tài xế
       };
       sendMessage("setID", object);
 
@@ -299,6 +298,10 @@ const HomePage = () => {
       disconnect();
       setInitialState(false);
     }
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [isConnected, fromCoordinates]);
 
   useEffect(() => {

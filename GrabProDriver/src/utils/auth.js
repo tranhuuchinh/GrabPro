@@ -25,6 +25,11 @@ const auth = {
     // retrieveIdFromStorage();
   },
 
+  type(data) {
+    const { data } = data;
+    AsyncStorage.setItem("type", data.type);
+  },
+
   // setAccessToken(token) {
   //   localStorage.access_token = token;
   // },
