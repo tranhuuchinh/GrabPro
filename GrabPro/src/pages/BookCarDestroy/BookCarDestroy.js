@@ -14,6 +14,7 @@ const BookCarDestroy = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
   const [cancel, setCancel] = useState(false);
+  const [message, setMessage] = useState(null);
   const timeOut = null;
 
   const cancelBook = () => {
@@ -32,7 +33,7 @@ const BookCarDestroy = () => {
         to: getStateCommand.to,
         distance: getStateCommand.distance,
         type: getStateCommand.type,
-      };
+    };
 
       sendMessage(socketCustomer, "customerClient", dataOrder);
     }
@@ -51,18 +52,32 @@ const BookCarDestroy = () => {
 
   }, []);
 
-  // Hủy đặt
   useEffect(() => {
-    const timeOut = setTimeout(() => {
-      if (!cancel) {
-        navigation.navigate("/bookcar-coming");
-      }
-    }, 4000);
+    if (message === null) {
+      socketCustomer.on("acceptedDriver", (message) => {
+        if (message) setMessage(message), setCancel(true);
+      });
+    }
+  })
 
-    return () => {
-      clearTimeout(timeOut);
-    };
-  }, [cancel]);
+  useEffect(() => {
+    if (message !==null) {
+      navigation.navigate("/bookcar-coming");
+    }
+  }, [message]);
+
+  // Hủy đặt
+  // useEffect(() => {
+  //   // const timeOut = setTimeout(() => {
+  //   //   if (!cancel) {
+  //   //     navigation.navigate("/bookcar-coming");
+  //   //   }
+  //   // }, 4000);
+
+  //   return () => {
+  //     clearTimeout(timeOut);
+  //   };
+  // }, [cancel]);
 
   if (!fontsLoaded) {
     return null;

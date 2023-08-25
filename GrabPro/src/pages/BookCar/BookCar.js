@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import StateManager from "../../service/commandbook/receiver";
 import { SetTimeCommand, SetTypeCommand, SetDistanceCommand } from "../../service/commandbook/command";
+import { socketCustomer } from "../../../src/service/socket";
 
 const BookCar = () => {
   const fontsLoaded = useCustomFonts();
@@ -83,6 +84,12 @@ const BookCar = () => {
       };
 
       request.send();
+  
+      // lấy 4 driver có khoảng cách đường chym bay gần nhất
+      socketCustomer.on("findDriver", (message) => {
+        console.log('cc');
+        console.log(message);
+      });
     }
   }, []);
 
