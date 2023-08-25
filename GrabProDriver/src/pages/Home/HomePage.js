@@ -52,13 +52,23 @@ const HomePage = () => {
   const [customer, setCustomer] = useState();
   const [idOrder, setIdOrder] = useState();
 
-  // const [response, error, isLoading] = useAxios(
-  //   "get",
-  //   `/orders/64c89a27ac10cccaf400b8d9`,
-  //   {},
-  //   {},
-  //   []
-  // );
+  const [responseDriver, error, isLoading] = useAxios(
+    "get",
+    `/driver/${AsyncStorage.getItem("_id")}`,
+    {},
+    {},
+    []
+  );
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (responseDriver && responseDriver.data !== undefined) {
+      auth.type(responseDriver.data);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     const [response, error, isLoading] = useAxios(
@@ -83,12 +93,9 @@ const HomePage = () => {
         longitude: response.data.to.altitude,
       }));
 
-      auth.type(response.data);
       console.log("fdfjsjkdhkgksdjhfshkj", fromCoordinates);
     }
   }, [idOrder]);
-
-  // ...
 
   useEffect(() => {
     // Ở đây bạn có thể sử dụng fromCoordinates và toCoordinates

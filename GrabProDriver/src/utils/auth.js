@@ -27,7 +27,7 @@ const auth = {
 
   type(data) {
     const { data } = data;
-    AsyncStorage.setItem("type", data.type);
+    AsyncStorage.setItem("type", data.transport.type);
   },
 
   // setAccessToken(token) {
