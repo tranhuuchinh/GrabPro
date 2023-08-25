@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#126FD7",
   },
   receive_mid: {
+    alignSelf: "flex-start",
     paddingHorizontal: 14,
     paddingVertical: 16,
     borderBottomWidth: 1,
@@ -138,14 +139,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 3,
   },
-  receive_btn:{
+  receive_btn: {
     paddingHorizontal: 14,
     paddingVertical: 10,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
   },
-  receive_btn_button:{
+  receive_btn_button: {
     flex: 1,
     display: "flex",
     alignItems: "center",
@@ -154,12 +155,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 50,
   },
-  receive_btn_text:{
+  receive_btn_text: {
     fontSize: 14,
     fontFamily: "Poppins_600SemiBold",
     color: "white",
   },
-  receive_btn_off:{
+  receive_btn_off: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

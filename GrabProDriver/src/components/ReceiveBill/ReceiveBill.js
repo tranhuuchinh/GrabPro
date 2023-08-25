@@ -10,21 +10,57 @@ import {
   faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import useAxios from "../../hooks/useAxios";
 
-const ReceiveBill = ({ orderData, point }) => {
+const ReceiveBill = ({ orderData, point, handleDrawDirection }) => {
   const fontsLoaded = useCustomFonts();
   const [state, setState] = useState(1);
-  const [pointNum, setPointNum] = useState("");
-  const [nameCustomer, setNameCustomer] = useState("");
+  const [pointNum, setPointNum] = useState(0);
+  const [nameCustomer, setNameCustomer] = useState();
   const [address, setAddress] = useState("");
+  const [price, setPrice] = useState(0);
+  const [idUser, setIdUser] = useState("");
+
+  const [response, error, isLoading] = useAxios(
+    "get",
+    `/customer/profile/${orderData.idCustomer}`,
+    {},
+    {},
+    []
+  );
+  // console.log(typeof orderData.idCustomer);
+  // console.log(typeof orderData);
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+    // console.log(nameCustomer);
+    console.log(typeof response);
+    // setNameCustomer(response.data);
+  }, [isLoading, response]);
 
   useEffect(() => {
-    console.log(orderData);
-    console.log(point);
-    if (point == 2) {
-    } else if (point == 3) {
+    if (response && response.data !== null && response.data !== undefined) {
+      setIdUser(orderData.idCustomer);
+      setNameCustomer(response.data.fullname);
+      setPrice(orderData.totalPrice);
+      if (point === 0) {
+        setPointNum(0);
+        // handleDrawDirection(0);
+      } else if (point === 1) {
+        setPointNum(1);
+        setAddress(orderData.from.address);
+        // handleDrawDirection(1);
+      } else if (point === 2) {
+        setPointNum(2);
+        setAddress(orderData.to.address);
+      }
     }
-  }, [orderData, point]);
+  }, [point]);
+
+  const formatNumberWithCommas = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -34,7 +70,7 @@ const ReceiveBill = ({ orderData, point }) => {
         <View style={styles.receive_head}>
           <View style={styles.receive_headItem}>
             <View style={styles.receive_head_icon}>
-              <Text style={styles["receive_head-txt"]}>2</Text>
+              <Text style={styles["receive_head-txt"]}>{pointNum}</Text>
             </View>
             <Text style={styles["receive_head-title"]}>Địa điểm</Text>
           </View>
@@ -47,25 +83,29 @@ const ReceiveBill = ({ orderData, point }) => {
 
             <Text style={styles["receive_head-title-mid2"]}>GrabBike</Text>
           </View>
-          <View style={styles.receive_headItem}>
+          <Pressable
+            style={styles.receive_headItem}
+            onPress={() => handleDrawDirection(point)}
+          >
             <View style={styles.receive_head_icon1}>
               <FontAwesomeIcon icon={faPaperPlane} size={20} color="white" />
             </View>
-            <Text style={styles["receive_head-title"]}>Địa điểm</Text>
-          </View>
+            <Text style={styles["receive_head-title"]}>Chỉ đường</Text>
+          </Pressable>
         </View>
         <View style={styles.receive_mid}>
-          <Text style={styles.receive_mid_name}>Tran Van A</Text>
+          <Text style={styles.receive_mid_name}>{nameCustomer}</Text>
           <Text
             style={styles.receive_mid_add}
             numberOfLines={2}
             ellipsizeMode="tail"
           >
-            17 Nguyễn Thị Minh Khai, 17, Nguyễn Thị Minh Khai, P.Bến Nghé, Q.1,
-            Hồ Chí Minh
+            {address}
           </Text>
           <View style={styles.receive_mid_price}>
-            <Text style={styles["receive_mid_numb"]}>36.296</Text>
+            <Text style={styles["receive_mid_numb"]}>
+              {formatNumberWithCommas(price)}
+            </Text>
             <Text style={styles["receive_mid_dong"]}>đ</Text>
             <View style={styles["receive_mid_status-ctn"]}>
               <Text style={styles["receive_mid-txt"]}>Thẻ/Ví</Text>

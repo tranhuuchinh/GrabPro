@@ -44,46 +44,55 @@ const HomePage = () => {
   const [destination, setDestination] = useState(null);
   // const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [coordinate, setCoordinate] = useState([]);
-  const [ids, setID] = useState();
+  const [idDriver, setID] = useState();
   const [fromCoordinates, setFromCoordinates] = useState(null);
   const [toCoordinates, setToCoordinates] = useState(null);
+  const [directioPoint, setDirectionPoint] = useState("");
+  const [customer, setCustomer] = useState();
+  const [idOrder, setIdOrder] = useState();
 
-  const [response, error, isLoading] = useAxios(
-    "get",
-    `/orders/64c89a27ac10cccaf400b8d9`,
-    {},
-    {},
-    []
-  );
+  // const [response, error, isLoading] = useAxios(
+  //   "get",
+  //   `/orders/64c89a27ac10cccaf400b8d9`,
+  //   {},
+  //   {},
+  //   []
+  // );
 
   useEffect(() => {
-    if (response && response.data !== undefined) {
+    const [response, error, isLoading] = useAxios(
+      "get",
+      `/orders/64c89a27ac10cccaf400b8d9`,
+      {},
+      {},
+      []
+    );
+
+    if (!isLoading && response && response.data !== undefined) {
       // Lấy tọa độ từ dữ liệu response và cập nhật vào state
-      setFromCoordinates({
+      setFromCoordinates((prevFromCoords) => ({
+        ...prevFromCoords,
         latitude: response.data.from.latitude,
         longitude: response.data.from.altitude,
-      });
+      }));
 
-      setToCoordinates({
+      setToCoordinates((prevToCoords) => ({
+        ...prevToCoords,
         latitude: response.data.to.latitude,
         longitude: response.data.to.altitude,
-      });
+      }));
+      console.log("fdfjsjkdhkgksdjhfshkj", fromCoordinates);
     }
-  }, [isLoading]);
+  }, [idOrder]);
+
+  // ...
+
   useEffect(() => {
-    console.log("Vinh 1");
-    console.log(fromCoordinates);
-    console.log(toCoordinates);
+    // Ở đây bạn có thể sử dụng fromCoordinates và toCoordinates
   }, [fromCoordinates, toCoordinates]);
 
   const handleToggleConnect = () => {
     setIsConnected((prev) => !prev);
-  };
-
-  // Tọa độ điểm gần đây
-  const nearbyCoords = {
-    latitude: 10.76414,
-    longitude: 106.68224,
   };
 
   const retrieveIdFromStorage = async () => {
@@ -92,7 +101,7 @@ const HomePage = () => {
       if (_id !== null) {
         setID(_id);
         // console.log("Giá trị _id từ AsyncStorage:", _id);
-        console.log("fdsfjs" + ids);
+        // console.log("fdsfjs" + ids);
       } else {
         console.log("Không tìm thấy giá trị _id trong AsyncStorage");
       }
@@ -112,23 +121,185 @@ const HomePage = () => {
     try {
       const location = await Location.getCurrentPositionAsync({});
       setCurrentLocation(location.coords);
-      // In tọa độ ra console
-      console.log("Vinh 2");
-      console.log("Latitude:", location.coords);
-      console.log("Latitude:", location.coords.latitude);
-      console.log("Longitude:", location.coords.longitude);
 
       // Tính khoảng cách bằng cách tính khoảng cách Euclidean giữa hai điểm
-      const distance = Math.sqrt(
-        Math.pow(location.coords.latitude - nearbyCoords.latitude, 2) +
-          Math.pow(location.coords.longitude - nearbyCoords.longitude, 2)
-      );
-      console.log("Distance to Nearby Point:", distance * 111139, "meters");
+      let distance = 0;
+      console.log("Vinh vị trí");
+      if (fromCoordinates) {
+        distance = Math.sqrt(
+          Math.pow(location.coords.latitude - fromCoordinates.latitude, 2) +
+            Math.pow(location.coords.longitude - fromCoordinates.longitude, 2)
+        );
+        console.log("Distance to Nearby Point:", distance * 111139, "meters");
+      }
+
       // Với 111139 là giá trị đổi từ độ sang mét tại vĩ độ Hồ Chí Minh
     } catch (error) {
       console.error("Error getting location:", error);
     }
   };
+
+  // Tính toán và hiển thị đường đi
+  useEffect(() => {
+    console.log("Vinh đường đi");
+    if (statePoint == 0) {
+      console.log("đương đi" + currentLocation);
+      if (currentLocation && fromCoordinates) {
+        var request = new XMLHttpRequest();
+        request.open(
+          "GET",
+          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&start=${currentLocation.longitude},${currentLocation.latitude}&end=${fromCoordinates.longitude},${fromCoordinates.latitude}`
+        );
+        request.setRequestHeader(
+          "Accept",
+          "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8"
+        );
+        request.onreadystatechange = function () {
+          if (this.readyState === 4) {
+            const responseObj = JSON.parse(this.responseText);
+            const coordinatesA =
+              responseObj.features[0].geometry.coordinates.map((coord) => {
+                return {
+                  latitude: coord[1],
+                  longitude: coord[0],
+                };
+              });
+            setCoordinate(coordinatesA);
+          }
+        };
+        request.send();
+      }
+
+      setCoordinate([]);
+    } else {
+      if (toCoordinates && fromCoordinates) {
+        var request = new XMLHttpRequest();
+
+        request.open(
+          "GET",
+          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&start=${fromCoordinates.longitude},${fromCoordinates.latitude}&end=${toCoordinates.longitude},${toCoordinates.latitude}`
+        );
+
+        request.setRequestHeader(
+          "Accept",
+          "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8"
+        );
+
+        request.onreadystatechange = function () {
+          if (this.readyState === 4) {
+            const responseObj = JSON.parse(this.responseText);
+
+            const coordinatesA =
+              responseObj.features[0].geometry.coordinates.map((coord) => {
+                return {
+                  latitude: coord[1],
+                  longitude: coord[0],
+                };
+              });
+            setCoordinate(coordinatesA);
+          }
+        };
+
+        request.send();
+      }
+    }
+  }, [directioPoint]);
+
+  useEffect(() => {
+    getLocationAsync();
+
+    const interval = setInterval(() => {
+      getLocationAsync();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+
+    if (isConnected) {
+      socketDriverInstance = connect();
+      setInitialState(true);
+
+      //Chỗ này làm đăng nhập đăng kí gì đó bỏ IDUser vô chỗ IDAccount
+      const object = {
+        idAccount: idDriver,
+        type: "4seats", //Type là loại xe của tài xế
+      };
+      sendMessage("setID", object);
+
+      //Lắng nghe sự kiện bên socket gửi v
+      listenForMessage("driverClient", (data) => {
+        console.log("Received message from server:", data);
+        setCustomer(data);
+
+        //Data nhận về gồm:
+        // const data = {
+        //   idCustomer: 'sdsdsdsds',
+        //   lat: inforCustomer.from.lat,
+        //   lon: inforCustomer.from.lng,
+        //   idOrder: savedOrder._id,
+        // };
+
+        //Chỗ này gửi object gồm vị trí tài xế và id tài xế lên
+        const inforDriver = {
+          idDriver: idDriver,
+          idOrder: idOrder,
+          fromDri: {
+            lat: fromCoordinates.latitude,
+            lng: fromCoordinates.longitude,
+          },
+          toCus: {
+            lat: toCoordinates.latitude,
+            lng: toCoordinates.longitude,
+          },
+        };
+        sendMessage("driverClient", inforDriver);
+      });
+
+      // Khi trong lắng nghe này có dữ liệu thì hiện cái modal lên
+      listenForMessage("requestOrder", (data) => {
+        if (data !== null) {
+          setShowModal(true);
+          setIdOrder(data);
+        }
+        // Khi có data thì hiện modal lên
+        // data ở đây là idOrder lấy idOrder này hiển thị lên modal
+      });
+
+      // 1. KHI CHẤP NHẬN CUỐC ĐI
+      // - XÁC NHẬN CUỐC ĐI
+      const objectAccept = {
+        idOrder: idOrder,
+        idDriver: idDriver,
+        idCustomer: customer.idCustomer,
+      };
+      sendMessage("acceptOrder", objectAccept);
+
+      // - GỬI THÔNG TIN SAU MỖI 5 GIÂY: Nhớ dùng setTimeOut hay gì đó sau 5 giây gửi một lần
+      const objectSendInfo = {
+        idCustomer: customer.idCustomer,
+        location: {
+          lat: currentLocation.latitude,
+          lng: currentLocation.longitude,
+        },
+      };
+      sendMessage("followDriver", objectSendInfo);
+
+      // 3. KHI HOÀN THÀNH CUỐC ĐI thì tự gọi API cập nhật status của Order có idOrder ở trên thành 2
+      // và không gửi thông tin sau mỗi 5 giây nữa
+
+      // 2. KHI HỦY CUỐC ĐI
+      const objectCancel = {
+        idDriver: idDriver,
+        idOrder: idOrder,
+      };
+      sendMessage("cancelOrder", objectCancel);
+    } else if (!isConnected && initialState === true) {
+      console.log("Disconnected from server Driver");
+      disconnect();
+      setInitialState(false);
+    }
+  }, [isConnected, fromCoordinates]);
 
   useEffect(() => {
     setShowModalReceiveBill(false);
@@ -136,49 +307,13 @@ const HomePage = () => {
       socketDriver.on("disconnect", () => {
         console.log("Loss internet => Reconnect...");
         socketDriverInstance = connect();
-
+        retrieveIdFromStorage();
         //Chỗ này cũng bỏ idUser vô chỗ IdAccount
-        sendMessage("setID", "IdAccount");
+        sendMessage("setID", idDriver);
+        console.log("Vinh id" + idDriver);
       });
     }
   }, []);
-  //End
-
-  useEffect(() => {
-    getLocationAsync();
-    retrieveIdFromStorage();
-    if (isConnected) {
-      socketDriverInstance = connect();
-      setInitialState(true);
-
-      //Chỗ này làm đăng nhập đăng kí gì đó bỏ IDUser vô chỗ IDAccount
-      sendMessage("setID", "IdAccount");
-
-      //Lắng nghe sự kiện bên socket gửi v
-      listenForMessage("driverClient", (data) => {
-        console.log("Received message from server:", data);
-
-        //Chỗ này gửi object gồm vị trí tài xế và id tài xế lên
-        // sendMessage("driverClient", inforDriver);
-      });
-    } else if (!isConnected && initialState === true) {
-      console.log("Disconnected from server Driver");
-      disconnect();
-      setInitialState(false);
-    }
-  }, [isConnected]);
-
-  // useEffect(() => {
-  //   if (isConnected && socketDriver) {
-  //     socketDriver.on("disconnect", () => {
-  //       console.log("Loss internet => Reconnect...");
-  //       socketDriverInstance = connect();
-
-  //       //Chỗ này cũng bỏ idUser vô chỗ IdAccount
-  //       sendMessage("setID", "IdAccount");
-  //     });
-  //   }
-  // }, []);
 
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
@@ -194,7 +329,7 @@ const HomePage = () => {
       setTimeout(() => {
         setShowModal(false);
         setShowModalReceiveBill(true);
-      }, 5000);
+      }, 3000);
     }
   }, [response]);
 
@@ -219,13 +354,19 @@ const HomePage = () => {
                   latitudeDelta: 0.001,
                   longitudeDelta: 0.0005,
                 }}
+                region={{
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude,
+                  latitudeDelta: 0.001,
+                  longitudeDelta: 0.0005,
+                }}
               >
                 {currentLocation && (
                   <Marker
                     coordinate={currentLocation}
                     title="Vị trí hiện tại"
                     description="Địa điểm hiện tại của bạn"
-                    onPress={() => handleMarkerPress(1)}
+                    onPress={() => handleMarkerPress(0)}
                   />
                 )}
 
@@ -235,7 +376,7 @@ const HomePage = () => {
                     title="Địa điểm đón"
                     description="Địa điểm đón khách"
                     pinColor="purple"
-                    onPress={() => handleMarkerPress(2)}
+                    onPress={() => handleMarkerPress(1)}
                   />
                 )}
 
@@ -245,17 +386,13 @@ const HomePage = () => {
                     title="Địa điểm trả"
                     description="Địa điểm trả khách"
                     pinColor="blue"
-                    onPress={() => handleMarkerPress(3)}
+                    onPress={() => handleMarkerPress(2)}
                   />
                 )}
 
                 {fromCoordinates && toCoordinates && (
                   <Polyline
-                    coordinates={[
-                      currentLocation,
-                      fromCoordinates,
-                      toCoordinates,
-                    ]}
+                    coordinates={coordinate}
                     strokeColor="#FF0000"
                     strokeWidth={2}
                   />
@@ -632,7 +769,11 @@ const HomePage = () => {
         </View>
         {showModal && <ModalCustom orderData={response?.data} />}
         {showModalReceiveBill && (
-          <ReceiveBill orderData={response?.data} point={statePoint} />
+          <ReceiveBill
+            orderData={response?.data}
+            point={statePoint}
+            handleDrawDirection={setDirectionPoint}
+          />
         )}
       </View>
     );
