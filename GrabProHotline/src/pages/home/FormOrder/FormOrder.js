@@ -6,10 +6,10 @@ import ic_phone_black from '../../../assets/svg/phone_black.svg';
 import ic_user from '../../../assets/svg/user.svg';
 import ic_destination from '../../../assets/svg/destination.svg';
 import { useRecoilState } from 'recoil';
-import { locationsRecoil, nameRecoil, ordersRecoil, phoneRecoil } from '../recoil';
+import { fromRecoil, locationsRecoil, nameRecoil, ordersRecoil, phoneRecoil, toRecoil } from '../recoil';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
-import { sendMessage, socketCallcenter, socketGeolocation } from '../../../service/socket';
+import socketManagerInstance, { sendMessage, socketCallcenter } from '../../../service/socket';
 
 const tags = {
     WAITING: '#9A9A9A',
@@ -22,6 +22,8 @@ const FormOrder = () => {
     const [name, setName] = useRecoilState(nameRecoil);
     const [orders, setOrders] = useRecoilState(ordersRecoil);
     const [locations, setLocations] = useRecoilState(locationsRecoil);
+    const [from, setFrom] = useRecoilState(fromRecoil);
+    const [to, setTo] = useRecoilState(toRecoil);
 
     const [noHomeStart, setNoHomeStart] = useState('');
     const [streetStart, setStreetStart] = useState('');
@@ -50,6 +52,22 @@ const FormOrder = () => {
         setDistrictEnd(place.value.terms[idx--].value);
         setWardEnd(idx > 0 ? place.value.terms[idx--].value : '');
         setStreetEnd(place.value.terms[idx].value);
+    };
+    const handlePlaceSelectStartRecoil = (place) => {
+        const tmp = place.split(', ');
+        let idx = tmp.length - 1;
+        setCityStart(tmp[idx--]);
+        setDistrictStart(tmp[idx--]);
+        setWardStart(idx > 0 ? tmp[idx--] : '');
+        setStreetStart(tmp[idx]);
+    };
+    const handlePlaceSelectEndRecoil = (place) => {
+        const tmp = place.split(', ');
+        let idx = tmp.length - 1;
+        setCityEnd(tmp[idx--]);
+        setDistrictEnd(tmp[idx--]);
+        setWardEnd(idx > 0 ? tmp[idx--] : '');
+        setStreetEnd(tmp[idx]);
     };
 
     const handleGetAddress = () => {
@@ -93,7 +111,7 @@ const FormOrder = () => {
 
         socketCallcenter.on('disconnect', () => {
             console.log('Disconnected from server callcenter');
-            socketManagerInstance.reconnect(socketCallcenter);
+            socketManagerInstance?.reconnect(socketCallcenter);
         });
 
         return () => {
@@ -101,11 +119,18 @@ const FormOrder = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (from) handlePlaceSelectStartRecoil(from);
+    }, [from]);
+    useEffect(() => {
+        if (to) handlePlaceSelectEndRecoil(to);
+    }, [to]);
+
     return (
         <div className={classes.formOrder}>
             <div className={classes.formOrder__title}>
                 <h3>TẠO ĐƠN MỚI</h3>
-                <div style={{ backgroundColor: tags['WAITING'] }} className={classes['formOrder__title--tag']}>
+                {/* <div style={{ backgroundColor: tags['WAITING'] }} className={classes['formOrder__title--tag']}>
                     <p>Đang chờ</p>
                 </div>
                 <div style={{ backgroundColor: tags['RECIEVED'] }} className={classes['formOrder__title--tag']}>
@@ -113,7 +138,7 @@ const FormOrder = () => {
                 </div>
                 <div style={{ backgroundColor: tags['COMPLETED'] }} className={classes['formOrder__title--tag']}>
                     <p>Hoàn thành</p>
-                </div>
+                </div> */}
             </div>
             <div>
                 <div className={classes['formOrder__input_info']}>
@@ -156,14 +181,14 @@ const FormOrder = () => {
                 <label htmlFor="">
                     <img src={ic_address} width={16} alt="" />
                 </label>
-                <input
+                {/* <input
                     type="text"
                     name="noHome"
                     placeholder="Số nhà"
                     style={{ width: '80px' }}
                     value={noHomeStart}
                     onChange={(e) => setNoHomeStart(e.target.value)}
-                />
+                /> */}
                 <input
                     type="text"
                     name="street"
@@ -213,14 +238,14 @@ const FormOrder = () => {
                 <label htmlFor="">
                     <img src={ic_destination} width={16} alt="" />
                 </label>
-                <input
+                {/* <input
                     type="text"
                     name="noHome"
                     placeholder="Số nhà"
                     style={{ width: '80px' }}
                     value={noHomeEnd}
                     onChange={(e) => setNoHomeEnd(e.target.value)}
-                />
+                /> */}
                 <input
                     type="text"
                     name="street"
@@ -292,9 +317,9 @@ const FormOrder = () => {
             />
 
             <div className={classes.formOrder__btn}>
-                <ButtonCT outlineBtn borderRadius medium>
+                {/* <ButtonCT outlineBtn borderRadius medium>
                     Hủy
-                </ButtonCT>
+                </ButtonCT> */}
                 <ButtonCT
                     primary
                     borderRadius
@@ -322,9 +347,9 @@ const FormOrder = () => {
                     Đặt đơn
                 </ButtonCT>
 
-                <ButtonCT outlineBtnBlue borderRadius medium>
+                {/* <ButtonCT outlineBtnBlue borderRadius medium>
                     Đặt lại
-                </ButtonCT>
+                </ButtonCT> */}
                 <ButtonCT outlineBtn borderRadius medium>
                     Hủy đơn
                 </ButtonCT>

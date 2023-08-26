@@ -13,7 +13,7 @@ import Success from '../../assets/imgs/Success.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import socketManagerInstance, { sendMessage, socketGeolocation } from '../../service/socket';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 const apiKeyNominatim = '5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114';
 
@@ -66,9 +66,14 @@ const Geolocation = () => {
 
     const fitBoundsToMarkers = (newGeocode) => {
         const bounds = new window.google.maps.LatLngBounds();
+
         bounds.extend(geocode);
-        bounds.extend(newGeocode);
-        map.fitBounds(bounds);
+
+        if (newGeocode) {
+            bounds.extend(new window.google.maps.LatLng(newGeocode.lat, newGeocode.lng));
+        }
+
+        if (map) map.fitBounds(bounds);
     };
 
     const handleSplitAddress = (address) => {
@@ -101,7 +106,7 @@ const Geolocation = () => {
         if (typeMap === 'GoogleMaps') {
             const ggMap = new GgMap(process.env.REACT_APP_GOOGLE_API);
             const location = await ggMap.getLocation(address);
-    
+
             if (type === 'NEW') {
                 setNewGeocode(location);
             } else if (type === 'SEARCH') {
@@ -112,11 +117,10 @@ const Geolocation = () => {
             }
 
             fitBoundsToMarkers(location);
-        }
-        else{
+        } else {
             const nominatim = new Nominatim(apiKeyNominatim);
             const location = await nominatim.getLocation(address);
-    
+
             if (type === 'NEW') {
                 setNewGeocode(location);
             } else if (type === 'SEARCH') {
@@ -165,7 +169,7 @@ const Geolocation = () => {
 
         setStack((prev) => prev.filter((item) => item !== 'geocodeStart'));
         const tmp = message;
-        tmp.data.geocodeStart = newGeocode;
+        tmp.data.geocodeStart = newGeocode || geocode;
         tmp.data.addressStart = noHome + ' ' + street + ', ' + ward + ', ' + district + ', ' + city;
         setMessage(tmp);
 
@@ -203,6 +207,11 @@ const Geolocation = () => {
     }, [stack]);
 
     useEffect(() => {
+        console.log(socketManagerInstance);
+        if (!socketManagerInstance) {
+            socketManagerInstance = new SingletonManager().getInstance();
+        }
+
         socketGeolocation.on('connect', () => {
             console.log('Connected to server geolocation');
         });
@@ -280,7 +289,7 @@ const Geolocation = () => {
             </div>
             <div className={classes.geo__info}>
                 <h4>Địa chỉ từ khách hàng</h4>
-                <p>135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, TP HCM</p>
+                <p>{address}</p>
 
                 <br />
                 <input
@@ -343,28 +352,46 @@ const Geolocation = () => {
                 />
                 <br />
 
-                <ButtonCT outlineBtnBlue borderRadius medium style={{float: 'right', display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}} onClick={handleReGeocode}>
+                <ButtonCT
+                    outlineBtnBlue
+                    borderRadius
+                    medium
+                    style={{ float: 'right', display: typeMap === 'GoogleMaps' ? 'flex' : 'none' }}
+                    onClick={handleReGeocode}
+                >
                     Định vị lại
                 </ButtonCT>
 
                 <br />
-                <br />
                 <h4>Địa chỉ định vị</h4>
                 <p>
-                    <strong>Lat: </strong> {newGeocode ? newGeocode.lat : geocode.lat}
+                    <strong>Lat: </strong> {newGeocode ? newGeocode?.lat : geocode?.lat}
                 </p>
                 <p>
-                    <strong>Lng: </strong> {newGeocode ? newGeocode.lng : geocode.lng}
+                    <strong>Lng: </strong> {newGeocode ? newGeocode?.lng : geocode?.lng}
                 </p>
 
                 <br />
-                <br />
                 {stack.length == 2 ? (
-                    <ButtonCT primary borderRadius medium block onClick={handleContinue} style={{display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}}>
+                    <ButtonCT
+                        primary
+                        borderRadius
+                        medium
+                        block
+                        onClick={handleContinue}
+                        // style={{ display: typeMap === 'GoogleMaps' ? 'flex' : 'none' }}
+                    >
                         Xác nhận & Tiếp tục
                     </ButtonCT>
                 ) : (
-                    <ButtonCT primary borderRadius medium block onClick={handleComplete} style={{display: typeMap === 'GoogleMaps' ? 'flex' : 'none'}}>
+                    <ButtonCT
+                        primary
+                        borderRadius
+                        medium
+                        block
+                        onClick={handleComplete}
+                        // style={{ display: typeMap === 'GoogleMaps' ? 'flex' : 'none' }}
+                    >
                         Hoàn thành
                     </ButtonCT>
                 )}
@@ -372,18 +399,35 @@ const Geolocation = () => {
                 <br />
 
                 <div>
-                    <button onClick={() => {setTypeMap('GoogleMaps'), toast.success('Bạn đang sử dụng Google Maps', {
-                        position: toast.POSITION.TOP_LEFT
-                    });}}>
-                        <img src={Success} className={classes.geo__img} style={{display: typeMap === 'GoogleMaps' ? 'inline' : 'none'}}/>
+                    <button
+                        onClick={() => {
+                            setTypeMap('GoogleMaps'),
+                                toast.success('Bạn đang sử dụng Google Maps', {
+                                    position: toast.POSITION.TOP_LEFT,
+                                });
+                        }}
+                    >
+                        <img
+                            src={Success}
+                            className={classes.geo__img}
+                            style={{ display: typeMap === 'GoogleMaps' ? 'inline' : 'none' }}
+                        />
                         <img src={GGMapLogo} />
                         <p>Google Maps</p>
-
                     </button>
-                    <button onClick={() => {setTypeMap('Nominatim'), toast.success('Bạn đang sử dụng Nominatim', {
-                        position: toast.POSITION.TOP_LEFT
-                    });}}>
-                        <img src={Success} className={classes.geo__img} style={{display: typeMap === 'GoogleMaps' ? 'none' : 'inline-block'}}/>
+                    <button
+                        onClick={() => {
+                            setTypeMap('Nominatim'),
+                                toast.success('Bạn đang sử dụng Nominatim', {
+                                    position: toast.POSITION.TOP_LEFT,
+                                });
+                        }}
+                    >
+                        <img
+                            src={Success}
+                            className={classes.geo__img}
+                            style={{ display: typeMap === 'GoogleMaps' ? 'none' : 'inline-block' }}
+                        />
                         <img src={NominatimLogo} />
                         <p>Nominatim</p>
                     </button>

@@ -6,8 +6,10 @@ import ic_phone from '../../assets/svg/phone.svg';
 import AddressItem from './AddressItem/AddressItem';
 import FormOrder from './FormOrder/FormOrder';
 import useAxios from '../../hooks/useAxios';
-import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
-import { locationsRecoil, nameRecoil, ordersRecoil, phoneRecoil } from './recoil';
+import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { fromRecoil, locationsRecoil, nameRecoil, ordersRecoil, phoneRecoil, toRecoil } from './recoil';
+import ButtonCT from '../../components/button/ButtonCT';
+import { useState } from 'react';
 
 const dataOrders = [
     {
@@ -52,6 +54,15 @@ const HomeRecoil = () => {
     const [name, setName] = useRecoilState(nameRecoil);
     const orders = useRecoilValue(ordersRecoil);
     const locations = useRecoilValue(locationsRecoil);
+    const setFrom = useSetRecoilState(fromRecoil);
+    const setTo = useSetRecoilState(toRecoil);
+
+    const [isFrom, setIsFrom] = useState(true);
+
+    const handleClick = (item) => {
+        if (isFrom) setFrom(item);
+        else setTo(item);
+    };
 
     useEffect(() => {
         if (isLoading0d === false && !error0d && response0d.data) {
@@ -63,11 +74,14 @@ const HomeRecoil = () => {
             <div className={classes.home__left}>
                 <h4 className={classes['home__left-title']}>Đơn hàng gần đây</h4>
                 <div className={classes['home__left-list']}>
-                    {orders.map((item, idx) => (
-                        <div key={+idx}>
-                            <OrderItem item={item} />
-                        </div>
-                    ))}
+                    {orders
+                        .slice(-5)
+                        .reverse()
+                        .map((item, idx) => (
+                            <div key={+idx}>
+                                <OrderItem item={item} />
+                            </div>
+                        ))}
                 </div>
             </div>
             <div className={classes.home__body}>
@@ -98,11 +112,17 @@ const HomeRecoil = () => {
             <div className={classes.home__right}>
                 <h4 className={classes['home__right-title']}>Địa chỉ nổi bật</h4>
                 <div className={classes['home__right-list']}>
-                    {locations.map((item, idx) => (
-                        <div key={+idx}>
+                    {locations.slice(0, 5).map((item, idx) => (
+                        <div key={+idx} onClick={() => handleClick(item?.data?.address)}>
                             <AddressItem item={item} />
                         </div>
                     ))}
+                    <ButtonCT outlineBtn medium primary={isFrom} onClick={() => setIsFrom(true)}>
+                        From
+                    </ButtonCT>
+                    <ButtonCT outlineBtn medium primary={!isFrom} onClick={() => setIsFrom(false)}>
+                        To
+                    </ButtonCT>
                 </div>
             </div>
         </div>

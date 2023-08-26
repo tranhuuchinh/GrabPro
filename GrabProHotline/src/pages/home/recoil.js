@@ -19,3 +19,13 @@ export const locationsRecoil = atom({
     key: 'locationsRecoil',
     default: [],
 });
+
+export const fromRecoil = atom({
+    key: 'fromRecoil',
+    default: '',
+});
+
+export const toRecoil = atom({
+    key: 'toRecoil',
+    default: '',
+});

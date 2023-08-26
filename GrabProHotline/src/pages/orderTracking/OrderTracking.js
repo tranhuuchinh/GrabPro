@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import classes from './OrderTracking.module.scss';
-import OrderItem from '../home/OrderItem/OrderItem';
+import OrderItem from './OrderItem/OrderItem';
 import ic_position from '../../assets/svg/address.svg';
-import { DirectionsService, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { socketCallcenter } from '../../service/socket';
+import { DirectionsRenderer, DirectionsService, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import socketManagerInstance, { socketCallcenter } from '../../service/socket';
 import { useEffect } from 'react';
 
 const containerStyle = {
@@ -67,8 +67,26 @@ const OrderTracking = () => {
         region: 'vn',
     });
     const [map, setMap] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [geocode, setGeocode] = useState({ lat: 37.7749, lng: -122.4194 });
     const [newGeocode, setNewGeocode] = useState({ lat: 38.7749, lng: -122.4194 });
+    const [orders, setOrders] = useState([]);
+
+    const [directionsResponse, setDirectionsResponse] = useState(null);
+    const [distance, setDistance] = useState('');
+    const [duration, setDuration] = useState('');
+
+    const handleSelected = (item) => {
+        setSelected(item);
+        setGeocode({
+            lat: item?.order?.from?.latitude,
+            lng: item?.order?.from?.altitude,
+        });
+        setNewGeocode({
+            lat: item?.order?.to?.latitude,
+            lng: item?.order?.to?.altitude,
+        });
+    };
 
     const onLoad = React.useCallback(function callback(mapInstance) {
         const bounds = new window.google.maps.LatLngBounds(geocode);
@@ -87,7 +105,7 @@ const OrderTracking = () => {
         });
 
         socketCallcenter.on('FOLLOW_ORDER_CLIENT', (message) => {
-            console.log(message);
+            setOrders((tmp) => [message, ...tmp]);
         });
 
         socketCallcenter.on('disconnect', () => {
@@ -100,18 +118,48 @@ const OrderTracking = () => {
         };
     }, []);
 
+    console.log(selected);
+
     const customMarkerIcon = {
         url: ic_position,
         scaledSize: isLoaded ? new window.google.maps.Size(36, 36) : null,
     };
+
+    async function calculateRoute() {
+        try {
+            const directionsService = new google.maps.DirectionsService();
+            const results = await directionsService.route({
+                origin: geocode,
+                destination: newGeocode,
+                travelMode: google.maps.TravelMode.DRIVING,
+            });
+            setDirectionsResponse(results);
+            setDistance(results.routes[0].legs[0].distance.text);
+            setDuration(results.routes[0].legs[0].duration.text);
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        calculateRoute();
+    }, [geocode?.lat, newGeocode?.lat]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            if (selected) console.log(selected);
+            // Send Socket get location driver
+        }, 1000);
+        return () => {
+            clearInterval(timer);
+        };
+    }, [selected]);
 
     return (
         <div className={classes.orderTracking}>
             <div className={classes.orderTracking__left}>
                 <h3 style={{ color: 'blue', padding: '10px', boxShadow: '1px 2px 3px #ddd' }}>Đơn đang thực hiện</h3>
                 <div className={classes['orderTracking__left-list']}>
-                    {dataOrders.map((item, idx) => (
-                        <div key={+idx}>
+                    {orders.map((item, idx) => (
+                        <div key={+idx} onClick={() => handleSelected(item)}>
                             <OrderItem item={item} />
                         </div>
                     ))}
@@ -120,20 +168,25 @@ const OrderTracking = () => {
             <div className={classes.orderTracking__info}>
                 <h4>Khách hàng</h4>
                 <div style={{ border: '1px solid #ddd', padding: '10px' }}>
-                    <strong>Trần Duy Khương</strong>
-                    <p>027 3829 123</p>
+                    <strong>{selected ? selected?.user?.fullname : 'No name'}</strong>
+                    <p>{selected ? selected?.user?.idAccount?.phone : 'No phone'}</p>
                 </div>
                 <br />
                 <h4>Đơn hàng</h4>
                 <div>
                     <h5>Bắt đầu</h5>
-                    <p>135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, Tp Hồ Chí Minh</p>
+                    <p>{selected ? selected?.order?.from?.address : 'None'}</p>
                     <h5 style={{ paddingTop: '10px' }}>Kết thúc</h5>
-                    <p>135 Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, Tp Hồ Chí Minh</p>
+                    <p>{selected ? selected?.order?.to?.address : 'None'}</p>
                     <h5 style={{ paddingTop: '10px' }}>Thời gian đặt</h5>
-                    <p>12:30 27/07/2023</p>
+                    <p>{selected ? selected?.order?.createdAt.slice(0, 16).replace('T', ' ') : 'None'}</p>
                 </div>
                 <br />
+                <h5>Khoảng cách</h5>
+                <p>{distance}</p>
+                <br />
+                <h5>Ước lượng thời gian</h5>
+                <p>{duration}</p>
                 <h4>Tài xế</h4>
                 <div style={{ padding: '10px', backgroundColor: 'lightcyan' }}>
                     <strong>Trần Hữu Chính</strong>
@@ -151,21 +204,10 @@ const OrderTracking = () => {
                         onLoad={onLoad}
                         onUnmount={onUnmount}
                     >
-                        <Marker position={geocode} />
-                        <Marker position={newGeocode} icon={customMarkerIcon} />
+                        {/* <Marker position={geocode} />
+                        <Marker position={newGeocode} icon={customMarkerIcon} /> */}
 
-                        {/* <DirectionsService
-                            options={{
-                                geocode,
-                                destination,
-                                travelMode: 'DRIVING',
-                            }}
-                            callback={(response) => {
-                                if (response !== null) {
-                                    return <DirectionsRenderer directions={response} />;
-                                }
-                            }}
-                        /> */}
+                        {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
                     </GoogleMap>
                 ) : (
                     <>Loading...</>
