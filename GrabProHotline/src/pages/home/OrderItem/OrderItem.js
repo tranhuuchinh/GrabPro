@@ -29,7 +29,7 @@ const OrderItem = ({ item }) => {
                 <p className={classes['orderItem__body-phone']} style={{ color: 'blue' }}>
                     {item?.to?.address}
                 </p>
-                <p className={classes['orderItem__body-time']}>{item?.createdAt?.substring(0, 10)}</p>
+                <p className={classes['orderItem__body-time']}>{item?.createdAt?.slice(0, 16).replace('T', ' ')}</p>
             </div>
         </div>
     );

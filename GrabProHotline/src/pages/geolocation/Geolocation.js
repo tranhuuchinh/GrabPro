@@ -65,15 +65,17 @@ const Geolocation = () => {
     }, []);
 
     const fitBoundsToMarkers = (newGeocode) => {
-        const bounds = new window.google.maps.LatLngBounds();
+        try {
+            const bounds = new window.google.maps.LatLngBounds();
 
-        bounds.extend(geocode);
+            bounds.extend(geocode);
 
-        if (newGeocode) {
-            bounds.extend(new window.google.maps.LatLng(newGeocode.lat, newGeocode.lng));
-        }
+            if (newGeocode) {
+                bounds.extend(new window.google.maps.LatLng(newGeocode.lat, newGeocode.lng));
+            }
 
-        if (map) map.fitBounds(bounds);
+            if (map) map.fitBounds(bounds);
+        } catch (e) {}
     };
 
     const handleSplitAddress = (address) => {
