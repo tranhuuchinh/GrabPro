@@ -71,30 +71,29 @@ const HomePage = () => {
   }, [isLoading]);
 
   useEffect(() => {
-    const [response, error, isLoading] = useAxios(
-      "get",
-      `/orders/${idOrder}`,
-      {},
-      {},
-      []
-    );
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/orders/${idOrder}`);
 
-    if (!isLoading && response && response.data !== undefined) {
-      // Lấy tọa độ từ dữ liệu response và cập nhật vào state
-      setFromCoordinates((prevFromCoords) => ({
-        ...prevFromCoords,
-        latitude: response.data.from.latitude,
-        longitude: response.data.from.altitude,
-      }));
+        if (response.data !== undefined) {
+          const fromLatitude = response.data.from.latitude;
+          const fromLongitude = response.data.from.altitude;
 
-      setToCoordinates((prevToCoords) => ({
-        ...prevToCoords,
-        latitude: response.data.to.latitude,
-        longitude: response.data.to.altitude,
-      }));
+          const toLatitude = response.data.to.latitude;
+          const toLongitude = response.data.to.altitude;
 
-      console.log("fdfjsjkdhkgksdjhfshkj", fromCoordinates);
-    }
+          setFromCoordinates({
+            latitude: fromLatitude,
+            longitude: fromLongitude,
+          });
+          setToCoordinates({ latitude: toLatitude, longitude: toLongitude });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [idOrder]);
 
   useEffect(() => {
@@ -333,15 +332,15 @@ const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalReceiveBill, setShowModalReceiveBill] = useState(false);
   const [statePoint, setStatePoint] = useState(0);
-  useEffect(() => {
-    if (response?.data) {
-      setShowModal(true); // Hiển thị modal khi có dữ liệu response
-      setTimeout(() => {
-        setShowModal(false);
-        setShowModalReceiveBill(true);
-      }, 3000);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.data) {
+  //     setShowModal(true); // Hiển thị modal khi có dữ liệu response
+  //     setTimeout(() => {
+  //       setShowModal(false);
+  //       setShowModalReceiveBill(true);
+  //     }, 3000);
+  //   }
+  // }, [response]);
 
   const handleMarkerPress = (markerNumber) => {
     console.log(`Pressed marker number ${markerNumber}`);

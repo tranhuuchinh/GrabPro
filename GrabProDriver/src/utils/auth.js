@@ -25,8 +25,8 @@ const auth = {
     // retrieveIdFromStorage();
   },
 
-  type(data) {
-    const { data } = data;
+  type(datas) {
+    const { data } = datas;
     AsyncStorage.setItem("type", data.transport.type);
   },
 
