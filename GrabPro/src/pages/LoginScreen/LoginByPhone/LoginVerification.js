@@ -89,7 +89,7 @@ const LoginVerification = () => {
         console.log(object);
         // Thực hiện gọi API bằng axios
         axios
-          .post("http://192.168.1.5:3000/auth/register?role=customer", object)
+          .post("http://192.168.1.7:3000/auth/register?role=customer", object)
           .then((response) => {
             // Xử lý phản hồi từ API
           })
