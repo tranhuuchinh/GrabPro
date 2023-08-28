@@ -32,6 +32,8 @@ import {
 import useAxios from "../../hooks/useAxios";
 import ReceiveBill from "../../components/ReceiveBill/ReceiveBill";
 import auth from "../../utils/auth";
+import axios from "axios";
+import { axiosClient } from "../../api/axios";
 
 const HomePage = () => {
   const fontsLoaded = useCustomFonts();
@@ -51,42 +53,79 @@ const HomePage = () => {
   const [directioPoint, setDirectionPoint] = useState("");
   const [customer, setCustomer] = useState();
   const [idOrder, setIdOrder] = useState();
+  const [infoDriver, setInfoDriver] = useState();
+  const [dataOrder, setDataOrder] = useState();
 
-  const [responseDriver, error, isLoading] = useAxios(
-    "get",
-    `/driver/${AsyncStorage.getItem("_id")}`,
-    {},
-    {},
-    []
-  );
+  const retrieveIdFromStorage = async () => {
+    try {
+      const _id = await AsyncStorage.getItem("_id");
+      if (_id !== null) {
+        setID(_id);
+        console.log("Giá trị _id từ AsyncStorage:", _id);
+        // console.log("fdsfjs" + _id); // Sử dụng _id thay vì idDriver
+        return _id; // Trả về giá trị _id
+      } else {
+        console.log("Không tìm thấy giá trị _id trong AsyncStorage");
+        return null; // Hoặc có thể trả về giá trị khác để thể hiện không có giá trị
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy giá trị _id từ AsyncStorage:", error);
+      return null; // Xử lý lỗi và trả về giá trị khác để thể hiện không có giá trị
+    }
+  };
 
   useEffect(() => {
-    if (isLoading) {
-      return;
-    }
+    retrieveIdFromStorage().then((_id) => {
+      setShowModalReceiveBill(false);
+      if (isConnected && socketDriver) {
+        socketDriver.on("disconnect", () => {
+          console.log("Loss internet => Reconnect...");
+          socketDriverInstance = connect();
+          sendMessage("setID", _id);
+        });
+      }
+      if (_id) {
+        axios
+          .get(`http://192.168.1.8:3002/driver/${_id}`)
+          .then((response) => {
+            const responseData = response.data;
+            console.log("Vinh lấy info driver");
+            console.log(responseData);
+            setInfoDriver(responseData);
+            auth.type(responseData);
+          })
+          .catch((error) => {
+            console.error("Error fetching driver data:", error);
+          });
+      }
+    });
+  }, []);
 
-    if (responseDriver && responseDriver.data !== undefined) {
-      auth.type(responseDriver.data);
-    }
-  }, [isLoading]);
-
+  //Lấy data order
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/orders/${idOrder}`);
+        // axiosClient.get(`/orders/${idOrder}`);
+        if (idOrder) {
+          axiosClient.get(`/orders/${idOrder}`, {}, {}, []).then((response) => {
+            if (response.data !== undefined) {
+              setDataOrder(response.data);
+              const fromLatitude = response.data.from.latitude;
+              const fromLongitude = response.data.from.altitude;
 
-        if (response.data !== undefined) {
-          const fromLatitude = response.data.from.latitude;
-          const fromLongitude = response.data.from.altitude;
+              const toLatitude = response.data.to.latitude;
+              const toLongitude = response.data.to.altitude;
 
-          const toLatitude = response.data.to.latitude;
-          const toLongitude = response.data.to.altitude;
-
-          setFromCoordinates({
-            latitude: fromLatitude,
-            longitude: fromLongitude,
+              setFromCoordinates({
+                latitude: fromLatitude,
+                longitude: fromLongitude,
+              });
+              setToCoordinates({
+                latitude: toLatitude,
+                longitude: toLongitude,
+              });
+            }
           });
-          setToCoordinates({ latitude: toLatitude, longitude: toLongitude });
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -102,21 +141,6 @@ const HomePage = () => {
 
   const handleToggleConnect = () => {
     setIsConnected((prev) => !prev);
-  };
-
-  const retrieveIdFromStorage = async () => {
-    try {
-      const _id = await AsyncStorage.getItem("_id");
-      if (_id !== null) {
-        setID(_id);
-        // console.log("Giá trị _id từ AsyncStorage:", _id);
-        // console.log("fdsfjs" + ids);
-      } else {
-        console.log("Không tìm thấy giá trị _id trong AsyncStorage");
-      }
-    } catch (error) {
-      console.error("Lỗi khi lấy giá trị _id từ AsyncStorage:", error);
-    }
   };
 
   //Lấy vị trí hiện tại
@@ -152,7 +176,7 @@ const HomePage = () => {
   useEffect(() => {
     console.log("Vinh đường đi");
     if (statePoint == 0) {
-      console.log("đương đi" + currentLocation);
+      // console.log(currentLocation);
       if (currentLocation && fromCoordinates) {
         var request = new XMLHttpRequest();
         request.open(
@@ -217,9 +241,9 @@ const HomePage = () => {
   useEffect(() => {
     getLocationAsync();
 
-    const interval = setInterval(() => {
-      getLocationAsync();
-    }, 1000);
+    // const interval = setInterval(() => {
+    //   getLocationAsync();
+    // }, 1000);
 
     if (isConnected) {
       socketDriverInstance = connect();
@@ -263,6 +287,7 @@ const HomePage = () => {
 
       // Khi trong lắng nghe này có dữ liệu thì hiện cái modal lên
       listenForMessage("requestOrder", (data) => {
+        console.log("requestOrder" + data);
         if (data !== null) {
           setShowModal(true);
           setIdOrder(data);
@@ -273,22 +298,22 @@ const HomePage = () => {
 
       // 1. KHI CHẤP NHẬN CUỐC ĐI
       // - XÁC NHẬN CUỐC ĐI
-      const objectAccept = {
-        idOrder: idOrder,
-        idDriver: idDriver,
-        idCustomer: customer.idCustomer,
-      };
-      sendMessage("acceptOrder", objectAccept);
+      // const objectAccept = {
+      //   idOrder: idOrder,
+      //   idDriver: idDriver,
+      //   idCustomer: customer.idCustomer,
+      // };
+      // sendMessage("acceptOrder", objectAccept);
 
-      // - GỬI THÔNG TIN SAU MỖI 5 GIÂY: Nhớ dùng setTimeOut hay gì đó sau 5 giây gửi một lần
-      const objectSendInfo = {
-        idCustomer: customer.idCustomer,
-        location: {
-          lat: currentLocation.latitude,
-          lng: currentLocation.longitude,
-        },
-      };
-      sendMessage("followDriver", objectSendInfo);
+      // // - GỬI THÔNG TIN SAU MỖI 5 GIÂY: Nhớ dùng setTimeOut hay gì đó sau 5 giây gửi một lần
+      // const objectSendInfo = {
+      //   idCustomer: customer.idCustomer,
+      //   location: {
+      //     lat: currentLocation.latitude,
+      //     lng: currentLocation.longitude,
+      //   },
+      // };
+      // sendMessage("followDriver", objectSendInfo);
 
       // 3. KHI HOÀN THÀNH CUỐC ĐI thì tự gọi API cập nhật status của Order có idOrder ở trên thành 2
       // và không gửi thông tin sau mỗi 5 giây nữa
@@ -305,42 +330,28 @@ const HomePage = () => {
       setInitialState(false);
     }
 
-    return () => {
-      clearInterval(interval);
-    };
+    // return () => {
+    //   clearInterval(interval);
+    // };
   }, [isConnected, fromCoordinates]);
-
-  useEffect(() => {
-    setShowModalReceiveBill(false);
-    if (isConnected && socketDriver) {
-      socketDriver.on("disconnect", () => {
-        console.log("Loss internet => Reconnect...");
-        socketDriverInstance = connect();
-        retrieveIdFromStorage();
-        //Chỗ này cũng bỏ idUser vô chỗ IdAccount
-        sendMessage("setID", idDriver);
-        console.log("Vinh id" + idDriver);
-      });
-    }
-  }, []);
 
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
   };
 
   //Modal
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [showModalReceiveBill, setShowModalReceiveBill] = useState(false);
   const [statePoint, setStatePoint] = useState(0);
-  // useEffect(() => {
-  //   if (response?.data) {
-  //     setShowModal(true); // Hiển thị modal khi có dữ liệu response
-  //     setTimeout(() => {
-  //       setShowModal(false);
-  //       setShowModalReceiveBill(true);
-  //     }, 3000);
-  //   }
-  // }, [response]);
+  useEffect(() => {
+    // if (response?.data) {
+    setShowModal(true); // Hiển thị modal khi có dữ liệu response
+    setTimeout(() => {
+      setShowModal(false);
+      setShowModalReceiveBill(true);
+    }, 3000);
+    // }
+  }, []);
 
   const handleMarkerPress = (markerNumber) => {
     console.log(`Pressed marker number ${markerNumber}`);
@@ -776,14 +787,14 @@ const HomePage = () => {
             </View>
           </View>
         </View>
-        {showModal && <ModalCustom orderData={response?.data} />}
-        {showModalReceiveBill && (
+        {showModal && <ModalCustom orderData={orderData} />}
+        {/* {showModalReceiveBill && (
           <ReceiveBill
-            orderData={response?.data}
+            orderData={dataOrder}
             point={statePoint}
             handleDrawDirection={setDirectionPoint}
           />
-        )}
+        )} */}
       </View>
     );
   }

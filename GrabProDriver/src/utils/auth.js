@@ -22,11 +22,11 @@ const auth = {
     AsyncStorage.setItem("phone", data.phone);
     AsyncStorage.setItem("role", data.role);
     const storedId = AsyncStorage.getItem("_id");
-    // retrieveIdFromStorage();
   },
 
-  type(datas) {
-    const { data } = datas;
+  type(dataDriver) {
+    const { data } = dataDriver;
+    // console.log(data.transport.type);
     AsyncStorage.setItem("type", data.transport.type);
   },
 

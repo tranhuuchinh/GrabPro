@@ -45,7 +45,7 @@ const LogInScreen = () => {
     }
     try {
       axios
-        .post("http://192.168.1.7:3000/auth/login?role=driver", {
+        .post("http://192.168.1.8:3000/auth/login?role=driver", {
           phone: phone,
           password: password,
           loginType: "phone",
@@ -56,7 +56,8 @@ const LogInScreen = () => {
             response.data.status == "success" &&
             response.data.data.role == "driver"
           ) {
-            const dataRes = auth.login(response.data);
+            auth.login(response.data);
+
             navigation.navigate("/home");
           }
         })
