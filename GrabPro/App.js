@@ -38,9 +38,12 @@ import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
 import LoginScreen from "./src/pages/LoginScreen/LoginScreen";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
-import * as Permissions from 'expo-permissions';
+import * as Permissions from "expo-permissions";
+import { LogBox } from "react-native";
 
 import { socketCustomer, socketDriver } from "./src/service/socket";
+
+LogBox.ignoreLogs(["Warning: No native ExpoFirebaseCore module found"]);
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -200,10 +203,10 @@ const App = () => {
   //   // Function to get permission for location
   //   const requestLocationPermission = async () => {
   //     const { status } = await Permissions.askAsync(Permissions.LOCATION);
-      
+
   //     if (status === 'granted') {
   //       console.log('You can use Geolocation');
-  
+
   //       return true;
   //     } else {
   //       console.log('You cannot use Geolocation');
