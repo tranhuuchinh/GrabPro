@@ -74,6 +74,22 @@ const HomePage = () => {
     }
   };
 
+  // Định nghĩa hàm để lấy giá trị type từ AsyncStorage
+  const retrieveTypeFromStorage = async () => {
+    try {
+      const type = await AsyncStorage.getItem("type");
+      if (type !== null) {
+        return type;
+      } else {
+        console.log("Không tìm thấy giá trị type trong AsyncStorage");
+        return null;
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy giá trị type từ AsyncStorage:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     retrieveIdFromStorage().then((_id) => {
       setShowModalReceiveBill(false);
@@ -250,10 +266,15 @@ const HomePage = () => {
       setInitialState(true);
 
       //Chỗ này làm đăng nhập đăng kí gì đó bỏ IDUser vô chỗ IDAccount
-      const object = {
-        idAccount: idDriver,
-        type: AsyncStorage.getItem("type"), //Type là loại xe của tài xế
-      };
+      // Trong useEffect hoặc bất kỳ hàm nào bạn cần sử dụng giá trị từ AsyncStorage
+      retrieveTypeFromStorage().then((type) => {
+        const object = {
+          idAccount: idDriver,
+          type: type,
+        };
+
+        // Tiếp tục sử dụng object trong các tương tác sau
+      });
       sendMessage("setID", object);
 
       //Lắng nghe sự kiện bên socket gửi v
