@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import Home from '../pages/Home/Home';
+import Home from '../pages/home/Home';
 import Order from '../pages/Order/Order';
 import User from '../pages/User/User';
 import NotFound from '../pages/notFound';
@@ -30,4 +30,3 @@ const Navigation = () => {
 };
 
 export default Navigation;
-
