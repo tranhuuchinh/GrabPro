@@ -102,7 +102,7 @@ const HomePage = () => {
       }
       if (_id) {
         axios
-          .get(`http://192.168.1.8:3002/driver/${_id}`)
+          .get(`http://192.168.1.4:3002/driver/${_id}`)
           .then((response) => {
             const responseData = response.data;
             console.log("Vinh lấy info driver");

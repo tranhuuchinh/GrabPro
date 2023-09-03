@@ -4,6 +4,10 @@ import styles from "./RegisterScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
+import axios from "axios";
+import { axiosClient } from "../../api/axios";
+import useAxios from "../../hooks/useAxios";
+import auth from "../../utils/auth";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -37,7 +41,33 @@ const RegisterScreen = () => {
     }
 
     if (isPhone && isPass) {
-      navigation.navigate("/update");
+      try {
+        console.log("Vinh 1");
+        const object = {
+          phone: phone,
+          password: password,
+          role: "driver",
+        };
+        axios
+          .post("http://192.168.1.4:3000/auth/register", object)
+          .then((response) => {
+            // console.log(response.data);
+            if (
+              response.data.status == "success" &&
+              response.data.data.role == "driver"
+            ) {
+              auth.login(response.data);
+              navigation.navigate("/home");
+            }
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log("Vinh");
+          });
+      } catch (error) {
+        // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
+        console.error("Đăng nhập thất bại:", error);
+      }
     }
   };
 

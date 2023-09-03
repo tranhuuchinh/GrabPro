@@ -4,7 +4,7 @@ import { API_ENDPOINT } from "@env";
 
 const axiosClient = axios.create({
   // baseURL: API_ENDPOINT,
-  baseURL: "http://192.168.1.8:3002",
+  baseURL: "http://192.168.1.4:3002",
   headers: {
     "Content-Type": "application/json",
   },
