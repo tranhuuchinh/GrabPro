@@ -15,6 +15,7 @@ import Background from "../../../assets/imgs/Profile/bgProfile.png";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import { axiosClient } from "../../api/axios";
+import StateManager from "../../service/commandbook/receiver";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -27,6 +28,7 @@ const emailValid = (email) => {
 };
 
 const ProfilePerson = () => {
+  const getStateCommand = StateManager.getState();
   const route = useRoute();
   const props = route.params;
   const fontsLoaded = useCustomFonts();
@@ -79,7 +81,7 @@ const ProfilePerson = () => {
     };
 
     axiosClient
-      .patch("/customer/profile/64cd144708afa47f3bda6ae6", object, {}, [])
+      .patch(`/customer/profile/${getStateCommand.id}`, object, {}, [])
       .then((res) => {
         console.log(res);
         if (res.status === "success") {

@@ -6,6 +6,7 @@ import img from "../../../assets/imgs/Favorite/halinh.png";
 import { useCustomFonts } from "../../styles/fonts";
 import { useRoute } from "@react-navigation/native";
 import useAxios from "../../hooks/useAxios";
+import StateManager from "../../service/commandbook/receiver";
 
 const formatDateTime = (dateTimeString) => {
   const options = {
@@ -31,16 +32,17 @@ const formatNumberWithDots = (inputNumber) => {
 
   const formattedNumber = Number(inputNumber).toLocaleString("en-US");
   return formattedNumber;
-}
+};
 
 const PaymentDetail = () => {
+  const getStateCommand = StateManager.getState();
   const fontsLoaded = useCustomFonts();
   const route = useRoute();
   const props = route.params;
   const [name, setName] = useState("");
   const [response, error, isLoading] = useAxios(
     "get",
-    "/customer/profile/64cd144708afa47f3bda6ae6",
+    `/customer/profile/${getStateCommand.id}`,
     {},
     {},
     []

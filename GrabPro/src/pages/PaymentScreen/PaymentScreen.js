@@ -15,13 +15,15 @@ import ic_qr from "../../../assets/icons/Payment/ic_qr.png";
 import PaymentItem from "./PaymentItem/PaymentItem";
 import { useCustomFonts } from "../../styles/fonts";
 import useAxios from "../../hooks/useAxios";
+import StateManager from "../../service/commandbook/receiver";
 
 const PaymentScreen = () => {
+  const getStateCommand = StateManager.getState();
   const [orders, setOrders] = useState([]);
 
   const [response, error, isLoading] = useAxios(
     "get",
-    "/bills?idUser=64cd144708afa47f3bda6ae6",
+    `/bills?idUser=${getStateCommand.id}`,
     {},
     {},
     []

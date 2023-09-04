@@ -43,7 +43,7 @@ import { LogBox } from "react-native";
 
 import { socketCustomer, socketDriver } from "./src/service/socket";
 
-LogBox.ignoreLogs(["Warning: No native ExpoFirebaseCore module found"]);
+LogBox.ignoreAllLogs();
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
