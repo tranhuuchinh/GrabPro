@@ -8,6 +8,7 @@ import axios from "axios";
 import { axiosClient } from "../../api/axios";
 import useAxios from "../../hooks/useAxios";
 import auth from "../../utils/auth";
+import { log } from "react-native-reanimated";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -24,7 +25,7 @@ const RegisterScreen = () => {
   const [isPass, setIsEmail] = useState(true);
   const [isPhone, setIsPhone] = useState(true);
 
-  const submitForm = () => {
+  const submitForm = async () => {
     if (!phoneValid(phone)) {
       setIsPhone(false);
       PhoneInput.current.focus();
@@ -42,28 +43,24 @@ const RegisterScreen = () => {
 
     if (isPhone && isPass) {
       try {
-        console.log("Vinh 1");
         const object = {
           phone: phone,
           password: password,
           role: "driver",
         };
-        axios
-          .post("http://192.168.1.7:3000/auth/register", object)
-          .then((response) => {
-            // console.log(response.data);
-            if (
-              response.data.status == "success" &&
-              response.data.data.role == "driver"
-            ) {
-              auth.login(response.data);
-              navigation.navigate("/home");
-            }
-            console.log(response.data);
-          })
-          .catch((error) => {
-            console.log("Vinh");
-          });
+
+        const response = await axios.post(
+          "http://192.168.1.5:3000/auth/register",
+          object
+        );
+
+        if (response.data.status === "success") {
+          const idAccount = response.data.dataRegis.user.idAccount._id;
+          console.log(idAccount);
+          navigation.navigate("/update", { idAccount });
+        } else {
+          console.log("Đăng ký không thành công.");
+        }
       } catch (error) {
         // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
         console.error("Đăng nhập thất bại:", error);

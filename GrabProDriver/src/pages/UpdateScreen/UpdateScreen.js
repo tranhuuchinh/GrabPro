@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Text, View, Pressable, TextInput } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import styles from "./UpdateScreen.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const emailValid = (email) => {
   const re =
@@ -30,6 +32,11 @@ const UpdateScreen = () => {
   const [isEmail, setIsEmail] = useState(true);
   const [isCode, setIsCode] = useState(true);
   const [isCar, setIsCar] = useState(true);
+  const route = useRoute();
+  const { idAccount } = route.params;
+  useEffect(() => {
+    console.log("ID: " + idAccount);
+  }, []);
 
   const submitForm = () => {
     if (name.length <= 4) {
@@ -62,7 +69,36 @@ const UpdateScreen = () => {
     }
 
     if (isName && isEmail) {
-      navigation.navigate("/home");
+      try {
+        const object = {
+          name: name,
+          email: email,
+          code: code,
+          nameCar: nameCar,
+          color: color,
+          type: selectedValue,
+        };
+
+        // Gọi API PATCH để cập nhật thông tin tài xế
+        axios
+          .patch(`http://192.168.1.5:3002/driver/${idAccount}`, object)
+          .then((response) => {
+            if (response.data.status === "success") {
+              console.log("Cập nhật thành công.");
+              // Nếu cần, bạn có thể điều hướng người dùng đến trang khác sau khi cập nhật thành công.
+              navigation.navigate("/home");
+            } else {
+              console.log("Cập nhật không thành công.");
+            }
+          })
+          .catch((error) => {
+            // Xử lý lỗi từ server (ví dụ: hiển thị thông báo lỗi cho người dùng)
+            console.error("Lỗi từ server:", error);
+          });
+      } catch (error) {
+        // Xử lý lỗi ở phía máy khách (ví dụ: lỗi khi gọi API)
+        console.error("Lỗi từ máy khách:", error);
+      }
     }
   };
 
@@ -78,11 +114,12 @@ const UpdateScreen = () => {
             <SelectList
               style={styles.register_input}
               data={[
-                { key: "GrabCar", value: "GrabCar" },
-                { key: "GrabBike", value: "GrabBike" },
+                { key: "GrabCar", value: "4seats" },
+                { key: "GrabBike", value: "7seats" },
+                { key: "MotoBike", value: "Motobike" },
               ]}
               save="value"
-              defaultOption={{ key: "GrabCar", value: "GrabCar" }}
+              defaultOption={{ key: "GrabCar", value: "motobike" }}
               setSelected={(val) => setSelectedValue(val)}
             />
           </View>

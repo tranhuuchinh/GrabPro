@@ -808,7 +808,7 @@ const HomePage = () => {
             </View>
           </View>
         </View>
-        {showModal && <ModalCustom orderData={orderData} />}
+        {/* {showModal && <ModalCustom orderData={orderData} />} */}
         {/* {showModalReceiveBill && (
           <ReceiveBill
             orderData={dataOrder}
