@@ -5,7 +5,7 @@ import { useCustomFonts } from "../../styles/fonts";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-const ModalCustom = ({ orderData }) => {
+const ModalCustom = ({ orderData, onCloseModel, onAccept }) => {
   const fontsLoaded = useCustomFonts();
 
   const [countdown, setCountdown] = useState(5);
@@ -13,6 +13,8 @@ const ModalCustom = ({ orderData }) => {
   const formatNumberWithCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+  // console.log("Data: ");
+  // console.log(orderData);
 
   useEffect(() => {
     if (countdown > 0) {
@@ -20,7 +22,13 @@ const ModalCustom = ({ orderData }) => {
         setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
 
-      return () => clearInterval(timer);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+    if (countdown === 0) {
+      console.log("00000");
+      onCloseModel();
     }
   }, [countdown]);
 
@@ -64,7 +72,12 @@ const ModalCustom = ({ orderData }) => {
               </Text>
             </View>
           </View>
-          <Pressable style={styles.custom_overlay_btn1}>
+          <Pressable
+            onPress={() => {
+              onAccept();
+            }}
+            style={styles.custom_overlay_btn1}
+          >
             <Text style={styles["custom_overlay_btn-txt1"]}>
               Đồng ý nhận cuốc
             </Text>
@@ -74,7 +87,12 @@ const ModalCustom = ({ orderData }) => {
               </Text>
             </View>
           </Pressable>
-          <Pressable style={styles.custom_overlay_btn2}>
+          <Pressable
+            onPress={() => {
+              onCloseModel();
+            }}
+            style={styles.custom_overlay_btn2}
+          >
             <Text style={styles["custom_overlay_btn-txt2"]}>Hủy</Text>
           </Pressable>
         </View>

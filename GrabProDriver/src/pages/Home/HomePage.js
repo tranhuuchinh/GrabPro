@@ -102,7 +102,7 @@ const HomePage = () => {
       }
       if (_id) {
         axios
-          .get(`http://192.168.1.4:3002/driver/${_id}`)
+          .get(`http://192.168.1.6:3002/driver/${_id}`)
           .then((response) => {
             const responseData = response.data;
             console.log("Vinh lấy info driver");
@@ -126,6 +126,8 @@ const HomePage = () => {
           axiosClient.get(`/orders/${idOrder}`, {}, {}, []).then((response) => {
             if (response.data !== undefined) {
               setDataOrder(response.data);
+              console.log("Order");
+              console.log(response.data.idCustomer);
               const fromLatitude = response.data.from.latitude;
               const fromLongitude = response.data.from.altitude;
 
@@ -274,13 +276,14 @@ const HomePage = () => {
         };
 
         // Tiếp tục sử dụng object trong các tương tác sau
+        sendMessage("setID", object);
       });
-      sendMessage("setID", object);
 
       //Lắng nghe sự kiện bên socket gửi v
       listenForMessage("driverClient", (data) => {
-        console.log("Received message from server:", data);
+        console.log("Received message from server:");
         setCustomer(data);
+        // console.log(data);
 
         //Data nhận về gồm:
         // const data = {
@@ -289,36 +292,46 @@ const HomePage = () => {
         //   lon: inforCustomer.from.lng,
         //   idOrder: savedOrder._id,
         // };
+        let idOrderr = data?.idOrder;
+        let latDriver = currentLocation.latitude;
+        let lngDriver = currentLocation.longitude;
+        console.log(typeof currentLocation.latitude);
+        console.log(currentLocation.longitude);
 
         //Chỗ này gửi object gồm vị trí tài xế và id tài xế lên
         const inforDriver = {
           idDriver: idDriver,
-          idOrder: idOrder,
+          idOrder: idOrderr,
           fromDri: {
-            lat: fromCoordinates.latitude,
-            lng: fromCoordinates.longitude,
+            lat: latDriver,
+            lng: lngDriver,
+            // lat: 10.7665997,
+            // lng: 106.6951836,
           },
           toCus: {
-            lat: toCoordinates.latitude,
-            lng: toCoordinates.longitude,
+            lat: data.lat,
+            lng: data.lon,
+            // lat: 10.7665997,
+            // lng: 106.6951846,
           },
         };
+        console.log("ccccccc");
         sendMessage("driverClient", inforDriver);
       });
 
       // Khi trong lắng nghe này có dữ liệu thì hiện cái modal lên
-      listenForMessage("requestOrder", (data) => {
-        console.log("requestOrder" + data);
-        if (data !== null) {
+      listenForMessage("requestOrder", (dataIdOrder) => {
+        console.log("requestOrder" + dataIdOrder);
+        if (dataIdOrder !== null) {
           setShowModal(true);
-          setIdOrder(data);
+          setIdOrder(dataIdOrder);
         }
         // Khi có data thì hiện modal lên
         // data ở đây là idOrder lấy idOrder này hiển thị lên modal
       });
 
-      // 1. KHI CHẤP NHẬN CUỐC ĐI
-      // - XÁC NHẬN CUỐC ĐI
+      // // 1. KHI CHẤP NHẬN CUỐC ĐI
+      // // - XÁC NHẬN CUỐC ĐI
       // const objectAccept = {
       //   idOrder: idOrder,
       //   idDriver: idDriver,
@@ -340,11 +353,11 @@ const HomePage = () => {
       // và không gửi thông tin sau mỗi 5 giây nữa
 
       // 2. KHI HỦY CUỐC ĐI
-      const objectCancel = {
-        idDriver: idDriver,
-        idOrder: idOrder,
-      };
-      sendMessage("cancelOrder", objectCancel);
+      // const objectCancel = {
+      //   idDriver: idDriver,
+      //   idOrder: idOrder,
+      // };
+      // sendMessage("cancelOrder", objectCancel);
     } else if (!isConnected && initialState === true) {
       console.log("Disconnected from server Driver");
       disconnect();
@@ -354,7 +367,7 @@ const HomePage = () => {
     // return () => {
     //   clearInterval(interval);
     // };
-  }, [isConnected, fromCoordinates]);
+  }, [isConnected]);
 
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
@@ -370,13 +383,36 @@ const HomePage = () => {
     setTimeout(() => {
       setShowModal(false);
       setShowModalReceiveBill(true);
-    }, 3000);
+    }, 5000);
     // }
   }, []);
 
   const handleMarkerPress = (markerNumber) => {
     console.log(`Pressed marker number ${markerNumber}`);
     setStatePoint(markerNumber);
+  };
+
+  handleCloseModel = () => {
+    // 2. KHI HỦY CUỐC ĐI
+    const objectCancel = {
+      idDriver: idDriver,
+      idOrder: idOrder,
+    };
+    sendMessage("cancelOrder", objectCancel);
+    setShowModal(false);
+  };
+
+  handleAcceptOrder = () => {
+    console.log("Accept order");
+    // 1. KHI CHẤP NHẬN CUỐC ĐI
+    // - XÁC NHẬN CUỐC ĐI
+    const objectAccept = {
+      idOrder: idOrder,
+      idDriver: idDriver,
+      idCustomer: dataOrder.idCustomer,
+    };
+    sendMessage("acceptOrder", objectAccept);
+    setShowModal(false);
   };
 
   if (!fontsLoaded) {
@@ -808,7 +844,13 @@ const HomePage = () => {
             </View>
           </View>
         </View>
-        {/* {showModal && <ModalCustom orderData={orderData} />} */}
+        {showModal && dataOrder && (
+          <ModalCustom
+            orderData={dataOrder}
+            onCloseModel={handleCloseModel}
+            onAccept={handleAcceptOrder}
+          />
+        )}
         {/* {showModalReceiveBill && (
           <ReceiveBill
             orderData={dataOrder}

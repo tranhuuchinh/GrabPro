@@ -81,7 +81,7 @@ const UpdateScreen = () => {
 
         // Gọi API PATCH để cập nhật thông tin tài xế
         axios
-          .patch(`http://192.168.1.5:3002/driver/${idAccount}`, object)
+          .patch(`http://192.168.1.6:3002/driver/${idAccount}`, object)
           .then((response) => {
             if (response.data.status === "success") {
               console.log("Cập nhật thành công.");

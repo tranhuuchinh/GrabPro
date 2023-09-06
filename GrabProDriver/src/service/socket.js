@@ -9,7 +9,7 @@ class SocketManager {
 
   connect() {
     if (!SocketManager.instance) {
-      this.socketDriver = io.connect(API_ENDPOINT);
+      this.socketDriver = io.connect("http://192.168.1.6:3002");
       SocketManager.instance = this;
     }
 

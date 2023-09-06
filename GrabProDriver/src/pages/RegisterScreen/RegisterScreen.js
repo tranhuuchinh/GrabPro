@@ -50,7 +50,7 @@ const RegisterScreen = () => {
         };
 
         const response = await axios.post(
-          "http://192.168.1.5:3000/auth/register",
+          "http://192.168.1.6:3000/auth/register",
           object
         );
 
