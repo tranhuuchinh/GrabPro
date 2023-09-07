@@ -5,8 +5,9 @@ import { API_ENDPOINT } from "@env";
 // console.log(API_ENDPOINT);
 
 const axiosClient = axios.create({
-  baseURL: "https://316f-222-253-157-117.ngrok-free.app/customer/",
+  // baseURL: "https://a940-222-253-150-4.ngrok-free.app/customer/",
   // baseURL: API_ENDPOINT,
+  baseURL: "http://192.168.1.7:3001",
 
   headers: {
     "Content-Type": "application/json",
