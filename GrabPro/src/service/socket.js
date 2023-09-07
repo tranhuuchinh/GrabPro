@@ -3,7 +3,7 @@ import io from "socket.io-client";
 class SocketManager {
   constructor() {
     if (!SocketManager.instance) {
-      this.socketCustomer = io.connect("http://192.168.1.11:3001");
+      this.socketCustomer = io.connect("http://192.168.1.3:3001");
       SocketManager.instance = this;
     }
 

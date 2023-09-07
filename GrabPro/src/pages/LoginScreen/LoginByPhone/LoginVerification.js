@@ -28,6 +28,7 @@ import useAxios from "../../../hooks/useAxios";
 import axios from "axios";
 import StateManager from "../../../service/commandbook/receiver";
 import { SetIdCommand } from "../../../service/commandbook/command";
+import { API_AUTH } from "@env";
 
 const LoginVerification = () => {
   const [code, setCode] = useState("");
@@ -91,7 +92,7 @@ const LoginVerification = () => {
         console.log(object);
         // Thực hiện gọi API bằng axios
         axios
-          .post("http://192.168.1.11:3000/auth/register?role=customer", object)
+          .post(`${API_AUTH}auth/register?role=customer`, object)
           .then((response) => {
             const setIdUser = new SetIdCommand(
               StateManager,

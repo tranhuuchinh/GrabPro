@@ -33,6 +33,7 @@ const BookCar = () => {
   const [locationFrom, setLocationFrom] = useState({ latitude: getStateCommand.from.lat, longitude: getStateCommand.from.lng });
   const [locationTo, setLocationTo] = useState({ latitude: getStateCommand.to.lat, longitude: getStateCommand.to.lng });
   const [coordinate, setCoordinate] = useState([]);
+  const [distance, setDistance] = useState(0);
 
   // const deg2rad = (deg) => {
   //   return deg * (Math.PI / 180);
@@ -76,6 +77,7 @@ const BookCar = () => {
             }
           });
 
+          setDistance(Math.round((responseObj.features[0].properties.segments[0].distance / 1000) * 100) / 100);
           const setDistance = new SetDistanceCommand(StateManager, Math.round((responseObj.features[0].properties.segments[0].distance / 1000) * 100) / 100);
           setDistance.execute();
 
@@ -302,7 +304,7 @@ const BookCar = () => {
               </View>
 
               <Text style={styles["bookcar__container-location-price"]}>
-                61.000đ
+              {active === '4seats' ? distance*15000 : distance*45000}đ
               </Text>
             </View>
           </Pressable>
@@ -326,7 +328,7 @@ const BookCar = () => {
               </View>
 
               <Text style={styles["bookcar__container-location-price"]}>
-                61.000đ
+                {active === '4seats' ? distance*15000 : distance*45000}đ
               </Text>
             </View>
           </Pressable>
