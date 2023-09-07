@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import StateManager from "../../service/commandbook/receiver";
 import { SetToCommand } from "../../service/commandbook/command";
 
-const apiKey = '5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114'
+const apiKey = "5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114";
 
 const BookCarHome = () => {
   const fontsLoaded = useCustomFonts();
@@ -26,7 +26,6 @@ const BookCarHome = () => {
 
   const [text, setText] = useState("");
   const [dataSearch, setDataSearch] = useState([]);
-
 
   const handlePressBack = () => {
     navigation.goBack();
@@ -43,12 +42,15 @@ const BookCarHome = () => {
     const setLocationTo = {
       address: location.properties.name,
       lat: location.geometry.coordinates[1],
-      lng: location.geometry.coordinates[0]
+      lng: location.geometry.coordinates[0],
     };
 
     const setDestination = new SetToCommand(StateManager, setLocationTo);
     setDestination.execute();
-    navigation.navigate("/bookcar-pickup", { locationFrom: null, locationTo: location});
+    navigation.navigate("/bookcar-pickup", {
+      locationFrom: null,
+      locationTo: location,
+    });
   };
   const handlePressBookCar = () => {
     navigation.navigate("/bookcar-book");
@@ -56,21 +58,23 @@ const BookCarHome = () => {
 
   const handleChangeText = async (newText) => {
     setText(newText); // Cập nhật giá trị của TextInput
-  
+
     // Gọi API để lấy danh sách địa điểm dựa trên newText
     const apiUrl = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${apiKey}&text=${newText}`;
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
-  
+
       // Kiểm tra dữ liệu trả về có khác undefined hay không
       if (data && data.features && Array.isArray(data.features)) {
         // Lọc chỉ lấy các địa điểm ở Việt Nam
-        const vietnamLocations = data.features.filter((location) =>
-          location.properties.country === "Vietnam" || location.properties.country === "Viet Nam"
+        const vietnamLocations = data.features.filter(
+          (location) =>
+            location.properties.country === "Vietnam" ||
+            location.properties.country === "Viet Nam"
         );
-  
-        setDataSearch(vietnamLocations.slice(0, 3)); 
+
+        setDataSearch(vietnamLocations.slice(0, 3));
       } else {
         console.log("Dữ liệu API không hợp lệ");
       }
@@ -78,8 +82,6 @@ const BookCarHome = () => {
       console.error(error);
     }
   };
-  
-  
 
   if (!fontsLoaded) {
     return null;
@@ -125,42 +127,47 @@ const BookCarHome = () => {
           </View>
 
           <View style={{ marginTop: 20 }}>
-            {dataSearch && dataSearch.map((location, index) => (
-              <Pressable
-                onPress={() => handlePressLocation(location)}
-                key={index}
-              >
-                <View style={styles["bookcar__container-location"]}>
-                  <View style={{ width: "10%" }}>
-                    <Image
-                      source={LocationItem}
-                      style={{ width: 25, height: 25 }}
+            {dataSearch &&
+              dataSearch.map((location, index) => (
+                <Pressable
+                  onPress={() => handlePressLocation(location)}
+                  key={index}
+                >
+                  <View style={styles["bookcar__container-location"]}>
+                    <View style={{ width: "10%" }}>
+                      <Image
+                        source={LocationItem}
+                        style={{ width: 25, height: 25 }}
+                      />
+                    </View>
+
+                    <View style={{ width: "70%" }}>
+                      <Text style={styles["bookcar__container-location-title"]}>
+                        {location.properties.label}
+                      </Text>
+                      <Text
+                        style={styles["bookcar__container-location-content"]}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
+                        {location.properties.housenumber}
+                        {location.properties.housenumber ? " " : ""}
+                        {location.properties.street}
+                        {location.properties.street ? "," : ""}{" "}
+                        {location.properties.county},{" "}
+                        {location.properties.locality}
+                      </Text>
+                    </View>
+
+                    <FontAwesomeIcon
+                      icon={faArrowRightLong}
+                      size={16}
+                      color="#434343"
+                      style={{ width: "20%" }}
                     />
                   </View>
-
-                  <View style={{ width: "70%" }}>
-                    <Text style={styles["bookcar__container-location-title"]}>
-                      {location.properties.label}
-                    </Text>
-                    <Text
-                      style={styles["bookcar__container-location-content"]}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {location.properties.housenumber}{location.properties.housenumber ? ' ' : ''}{location.properties.street}{location.properties.street ? ',' : ''} {location.properties.county}, {location.properties.locality}
-                    </Text>
-                  </View>
-
-                  <FontAwesomeIcon
-                    icon={faArrowRightLong}
-                    size={16}
-                    color="#434343"
-                    style={{ width: "20%" }}
-                  />
-                </View>
-              </Pressable>
-            ))}
-
+                </Pressable>
+              ))}
           </View>
 
           <View style={styles["bookcar__container-movemore"]}>
