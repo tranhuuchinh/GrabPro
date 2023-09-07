@@ -38,6 +38,7 @@ import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
 import LoginScreen from "./src/pages/LoginScreen/LoginScreen";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
+import LogInScreens from "./src/pages/LoginScreenMain/LogInScreen";
 import * as Permissions from "expo-permissions";
 import { LogBox } from "react-native";
 
@@ -237,11 +238,12 @@ const App = () => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="/splash" component={SplashScreen} />
+        <Stack.Screen name="/splash" component={SplashScreen} />
         <Stack.Screen name="/wait" component={WaitScreen} />
         <Stack.Screen name="/login" component={LoginScreen} />
+        <Stack.Screen name="/loginMain" component={LogInScreens} />
         <Stack.Screen name="/lgphone" component={LoginByPhone} />
-        <Stack.Screen name="/verify" component={LoginVerification} /> */}
+        <Stack.Screen name="/verify" component={LoginVerification} />
         <Stack.Screen name="Tab" component={Tab} />
       </Stack.Navigator>
     </NavigationContainer>

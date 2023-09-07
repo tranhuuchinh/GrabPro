@@ -2,7 +2,7 @@ const { localStorage } = global.window;
 
 const auth = {
   login(data) {
-    localStorage.name = data.data.user.name;
+    localStorage.name = data.data.user.fullname;
     localStorage.email = data.data.user.email;
     localStorage.gender = data.data.user.gender;
     localStorage.dob = data.data.user.dob;

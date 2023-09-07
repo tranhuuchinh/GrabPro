@@ -26,6 +26,8 @@ import firebase from "firebase/compat/app";
 import { log } from "react-native-reanimated";
 import useAxios from "../../../hooks/useAxios";
 import axios from "axios";
+import StateManager from "../../../service/commandbook/receiver";
+import { SetIdCommand } from "../../../service/commandbook/command";
 
 const LoginVerification = () => {
   const [code, setCode] = useState("");
@@ -89,15 +91,19 @@ const LoginVerification = () => {
         console.log(object);
         // Thực hiện gọi API bằng axios
         axios
-          .post("http://192.168.1.7:3000/auth/register?role=customer", object)
+          .post("http://192.168.1.11:3000/auth/register?role=customer", object)
           .then((response) => {
+            const setIdUser = new SetIdCommand(
+              StateManager,
+              response.data.data._id
+            );
+            setIdUser.execute();
             // Xử lý phản hồi từ API
+            navigation.navigate("Tab"); //Vào Home
           })
           .catch((error) => {
             Alert.alert("Lỗi khi gọi API: " + error.message);
           });
-
-        navigation.navigate("Tab"); //Vào Home
       })
       .catch((error) => {
         Alert.alert("Lỗi xác minh: " + error.message);

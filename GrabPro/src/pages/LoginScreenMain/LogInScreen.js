@@ -8,6 +8,8 @@ import useAxios from "../../hooks/useAxios";
 import { axiosClient } from "../../api/axios";
 import auth from "../../utils/auth";
 import axios from "axios";
+import StateManager from "../../service/commandbook/receiver";
+import { SetIdCommand } from "../../service/commandbook/command";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -45,20 +47,25 @@ const LogInScreen = () => {
     }
     try {
       axios
-        .post("http://192.168.1.6:3000/auth/login?role=customer", {
+        .post("http://192.168.1.11:3000/auth/login?role=customer", {
           phone: phone,
           password: password,
           loginType: "phone",
         })
         .then(async (response) => {
-          // console.log(response.data);
           if (
-            response.data.status == "success" &&
-            response.data.data.role == "driver"
+            response.data.status === "success" &&
+            response.data.data.role === "customer"
           ) {
-            auth.login(response.data);
-            // console.log(response.data);
-            navigation.navigate("/home");
+            console.log(response.data.status);
+            const setIdUser = new SetIdCommand(
+              StateManager,
+              response.data.data._id
+            );
+            setIdUser.execute();
+            // console.log(response.data.data._id);
+            navigation.navigate("Tab"); //Vào Home
+            auth.login(response.data); //Vô được, nhưng không lưu vì trường data thiếu
           }
         })
         .catch((error) => {
