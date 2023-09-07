@@ -3,8 +3,9 @@ import qs from "qs";
 import { API_ENDPOINT } from "@env";
 
 const axiosClient = axios.create({
-  baseURL: API_ENDPOINT,
-  // baseURL: "https://316f-222-253-157-117.ngrok-free.app/driver/",
+  // baseURL: API_ENDPOINT,
+  baseURL: "http://192.168.1.7:3002",
+  // baseURL: "https://a940-222-253-150-4.ngrok-free.app/driver/",
   headers: {
     "Content-Type": "application/json",
   },

@@ -8,7 +8,7 @@ class SocketManager {
 
   connect() {
     if (!SocketManager.instance) {
-      this.socketDriver = io.connect("http://192.168.1.11:3002");
+      this.socketDriver = io.connect("http://192.168.1.7:3002");
       SocketManager.instance = this;
     }
 

@@ -24,7 +24,6 @@ const LogInScreen = () => {
   const PhoneInput = useRef();
   const [isPass, setIsEmail] = useState(true);
   const [isPhone, setIsPhone] = useState(true);
-  const [idDriver, setIdDriver] = useState("");
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -46,19 +45,19 @@ const LogInScreen = () => {
     }
     try {
       axios
-        .post(`${API_AUTH}/auth/login?role=driver`, {
+        .post(`http://192.168.1.7:3000/auth/login?role=driver`, {
           phone: phone,
           password: password,
           loginType: "phone",
         })
         .then(async (response) => {
-          console.log(response.data);
+          // console.log(response.data);
           if (
             response.data.status == "success" &&
             response.data.data.role == "driver"
           ) {
-            auth.login(response.data);
             // console.log(response.data);
+            auth.login(response.data);
             navigation.navigate("/home");
           }
         })

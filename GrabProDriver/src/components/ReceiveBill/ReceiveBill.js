@@ -12,7 +12,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import useAxios from "../../hooks/useAxios";
 
-const ReceiveBill = ({ orderData, point, handleDrawDirection }) => {
+const ReceiveBill = ({
+  orderData,
+  point,
+  handleDrawDirection,
+  onFinishOrder,
+}) => {
   const fontsLoaded = useCustomFonts();
   const [state, setState] = useState(1);
   const [pointNum, setPointNum] = useState(0);
@@ -125,28 +130,40 @@ const ReceiveBill = ({ orderData, point, handleDrawDirection }) => {
             </View>
             <Text style={styles.receive_control_txt}>Gọi điện</Text>
           </Pressable>
-          {state === 2 && (
-            <Pressable style={styles.receive_control_item}>
-              <View style={styles.receive_control_circle}>
-                <FontAwesomeIcon
-                  icon={faCircleQuestion}
-                  size={20}
-                  color="black"
-                />
-              </View>
-              <Text style={styles.receive_control_txt}>Hỗ trợ</Text>
-            </Pressable>
-          )}
+
+          <Pressable style={styles.receive_control_item}>
+            <View style={styles.receive_control_circle}>
+              <FontAwesomeIcon
+                icon={faCircleQuestion}
+                size={20}
+                color="black"
+              />
+            </View>
+            <Text style={styles.receive_control_txt}>Hỗ trợ</Text>
+          </Pressable>
         </View>
         <View style={styles.receive_btn}>
           {state === 1 ? (
             <>
               <View style={styles.receive_btn_button}>
-                <Text style={styles.receive_btn_text}>Đón khách</Text>
+                {pointNum === 2 ? (
+                  <Text style={styles.receive_btn_text}>Trả khách</Text>
+                ) : (
+                  <Text style={styles.receive_btn_text}>Đón khách</Text>
+                )}
               </View>
-              <Pressable style={styles.receive_btn_off}>
-                <FontAwesomeIcon icon={faPowerOff} size={20} color="#4FAE5A" />
-              </Pressable>
+              {pointNum === 2 && (
+                <Pressable
+                  onPress={() => onFinishOrder()}
+                  style={styles.receive_btn_off}
+                >
+                  <FontAwesomeIcon
+                    icon={faPowerOff}
+                    size={20}
+                    color="#4FAE5A"
+                  />
+                </Pressable>
+              )}
             </>
           ) : (
             <View style={styles.receive_btn_button}>

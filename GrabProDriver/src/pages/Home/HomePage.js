@@ -56,6 +56,10 @@ const HomePage = () => {
   const [idOrder, setIdOrder] = useState();
   const [infoDriver, setInfoDriver] = useState();
   const [dataOrder, setDataOrder] = useState();
+  const [flag, setFlag] = useState(true);
+  let getIdCustomer = "";
+  let getIdOrder = "";
+  let getFlag = true;
 
   const retrieveIdFromStorage = async () => {
     try {
@@ -102,8 +106,11 @@ const HomePage = () => {
         });
       }
       if (_id) {
+        // console.log(
+        //   `https://a940-222-253-150-4.ngrok-free.app/driver/driver/${_id}`
+        // );
         axios
-          .get(`${API_ENDPOINT}/driver/${_id}`)
+          .get(`http://192.168.1.7:3002/driver/${_id}`)
           .then((response) => {
             const responseData = response.data;
             console.log("Vinh lấy info driver");
@@ -124,7 +131,7 @@ const HomePage = () => {
       try {
         // axiosClient.get(`/orders/${idOrder}`);
         if (idOrder) {
-          axiosClient.get(`/orders/${idOrder}`, {}, {}, []).then((response) => {
+          axiosClient.get(`orders/${idOrder}`, {}, {}, []).then((response) => {
             if (response.data !== undefined) {
               setDataOrder(response.data);
               console.log("Order");
@@ -194,7 +201,7 @@ const HomePage = () => {
   // Tính toán và hiển thị đường đi
   useEffect(() => {
     console.log("Vinh đường đi");
-    if (statePoint == 0) {
+    if (statePoint === 0 || statePoint === 1) {
       // console.log(currentLocation);
       if (currentLocation && fromCoordinates) {
         var request = new XMLHttpRequest();
@@ -229,7 +236,7 @@ const HomePage = () => {
 
         request.open(
           "GET",
-          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&start=${fromCoordinates.longitude},${fromCoordinates.latitude}&end=${toCoordinates.longitude},${toCoordinates.latitude}`
+          `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248f1a1f6627cbd4347adf8adc8296df114&start=${currentLocation.longitude},${currentLocation.latitude}&end=${toCoordinates.longitude},${toCoordinates.latitude}`
         );
 
         request.setRequestHeader(
@@ -294,6 +301,8 @@ const HomePage = () => {
         //   idOrder: savedOrder._id,
         // };
         let idOrderr = data?.idOrder;
+        getIdCustomer = data?.idCustomer;
+        getIdOrder = data?.idOrder;
         let latDriver = currentLocation.latitude;
         let lngDriver = currentLocation.longitude;
         console.log(typeof currentLocation.latitude);
@@ -316,7 +325,6 @@ const HomePage = () => {
             // lng: 106.6951846,
           },
         };
-        console.log("ccccccc");
         sendMessage("driverClient", inforDriver);
       });
 
@@ -368,15 +376,52 @@ const HomePage = () => {
     // return () => {
     //   clearInterval(interval);
     // };
-  }, [isConnected]);
+  }, [isConnected, idOrder]);
 
   const handleToggleIncome = () => {
     setIsIncome((prev) => !prev);
   };
 
   useEffect(() => {
-    console.log("Gửi tín hiệu liên tục");
-  });
+    let intervalId;
+
+    // Kiểm tra isConnected và getFlag
+    if (isConnected && flag) {
+      console.log(flag);
+      // Bắt đầu chạy hàm sau mỗi 5 giây khi isConnected và getFlag là true
+      intervalId = setInterval(() => {
+        if (getIdCustomer !== "") {
+          getLocationAsync();
+          console.log(getIdCustomer);
+          console.log(getIdOrder);
+          console.log(flag);
+
+          const objectSendInfo = {
+            idOrder: getIdOrder,
+            idCustomer: getIdCustomer,
+            location: {
+              lat: currentLocation.latitude,
+              lng: currentLocation.longitude,
+            },
+          };
+          sendMessage("followDriver", objectSendInfo);
+        }
+        // Thực hiện các thao tác bạn muốn sau mỗi 5 giây ở đây
+      }, 5000); // 5000 milliseconds tương ứng với 5 giây
+    }
+
+    // Kiểm tra getFlag để dừng interval nếu cần
+    if (!flag) {
+      clearInterval(intervalId);
+    }
+
+    return () => {
+      // Hủy bỏ interval khi component bị unmount hoặc khi isConnected hoặc getFlag là false
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isConnected, flag]); // Thêm getFlag vào danh sách phụ thuộc
 
   //Modal
   const [showModal, setShowModal] = useState(true);
@@ -405,6 +450,7 @@ const HomePage = () => {
     };
     sendMessage("cancelOrder", objectCancel);
     setShowModal(false);
+    setFromCoordinates(null);
   };
 
   handleAcceptOrder = () => {
@@ -419,6 +465,15 @@ const HomePage = () => {
     sendMessage("acceptOrder", objectAccept);
     setShowModalReceiveBill(true);
     setShowModal(false);
+  };
+
+  handleFinishedOrder = () => {
+    console.log("Finish order");
+    getIdCustomer = "";
+    getIdOrder = "";
+    setFlag(false);
+    setShowModalReceiveBill(false);
+    setFromCoordinates(null);
   };
 
   if (!fontsLoaded) {
@@ -862,6 +917,7 @@ const HomePage = () => {
             orderData={dataOrder}
             point={statePoint}
             handleDrawDirection={setDirectionPoint}
+            onFinishOrder={handleFinishedOrder}
           />
         )}
       </View>
