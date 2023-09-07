@@ -9,6 +9,7 @@ import { axiosClient } from "../../api/axios";
 import useAxios from "../../hooks/useAxios";
 import auth from "../../utils/auth";
 import { log } from "react-native-reanimated";
+import { API_ENDPOINT, API_AUTH } from "@env";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -49,10 +50,7 @@ const RegisterScreen = () => {
           role: "driver",
         };
 
-        const response = await axios.post(
-          "http://192.168.1.6:3000/auth/register",
-          object
-        );
+        const response = await axios.post(`${API_AUTH}auth/register`, object);
 
         if (response.data.status === "success") {
           const idAccount = response.data.dataRegis.user.idAccount._id;
@@ -63,7 +61,7 @@ const RegisterScreen = () => {
         }
       } catch (error) {
         // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
-        console.error("Đăng nhập thất bại:", error);
+        console.error("Đăng ký thất bại:", error);
       }
     }
   };

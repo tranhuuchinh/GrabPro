@@ -34,6 +34,7 @@ import ReceiveBill from "../../components/ReceiveBill/ReceiveBill";
 import auth from "../../utils/auth";
 import axios from "axios";
 import { axiosClient } from "../../api/axios";
+import { API_ENDPOINT, API_AUTH } from "@env";
 
 const HomePage = () => {
   const fontsLoaded = useCustomFonts();
@@ -102,7 +103,7 @@ const HomePage = () => {
       }
       if (_id) {
         axios
-          .get(`http://192.168.1.6:3002/driver/${_id}`)
+          .get(`${API_ENDPOINT}/driver/${_id}`)
           .then((response) => {
             const responseData = response.data;
             console.log("Vinh lấy info driver");
@@ -154,7 +155,7 @@ const HomePage = () => {
   }, [idOrder]);
 
   useEffect(() => {
-    // Ở đây bạn có thể sử dụng fromCoordinates và toCoordinates
+    // Ở đây sử dụng fromCoordinates và toCoordinates
   }, [fromCoordinates, toCoordinates]);
 
   const handleToggleConnect = () => {
@@ -175,7 +176,7 @@ const HomePage = () => {
 
       // Tính khoảng cách bằng cách tính khoảng cách Euclidean giữa hai điểm
       let distance = 0;
-      console.log("Vinh vị trí");
+      console.log("Đã lấy vị trí");
       if (fromCoordinates) {
         distance = Math.sqrt(
           Math.pow(location.coords.latitude - fromCoordinates.latitude, 2) +
@@ -373,6 +374,10 @@ const HomePage = () => {
     setIsIncome((prev) => !prev);
   };
 
+  useEffect(() => {
+    console.log("Gửi tín hiệu liên tục");
+  });
+
   //Modal
   const [showModal, setShowModal] = useState(true);
   const [showModalReceiveBill, setShowModalReceiveBill] = useState(false);
@@ -382,7 +387,7 @@ const HomePage = () => {
     setShowModal(true); // Hiển thị modal khi có dữ liệu response
     setTimeout(() => {
       setShowModal(false);
-      setShowModalReceiveBill(true);
+      // setShowModalReceiveBill(true);
     }, 5000);
     // }
   }, []);
@@ -412,6 +417,7 @@ const HomePage = () => {
       idCustomer: dataOrder.idCustomer,
     };
     sendMessage("acceptOrder", objectAccept);
+    setShowModalReceiveBill(true);
     setShowModal(false);
   };
 
@@ -851,13 +857,13 @@ const HomePage = () => {
             onAccept={handleAcceptOrder}
           />
         )}
-        {/* {showModalReceiveBill && (
+        {showModalReceiveBill && (
           <ReceiveBill
             orderData={dataOrder}
             point={statePoint}
             handleDrawDirection={setDirectionPoint}
           />
-        )} */}
+        )}
       </View>
     );
   }
