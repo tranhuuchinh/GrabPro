@@ -76,7 +76,7 @@ const BookCar = () => {
             }
           });
 
-          const setDistance = new SetDistanceCommand(StateManager, responseObj.features[0].properties.segments[0].distance);
+          const setDistance = new SetDistanceCommand(StateManager, Math.round((responseObj.features[0].properties.segments[0].distance / 1000) * 100) / 100);
           setDistance.execute();
 
           setCoordinate(coordinatesA);
