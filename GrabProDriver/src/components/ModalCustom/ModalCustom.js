@@ -27,7 +27,7 @@ const ModalCustom = ({ orderData, onCloseModel, onAccept }) => {
       };
     }
     if (countdown === 0) {
-      console.log("00000");
+      // console.log("00000");
       onCloseModel();
     }
   }, [countdown]);

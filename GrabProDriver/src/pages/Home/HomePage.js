@@ -468,12 +468,27 @@ const HomePage = () => {
   };
 
   handleFinishedOrder = () => {
-    console.log("Finish order");
-    getIdCustomer = "";
-    getIdOrder = "";
-    setFlag(false);
-    setShowModalReceiveBill(false);
-    setFromCoordinates(null);
+    try {
+      // axiosClient.get(`/orders/${idOrder}`);
+      if (idOrder) {
+        axiosClient
+          .patch(`orders/${idOrder}`, { status: 2 }, {}, [])
+          .then((response) => {
+            if (response.status === "success") {
+              if (response.data !== undefined) {
+                console.log("Finish order");
+                getIdCustomer = "";
+                getIdOrder = "";
+                setFlag(false);
+                setShowModalReceiveBill(false);
+                setFromCoordinates(null);
+              }
+            }
+          });
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   if (!fontsLoaded) {
