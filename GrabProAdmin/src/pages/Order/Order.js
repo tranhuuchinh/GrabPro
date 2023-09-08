@@ -15,7 +15,7 @@ const Order = () => {
     const [listDriver, setListDriver] = useState([]);
     const [listAccount, setListAccount] = useState([]);
     const [renderData, setRenderData] = useState(listApp);
-    const [search, setSearch] = useState(renderData);
+    const [search, setSearch] = useState([]);
     const [isTab, setIsTap] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     // const [indexItem, setIndexItem] = useState(-1);
@@ -37,6 +37,7 @@ const Order = () => {
     useEffect(() => {
         if (isLoadingCustomer === false && !errorCustomer && responseCustomer.data) {
             setListCustomer(responseCustomer.data);
+            setSearch(responseCustomer.data)
         }
     }, [responseCustomer]);
 
@@ -53,16 +54,16 @@ const Order = () => {
     }, [responseAccount]);
 
     useEffect(() => {
-        setRenderData(listApp);
+        if (listApp) {
+            setRenderData(listApp);
+        }
     }, [listApp]);
 
-    useEffect(() => {
-        setSearch(renderData);
-    }, [renderData]);
-
-    console.log('haha');
-    console.log(renderData);
-    console.log(search);
+    // useEffect(() => {
+    //     if (search) {
+    //         setSearch(renderData);
+    //     }
+    // }, [renderData]);
 
     useEffect(() => {
         if (valueInput.trim() === '') {

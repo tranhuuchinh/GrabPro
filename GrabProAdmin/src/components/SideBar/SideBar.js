@@ -25,7 +25,7 @@ const SideBar = () => {
 
     return (
         <div className={classes.sidebar}>
-            <div className={classes.sidebar__wrapper} onClick={() => {setMoveTab('Dashboard'); navigation('/')}}>
+            <div className={classes.sidebar__wrapper} onClick={() => {setMoveTab('Dashboard'); navigation('/home')}}>
                 <FontAwesomeIcon icon={faHome} className={`${classes['sidebar__wrapper--ic']} ${moveTab === 'Dashboard' ? classes.active : ''}`}/>
                 <p style={{color: moveTab === 'Dashboard' ? '#5FCCFF' : ''}}>Dashboard</p>
             </div>

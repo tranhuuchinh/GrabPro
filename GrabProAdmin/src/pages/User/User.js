@@ -16,7 +16,7 @@ const User = () => {
     const [listLocation, setListLocation] = useState([]);
     const [listOrder, setListOrder] = useState([]);
     const [renderData, setRenderData] = useState(listCustomer);
-    const [search, setSearch] = useState(renderData);
+    const [search, setSearch] = useState([]);
     const [isTab, setIsTap] = useState('Customer');
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -46,6 +46,7 @@ const User = () => {
     useEffect(() => {
         if (isLoadingCustomer === false && !errorCustomer && responseCustomer.data) {
             setListCustomer(responseCustomer.data);
+            setSearch(responseCustomer.data);
         }
     }, [responseCustomer]);
 
@@ -79,13 +80,15 @@ const User = () => {
 
     useEffect(() => {
         if (valueInput.trim() === '') {
+            console.log('hâh');
             setRenderData(search);
         } else {
             // Ngược lại, thực hiện tìm kiếm trong danh sách gốc
-            const filteredData = renderData.filter((item) => item.name.trim().includes(valueInput));
+            const filteredData = search.filter((item) => item.fullname.trim().includes(valueInput));
             setRenderData(filteredData);
         }
     }, [valueInput]);
+
 
     const handleTab = (e) => {
         if (e.target.innerText === 'Customer') {

@@ -3,7 +3,7 @@ import qs from 'qs';
 
 const axiosClient = axios.create({
     // baseURL: process.env.REACT_APP_API_ENDPOINT,
-    baseURL: 'http://192.168.1.10:3000',
+    baseURL: 'http://192.168.1.8:3004',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -30,7 +30,8 @@ axiosClient.interceptors.response.use(
 );
 
 const axiosPrivate = axios.create({
-    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    // baseURL: process.env.REACT_APP_API_ENDPOINT,
+    baseURL: 'http://192.168.1.8:3004',
     headers: {
         'Content-Type': 'application/json',
     },

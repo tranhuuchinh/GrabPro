@@ -5,13 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import classes from './Header.module.scss';
 import Rose from '../../assets/imgs/Rose.jpg';
+import logo from '../../assets/imgs/logo.png';
 
 const Header = () => {
 
     return (
         <div className={classes.header}>
             <div className={classes.header__left}>
-                <img src={Rose} />
+                <img src={logo} />
             </div>
 
             <div className={classes.header__right}>
