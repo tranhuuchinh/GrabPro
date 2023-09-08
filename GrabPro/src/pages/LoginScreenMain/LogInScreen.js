@@ -48,7 +48,7 @@ const LogInScreen = () => {
     }
     try {
       axios
-        .post(`${API_AUTH}auth/login?role=customer`, {
+        .post(`http://192.168.1.8:3000/auth/login?role=customer`, {
           phone: phone,
           password: password,
           loginType: "phone",
