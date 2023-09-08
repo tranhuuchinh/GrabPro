@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faStar, faPhone } from "@fortawesome/free-solid-svg-icons";
@@ -8,10 +8,46 @@ import Book from "../../assets/imgs/BookCar/Book.png";
 import styles from "./BookCarComing.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
+import { socketCustomer } from "../../../src/service/socket";
+import useAxios from "../../hooks/useAxios";
 
 const BookCarComing = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+
+  const [idDriver, setIdDriver] = useState('');
+  const [infoDriver, setInfoDriver] = useState(null);
+
+  useEffect(() => {
+    // lấy 4 driver có khoảng cách đường chym bay gần nhất
+    socketCustomer.on("followDriver", (message) => {
+      console.log(message);
+      setIdDriver(message.idDriver);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (idDriver !== '') {
+      const fetchData = async () => {
+        const [responseDriver, errorDriver, isLoadingDriver] = useAxios(
+          "get",
+          `/driver/${idDriver}`,
+          {},
+          {},
+          []
+        );
+  
+        if (responseProduct && responseProduct.data !== undefined) {
+          setAward(responseProduct.data.mainAward);
+          setBonus(responseProduct.data.bonusPoint);
+          setFavorites(responseProduct.data.favoriteLocations);
+        }
+      };
+  
+      fetchData();
+    }
+  }, [idDriver]);
+
   if (!fontsLoaded) {
     return null;
   } else {

@@ -218,6 +218,8 @@ const App = () => {
   //   requestLocationPermission();
   // })
   useEffect(() => {
+    console.log("Bố láo");
+    
     socketCustomer.on("connect", () => {
       console.log("Connected to server customer");
     });

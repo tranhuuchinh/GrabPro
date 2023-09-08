@@ -10,6 +10,7 @@ import auth from "../../utils/auth";
 import axios from "axios";
 import StateManager from "../../service/commandbook/receiver";
 import { SetIdCommand } from "../../service/commandbook/command";
+import { API_AUTH } from "@env";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);

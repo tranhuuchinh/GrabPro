@@ -14,7 +14,7 @@ const WaitScreen = () => {
     navigation.navigate("/loginMain");
   };
   const handleResgister = () => {
-    navigation.navigate("/login");
+    navigation.navigate("/register");
   };
   return (
     <View style={styles.wait_container}>
