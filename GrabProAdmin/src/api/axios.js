@@ -2,8 +2,8 @@ import axios from 'axios';
 import qs from 'qs';
 
 const axiosClient = axios.create({
-    // baseURL: process.env.REACT_APP_API_ENDPOINT,
-    baseURL: 'http://192.168.1.8:3004',
+    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    // baseURL: 'http://192.168.1.5:3004',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -30,8 +30,8 @@ axiosClient.interceptors.response.use(
 );
 
 const axiosPrivate = axios.create({
-    // baseURL: process.env.REACT_APP_API_ENDPOINT,
-    baseURL: 'http://192.168.1.8:3004',
+    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    // baseURL: 'http://192.168.1.5:3004',
     headers: {
         'Content-Type': 'application/json',
     },

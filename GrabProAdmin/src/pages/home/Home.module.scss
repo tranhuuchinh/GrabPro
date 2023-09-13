@@ -10,20 +10,21 @@
 
   &__data{
     display: flex;
-    align-items: center;
+    align-items: stretch;
     column-gap: 2rem;
     margin-bottom: 2.8rem;
     
     &--item{
       flex: 1;
       display: flex;
+      justify-content: space-between;
       padding: 1.4rem;
       border-radius: 4px;
       box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.25);
       background-color: #fff;
      
       &-left{
-        margin-right: 5rem;
+        margin-right: 2rem;
         // min-width: 128px;
         
         span{

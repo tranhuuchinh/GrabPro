@@ -77,7 +77,7 @@ const Home = () => {
         if (dataHome && dataHome.timeUpdate) {
             const dateString = dataHome.timeUpdate;
 
-            const dateObj = new Date(dateString);
+            const dateObj = new Date('2023-09-08T17:33:12.091+00:00');
 
             const hours = dateObj.getUTCHours();
             const minutes = dateObj.getUTCMinutes();
@@ -118,7 +118,7 @@ const Home = () => {
 
                     <div className={classes['home__data--item-right']}>
                         <div>
-                            <p>32%</p>
+                            <p>100%</p>
                             <FontAwesomeIcon icon={faCircleUp} className={classes['home__data--item-right-icon']} />
                         </div>
                     </div>
@@ -132,7 +132,7 @@ const Home = () => {
 
                     <div className={classes['home__data--item-right']}>
                         <div>
-                            <p>32%</p>
+                            <p>100%</p>
                             <FontAwesomeIcon icon={faCircleUp} className={classes['home__data--item-right-icon']} />
                         </div>
                     </div>
@@ -146,10 +146,10 @@ const Home = () => {
 
                     <div className={classes['home__data--item-right']}>
                         <div>
-                            <p className={classes.decrease}>13%</p>
+                            <p className={classes.increase}>100%</p>
                             <FontAwesomeIcon
-                                icon={faCircleDown}
-                                className={`${classes['home__data--item-right-icon']} ${classes.decrease}`}
+                                icon={faCircleUp}
+                                className={`${classes['home__data--item-right-icon']} ${classes.increase}`}
                             />
                         </div>
                     </div>
@@ -163,7 +163,7 @@ const Home = () => {
 
                     <div className={classes['home__data--item-right']}>
                         <div>
-                            <p>13%</p>
+                            <p>100%</p>
                             <FontAwesomeIcon icon={faCircleUp} className={classes['home__data--item-right-icon']} />
                         </div>
                     </div>

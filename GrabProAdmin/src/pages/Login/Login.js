@@ -19,7 +19,7 @@ const Login = () => {
         // console.log(loginType);
         try {
             axios
-            .post('http://192.168.1.8:3000/auth/login?role=admin', {
+            .post(`http://192.168.1.5:3000/auth/login?role=admin`, {
               phone: username,
               password: password,
               loginType: "phone",
