@@ -110,7 +110,7 @@ const HomePage = () => {
         //   `https://a940-222-253-150-4.ngrok-free.app/driver/driver/${_id}`
         // );
         axios
-          .get(`http://192.168.1.7:3002/driver/${_id}`)
+          .get(`${API_ENDPOINT}driver/${_id}`)
           .then((response) => {
             const responseData = response.data;
             console.log("Vinh lấy info driver");
@@ -394,7 +394,6 @@ const HomePage = () => {
           getLocationAsync();
           console.log(getIdCustomer);
           console.log(getIdOrder);
-          console.log(flag);
 
           const objectSendInfo = {
             idOrder: getIdOrder,
@@ -404,6 +403,7 @@ const HomePage = () => {
               lng: currentLocation.longitude,
             },
           };
+          console.log(objectSendInfo);
           sendMessage("followDriver", objectSendInfo);
         }
         // Thực hiện các thao tác bạn muốn sau mỗi 5 giây ở đây
@@ -462,6 +462,7 @@ const HomePage = () => {
       idDriver: idDriver,
       idCustomer: dataOrder.idCustomer,
     };
+    console.log(objectAccept);
     sendMessage("acceptOrder", objectAccept);
     setShowModalReceiveBill(true);
     setShowModal(false);
@@ -482,6 +483,7 @@ const HomePage = () => {
                 setFlag(false);
                 setShowModalReceiveBill(false);
                 setFromCoordinates(null);
+                setToCoordinates(null);
               }
             }
           });

@@ -1,4 +1,5 @@
 import io from "socket.io-client";
+import { IPSOCKET } from "@env";
 
 class SocketManager {
   constructor() {
@@ -8,7 +9,7 @@ class SocketManager {
 
   connect() {
     if (!SocketManager.instance) {
-      this.socketDriver = io.connect("http://192.168.1.7:3002");
+      this.socketDriver = io.connect("http://192.168.1.9:3002");
       SocketManager.instance = this;
     }
 
