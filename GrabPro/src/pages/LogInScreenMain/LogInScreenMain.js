@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Text, View, Pressable, TextInput, Alert } from "react-native";
-import styles from "./LogInScreen.style";
+import styles from "./LogInScreenMain.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
@@ -72,7 +72,6 @@ const LogInScreen = () => {
         .catch((error) => {
           // Alert.alert("Tài khoản không tồn tại! Vui lòng kiểm tra lại");
         });
-      // navigation.navigate("/home");
     } catch (error) {
       // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
       console.error("Đăng nhập thất bại:", error);

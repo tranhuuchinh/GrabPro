@@ -100,6 +100,8 @@ const LoginVerification = () => {
             );
             setIdUser.execute();
             // Xử lý phản hồi từ API
+            setIsModalVisible(false);
+
             navigation.navigate("Tab"); //Vào Home
           })
           .catch((error) => {

@@ -38,7 +38,7 @@ import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
 import RegisterScreen from "./src/pages/LoginScreen/LoginScreen";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
-import LogInScreens from "./src/pages/LoginScreenMain/LogInScreen";
+import LogInScreens from "./src/pages/LoginScreenMain/LogInScreenMain";
 import * as Permissions from "expo-permissions";
 import { LogBox } from "react-native";
 
@@ -219,7 +219,7 @@ const App = () => {
   // })
   useEffect(() => {
     console.log("Bố láo");
-    
+
     socketCustomer.on("connect", () => {
       console.log("Connected to server customer");
     });
