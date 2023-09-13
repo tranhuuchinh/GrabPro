@@ -28,18 +28,19 @@ const BookCarDestroy = () => {
 
     if (getStateCommand.time === null) {
       const dataOrder = {
-        idUser: "64cd144708afa47f3bda6ae6",
+        idUser: getStateCommand.id,
         from: getStateCommand.from,
         to: getStateCommand.to,
         distance: getStateCommand.distance,
         type: getStateCommand.type,
-    };
+      };
+
+      console.log(dataOrder);
 
       sendMessage(socketCustomer, "customerClient", dataOrder);
-    }
-    else{
+    } else {
       const dataOrder = {
-        idUser: "64cd144708afa47f3bda6ae6",
+        idUser: getStateCommand.id,
         from: getStateCommand.from,
         to: getStateCommand.to,
         time: getStateCommand.time,
@@ -49,7 +50,6 @@ const BookCarDestroy = () => {
 
       sendMessage(socketCustomer, "customerClient", dataOrder);
     }
-
   }, []);
 
   useEffect(() => {
@@ -58,10 +58,10 @@ const BookCarDestroy = () => {
         if (message) setMessage(message), setCancel(true);
       });
     }
-  })
+  });
 
   useEffect(() => {
-    if (message !==null) {
+    if (message !== null) {
       navigation.navigate("/bookcar-coming");
     }
   }, [message]);

@@ -7,8 +7,10 @@ import { faBookmark, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Heading from "../../components/Heading/Heading";
 import { useNavigation } from "@react-navigation/native";
 import useAxios from "../../hooks/useAxios";
+import StateManager from '../../service/commandbook/receiver'
 
 const LocationPerson = () => {
+  const getStateCommand = StateManager.getState();
   const navigation = useNavigation();
   const fontsLoaded = useCustomFonts();
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +19,7 @@ const LocationPerson = () => {
 
   const [response, error, isLoading] = useAxios(
     "get",
-    "/customer/profile/64cd144708afa47f3bda6ae6",
+    `/customer/profile/${getStateCommand.id}`,
     {},
     {},
     []

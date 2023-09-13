@@ -11,6 +11,9 @@ const WaitScreen = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
+    navigation.navigate("/loginMain");
+  };
+  const handleResgister = () => {
     navigation.navigate("/login");
   };
   return (
@@ -26,7 +29,7 @@ const WaitScreen = () => {
           <Text style={styles.buttonTextLogin}>Đăng nhập</Text>
         </Pressable>
 
-        <Pressable style={styles.waitButtonRegister} onPress={handleLogin}>
+        <Pressable style={styles.waitButtonRegister} onPress={handleResgister}>
           <Text style={styles.buttonTextRegister}>Đăng kí ngay</Text>
         </Pressable>
       </View>

@@ -21,6 +21,7 @@ import StateManager from "../../service/commandbook/receiver";
 import { SetTypeCommand } from "../../service/commandbook/command";
 
 const HomeScreen = () => {
+  const getStateCommand = StateManager.getState();
   const [searchText, setSearchText] = useState("");
   const [award, setAward] = useState("");
   const [bonus, setBonus] = useState("");
@@ -30,7 +31,7 @@ const HomeScreen = () => {
 
   const [responseProduct, errorProduct, isLoadingProduct] = useAxios(
     "get",
-    "/customer/profile/64cd144708afa47f3bda6ae6",
+    `/customer/profile/${getStateCommand.id}`,
     {},
     {},
     []

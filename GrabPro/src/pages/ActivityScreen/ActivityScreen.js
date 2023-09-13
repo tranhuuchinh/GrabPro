@@ -6,6 +6,7 @@ import Oto from "../../../assets/icons/Activity/ic_oto.png";
 import Moto from "../../../assets/icons/Activity/ic_moto.png";
 import { useNavigation } from "@react-navigation/native";
 import useAxios from "../../hooks/useAxios";
+import StateManager from '../../service/commandbook/receiver'
 
 const truncateString = (inputString, maxLength) => {
   if (inputString.length > maxLength) {
@@ -36,6 +37,7 @@ const formatNumberWithDots = (inputNumber) => {
 };
 
 const ActivityScreen = () => {
+  const getStateCommand = StateManager.getState();
   const [type, setType] = useState("GrabCar");
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
@@ -43,7 +45,7 @@ const ActivityScreen = () => {
 
   const [response, error, isLoading] = useAxios(
     "get",
-    `/orders?type=${type}&idUser=64cd144708afa47f3bda6ae6`,
+    `/orders?type=${type}&idUser=${getStateCommand.id}`,
     {},
     {},
     [type]

@@ -35,15 +35,16 @@ import ChatDetail from "./src/pages/ChatDetail/ChatDetail";
 import ChatBook from "./src/pages/ChatBook/ChatBook";
 import SplashScreen from "./src/pages/SplashScreen/SplashScreen";
 import WaitScreen from "./src/pages/WaitScreen/WaitScreen";
-import LoginScreen from "./src/pages/LoginScreen/LoginScreen";
+import RegisterScreen from "./src/pages/LoginScreen/LoginScreen";
 import LoginByPhone from "./src/pages/LoginScreen/LoginByPhone/LoginByPhone";
 import LoginVerification from "./src/pages/LoginScreen/LoginByPhone/LoginVerification";
+import LogInScreens from "./src/pages/LoginScreenMain/LogInScreenMain";
 import * as Permissions from "expo-permissions";
 import { LogBox } from "react-native";
 
 import { socketCustomer, socketDriver } from "./src/service/socket";
 
-LogBox.ignoreLogs(["Warning: No native ExpoFirebaseCore module found"]);
+LogBox.ignoreAllLogs();
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -217,6 +218,8 @@ const App = () => {
   //   requestLocationPermission();
   // })
   useEffect(() => {
+    console.log("Bố láo");
+
     socketCustomer.on("connect", () => {
       console.log("Connected to server customer");
     });
@@ -237,11 +240,12 @@ const App = () => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="/splash" component={SplashScreen} />
+        <Stack.Screen name="/splash" component={SplashScreen} />
         <Stack.Screen name="/wait" component={WaitScreen} />
-        <Stack.Screen name="/login" component={LoginScreen} />
+        <Stack.Screen name="/register" component={RegisterScreen} />
+        <Stack.Screen name="/loginMain" component={LogInScreens} />
         <Stack.Screen name="/lgphone" component={LoginByPhone} />
-        <Stack.Screen name="/verify" component={LoginVerification} /> */}
+        <Stack.Screen name="/verify" component={LoginVerification} />
         <Stack.Screen name="Tab" component={Tab} />
       </Stack.Navigator>
     </NavigationContainer>

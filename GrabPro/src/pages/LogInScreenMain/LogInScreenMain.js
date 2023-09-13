@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Text, View, Pressable, TextInput, Alert } from "react-native";
-import styles from "./LogInScreen.style";
+import styles from "./LogInScreenMain.style";
 import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import Heading from "../../components/Heading/Heading";
@@ -8,6 +8,9 @@ import useAxios from "../../hooks/useAxios";
 import { axiosClient } from "../../api/axios";
 import auth from "../../utils/auth";
 import axios from "axios";
+import StateManager from "../../service/commandbook/receiver";
+import { SetIdCommand } from "../../service/commandbook/command";
+import { API_AUTH } from "@env";
 
 const phoneValid = (number) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
@@ -45,26 +48,30 @@ const LogInScreen = () => {
     }
     try {
       axios
-        .post("http://192.168.1.4:3000/auth/login?role=driver", {
+        .post(`http://192.168.1.8:3000/auth/login?role=customer`, {
           phone: phone,
           password: password,
           loginType: "phone",
         })
         .then(async (response) => {
-          // console.log(response.data);
           if (
-            response.data.status == "success" &&
-            response.data.data.role == "driver"
+            response.data.status === "success" &&
+            response.data.data.role === "customer"
           ) {
-            auth.login(response.data);
-
-            navigation.navigate("/home");
+            console.log(response.data.status);
+            const setIdUser = new SetIdCommand(
+              StateManager,
+              response.data.data._id
+            );
+            setIdUser.execute();
+            // console.log(response.data.data._id);
+            navigation.navigate("Tab"); //Vào Home
+            auth.login(response.data); //Vô được, nhưng không lưu vì trường data thiếu
           }
         })
         .catch((error) => {
           // Alert.alert("Tài khoản không tồn tại! Vui lòng kiểm tra lại");
         });
-      // navigation.navigate("/home");
     } catch (error) {
       // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
       console.error("Đăng nhập thất bại:", error);

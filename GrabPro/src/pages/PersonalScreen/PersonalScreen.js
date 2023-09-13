@@ -10,8 +10,10 @@ import {
   faCircleUser,
 } from "@fortawesome/free-solid-svg-icons";
 import useAxios from "../../hooks/useAxios";
+import StateManager from "../../service/commandbook/receiver";
 
 const PersonalScreen = () => {
+  const getStateCommand = StateManager.getState();
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
   const [award, setAward] = useState("");
@@ -22,7 +24,7 @@ const PersonalScreen = () => {
 
   const [response, error, isLoading] = useAxios(
     "get",
-    "/customer/profile/64cd144708afa47f3bda6ae6",
+    `/customer/profile/${getStateCommand.id}`,
     {},
     {},
     []
