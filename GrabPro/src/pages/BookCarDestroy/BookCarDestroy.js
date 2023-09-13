@@ -62,7 +62,7 @@ const BookCarDestroy = () => {
 
   useEffect(() => {
     if (message !== null) {
-      navigation.navigate("/bookcar-coming");
+      navigation.navigate("/bookcar-coming", { idDriver: message });
     }
   }, [message]);
 

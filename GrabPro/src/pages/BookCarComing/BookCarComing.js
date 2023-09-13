@@ -10,43 +10,45 @@ import { useCustomFonts } from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { socketCustomer } from "../../../src/service/socket";
 import useAxios from "../../hooks/useAxios";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+import MapView, { Polyline, Marker } from "react-native-maps";
 
 const BookCarComing = () => {
   const fontsLoaded = useCustomFonts();
   const navigation = useNavigation();
+  const route = useRoute();
+  const idDriver = route.params.idDriver;
 
-  const [idDriver, setIdDriver] = useState('');
   const [infoDriver, setInfoDriver] = useState(null);
+  const [locationDriver, setLocationDriver] = useState(null);
 
   useEffect(() => {
-    // lấy 4 driver có khoảng cách đường chym bay gần nhất
-    socketCustomer.on("followDriver", (message) => {
-      console.log(message);
-      setIdDriver(message.idDriver);
-    });
+    if (infoDriver === null) {
+      try {
+        axios
+          .get(`http://192.168.1.9:3002/driver/${idDriver}`, {})
+          .then(async (response) => {
+            console.log(infoDriver);
+            setInfoDriver(response.data.data);
+          })
+          .catch((error) => {
+            console.error("Lỗi khi gọi API:", error);
+            Alert.alert("Đã xảy ra lỗi khi gọi API. Vui lòng thử lại sau.");
+          });
+      } catch (error) {
+        // Xử lý lỗi ở đây, ví dụ hiển thị thông báo lỗi cho người dùng.
+        console.error("Thất bại", error);
+      }
+    }
   }, []);
 
   useEffect(() => {
-    if (idDriver !== '') {
-      const fetchData = async () => {
-        const [responseDriver, errorDriver, isLoadingDriver] = useAxios(
-          "get",
-          `/driver/${idDriver}`,
-          {},
-          {},
-          []
-        );
-  
-        if (responseProduct && responseProduct.data !== undefined) {
-          setAward(responseProduct.data.mainAward);
-          setBonus(responseProduct.data.bonusPoint);
-          setFavorites(responseProduct.data.favoriteLocations);
-        }
-      };
-  
-      fetchData();
-    }
-  }, [idDriver]);
+    socketCustomer.on("followDriver", (message) => {
+      console.log(message);
+      if (message) setLocationDriver(message);
+    });
+  }, [locationDriver]); // Thêm getFlag vào danh sách phụ thuộc
 
   if (!fontsLoaded) {
     return null;
@@ -54,7 +56,33 @@ const BookCarComing = () => {
     return (
       <View style={styles.bookcarcoming__container}>
         <View style={styles["bookcarcoming__container-maps"]}>
-          <Image source={HaLinh} style={{ width: "100%", flex: 1 }} />
+          {locationDriver && (
+            <MapView
+              style={{ width: "100%", height: "100%" }}
+              initialRegion={{
+                latitude: locationDriver.lat,
+                longitude: locationDriver.lng,
+                latitudeDelta: 0.016,
+                longitudeDelta: 0.05,
+              }}
+              region={{
+                latitude: locationDriver.lat,
+                longitude: locationDriver.lng,
+                latitudeDelta: 0.016,
+                longitudeDelta: 0.05,
+              }}
+            >
+              {locationDriver && (
+                <Marker
+                  coordinate={{
+                    latitude: locationDriver.lat,
+                    longitude: locationDriver.lng,
+                  }}
+                  title="Your location"
+                />
+              )}
+            </MapView>
+          )}
         </View>
 
         <View
@@ -83,7 +111,7 @@ const BookCarComing = () => {
 
               <View>
                 <Text style={styles["bookcarcoming__container-info-left-name"]}>
-                  Jenny Huỳnh
+                  {infoDriver !== null ? infoDriver.fullname : ""}
                 </Text>
 
                 <View
@@ -92,7 +120,7 @@ const BookCarComing = () => {
                   <Text
                     style={styles["bookcarcoming__container-info-left-star"]}
                   >
-                    5.0
+                    {infoDriver ? infoDriver.rating : ""}
                   </Text>
 
                   <FontAwesomeIcon icon={faStar} size={12} color="yellow" />
@@ -102,13 +130,17 @@ const BookCarComing = () => {
 
             <View style={styles["bookcarcoming__container-info-right"]}>
               <Text style={styles["bookcarcoming__container-info-right-title"]}>
-                51G-123.45
+                {infoDriver && infoDriver.transport
+                  ? infoDriver.transport.code
+                  : ""}
               </Text>
 
               <Text
                 style={styles["bookcarcoming__container-info-right-content"]}
               >
-                Đỏ - Ferrari
+                {infoDriver && infoDriver.transport
+                  ? infoDriver.transport.color
+                  : ""}
               </Text>
             </View>
           </View>

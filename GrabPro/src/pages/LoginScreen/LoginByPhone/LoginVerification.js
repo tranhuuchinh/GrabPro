@@ -92,7 +92,7 @@ const LoginVerification = () => {
         console.log(object);
         // Thực hiện gọi API bằng axios
         axios
-          .post(`${API_AUTH}auth/register?role=customer`, object)
+          .post("http://192.168.1.9:3000/auth/register?role=customer", object)
           .then((response) => {
             const setIdUser = new SetIdCommand(
               StateManager,
